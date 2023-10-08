@@ -1,6 +1,8 @@
 # Start working
   cd fiubademy-front
+  
   npm install
+  
   npm run dev
   
 # React + TypeScript + Vite
