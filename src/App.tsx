@@ -9,7 +9,11 @@ class App extends Component {
   render() {
     return (
       <div>
-        <SignIn />
+        Bienvenido a fiubademy
+        <br/>
+        <a href="/signIn">Sign in</a>
+        <br/>
+        <a href="/signUp">Sign up</a>
       </div>
     );
   }

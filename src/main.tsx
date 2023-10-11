@@ -7,6 +7,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import SignUp from './login/signup.tsx';
+import SignIn from './login/signin.tsx';
 
 const router = createBrowserRouter([
   {
@@ -14,6 +15,7 @@ const router = createBrowserRouter([
     element: <App />,
   },
   {path: "/signUp", element: <SignUp />},
+  {path: "/signIn", element: <SignIn />},
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
