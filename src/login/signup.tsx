@@ -31,10 +31,11 @@ function Copyright(props: any) {
 const defaultTheme = createTheme();
 
 export default function SignUp() {
+  const [signinFailed, setSigninFailed] = React.useState(false);
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    signup(data.get('email'), data.get("password"))
+    signup(data.get('email'), data.get("password"), setSigninFailed)
   };
 
   return (
@@ -100,6 +101,9 @@ export default function SignUp() {
                 />
               </Grid>
             </Grid>
+            {signinFailed && (<Typography component="h5" color="red" >
+            There was a problem with your sign up
+          </Typography>)}
             <Button
               type="submit"
               fullWidth

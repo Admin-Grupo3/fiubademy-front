@@ -31,10 +31,11 @@ function Copyright(props: any) {
 const defaultTheme = createTheme();
 
 export default function SignIn() {
+  const [signinFailed, setSigninFailed] = React.useState(false);
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    signin(data.get('email'), data.get("password"))
+    signin(data.get('email'), data.get("password"), setSigninFailed)
   };
 
   return (
@@ -80,6 +81,9 @@ export default function SignIn() {
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             />
+            {signinFailed && (<Typography component="h5" color="red" >
+            Wrong credentials
+          </Typography>)}
             <Button
               type="submit"
               fullWidth
