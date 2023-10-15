@@ -12,8 +12,7 @@ import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 
-const settings = ['SignIn'];
-
+const settings = ['signIn'];
 const Navbar = () => {
   const {openSidebar} = React.useContext(SidebarContext) as SideBarContextType;
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
@@ -25,9 +24,12 @@ const Navbar = () => {
 
 
   const handleCloseUserMenu = () => {
-    window.location.href = '/signIn';
     setAnchorElUser(null);
   };
+  function handleOptionSelected(setting: string){
+    window.location.href = '/' + setting;
+  }
+
   return (
     <NavbarWrapper className = "bg-white flex">
       <div className='container w-100'>
@@ -56,9 +58,10 @@ const Navbar = () => {
                 horizontal: 'right',
               }}
               open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu} href='/signUp'>
+                <MenuItem key={setting} onClick={() => handleOptionSelected(setting)}>
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
