@@ -3,6 +3,7 @@
 :root{
     --base-font: 'Raleway', sans-serif;
     --clr-white: #fff;
+    --clr-white-dark: #f7be8f;
     --clr-black: #000;
     --clr-orange: #fd9644;
     --clr-dark: #1C1D1F;
@@ -131,6 +132,7 @@ input, textarea, select{
 
 /* backgrounds */
 .bg-white{background-color: var(--clr-white);}
+.bg-white-dark{background-color: var(--clr-white-dark);}
 .bg-black{background-color: var(--clr-black);}
 .bg-transparent{background-color: transparent;}
 .bg-orange{background-color: var(--clr-orange);}

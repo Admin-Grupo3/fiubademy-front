@@ -11,8 +11,10 @@ import Menu from '@mui/material/Menu';
 import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
+import { Button } from '@mui/material';
 
 const settings = ['signIn'];
+const pages = ['Home', 'Courses', 'About', 'Contact'];
 const Navbar = () => {
   const {openSidebar} = React.useContext(SidebarContext) as SideBarContextType;
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
@@ -31,13 +33,23 @@ const Navbar = () => {
   }
 
   return (
-    <NavbarWrapper className = "bg-white flex">
+    <NavbarWrapper className = "bg-white-dark flex">
       <div className='container w-100'>
         <div className='brand-and-toggler flex flex-between w-100'>
           <Link to = "/" className='navbar-brand text-uppercase ls-1 fw-8'>
             <span>F</span>iubademy
           </Link>
-
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, paddingLeft:"50px"}}>
+            {pages.map((page) => (
+              <Button
+                key={page}
+                href={'/'+ page} 
+                sx={{ my: 2, display: 'block' }}
+              >
+                {page}
+              </Button>
+            ))}
+          </Box>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
