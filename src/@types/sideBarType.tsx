@@ -20,5 +20,5 @@ export interface SidebarType {
     updateCourse:(course: CourseType) => void;
     getCourses:() => CourseType[];
     getCourse:(id: number) => CourseType | undefined;
-    getCategorys:() => string[];
+    getCategorys:() => {id: Number, name: String}[];
   };
