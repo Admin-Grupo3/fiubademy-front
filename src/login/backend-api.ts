@@ -1,5 +1,5 @@
 import axios from 'axios';
-export { signup, signin, getCategories, createCourse };
+export { signup, signin, getCategories, createCourse, logOut };
 //const url = 'http://localhost:3300';
 
 const instance = axios.create({
@@ -11,7 +11,7 @@ function convertToISO6391(language: string): string | null {
   const languageMap: { [key: string]: string } = {
     'English': 'en',
     'Spanish': 'es'
-    // Agrega más mapeos según sea necesario
+    // Agregar más mapeos según sea necesario
   };
 
   return languageMap[language] || null;
@@ -26,9 +26,9 @@ function signup(email: any, password: any, setSigninFailed: any){
       };
     instance.post(`/users/signup`, payload)
   .then(response => {
-    console.log(response.data);
     if(response.status == 201){
-        window.location.href = "/";
+        //Redireccionar a inicio de sesion
+        window.location.href = "/signin";
     }
     else{
       setSigninFailed(true);
@@ -41,28 +41,44 @@ function signup(email: any, password: any, setSigninFailed: any){
 }
 
 function signin(email: any, password: any, setSigninFailed: any){
-    let payload = {
-        email: email,
-        password: password,
-      };
-    instance.post(`/users/signin`, payload)
+  let payload = {
+      email: email,
+      password: password,
+    };
+  instance.post(`/users/signin`, payload)
+.then(response => {
+  if(response.status == 201){
+    localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem('userData', JSON.stringify(payload));
+    window.location.href = "/";
+}
+else{
+  setSigninFailed(true);
+}
+})
+.catch(error => {
+  console.error(error);
+  setSigninFailed(true);
+});
+}
+
+function logOut(){
+  instance.post(`/users/logout`)
   .then(response => {
     if(response.status == 201){
+      localStorage.setItem('isLoggedIn', 'false');
+      localStorage.removeItem('userData');
       window.location.href = "/";
-  }
-  else{
-    setSigninFailed(true);
-  }
+    }
   })
   .catch(error => {
-    console.error(error);
-    setSigninFailed(true);
+    console.error('Error al hacer logout:', error);
   });
 }
 
+
 function getCategories(): Promise<{ id: number; name: string }[]> {
   return instance.get('/categories', ).then(response => {
-    console.log(response)
     if (response.status == 200) {
       return response.data;
     }
@@ -84,7 +100,6 @@ function createCourse(title: any, language: any, categoryIds: any) {
   };
   instance.post(`/courses`, payload)
   .then(response => {
-  console.log(response.data);
   if(response.status == 201){
     window.location.href = "/";
   }

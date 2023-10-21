@@ -35,7 +35,6 @@ const CoursesProvider: React.FC<Props> = ({children}) => {
         const data = getCategories();
         data.then(categorias => {
             const categories = categorias.map((item: { id: number; name: String; }) => ({ id: item.id, name: item.name }));
-            console.log(categories);
             return categories
           }).catch(error => {
             console.error('Error al obtener categorías:', error);

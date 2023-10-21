@@ -12,9 +12,10 @@ import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { Button } from '@mui/material';
+import { logOut } from '../login/backend-api.ts';
 
-const settings = ['signIn'];
-const pages = ['Home', 'Courses', 'About', 'Contact'];
+const settings = ['signIn', 'signUp'];
+const pages = ['About', 'Contact'];
 const Navbar = () => {
   const {openSidebar} = React.useContext(SidebarContext) as SideBarContextType;
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
@@ -23,12 +24,15 @@ const Navbar = () => {
     setAnchorElUser(event.currentTarget);
   };
 
-
-
+  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true'
+  
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
   function handleOptionSelected(setting: string){
+    if (setting == 'logOut') {
+      logOut()
+    }
     window.location.href = '/' + setting;
   }
 
@@ -40,6 +44,16 @@ const Navbar = () => {
             <span>F</span>iubademy
           </Link>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, paddingLeft:"50px"}}>
+          {isLoggedIn && (
+        <Button
+          key={"New course"}
+          href={'/courses'} 
+          sx={{ my: 2, display: 'block' }}
+        >
+          {"New course"}
+        </Button>
+      )}
+          
             {pages.map((page) => (
               <Button
                 key={page}
@@ -72,11 +86,16 @@ const Navbar = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
+              { !isLoggedIn && (settings.map((setting) => (
                 <MenuItem key={setting} onClick={() => handleOptionSelected(setting)}>
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
-              ))}
+              )))}
+              {isLoggedIn && (
+              <MenuItem key={'logOut'} onClick={() => handleOptionSelected("logOut")}>
+                  <Typography textAlign="center">{"logOut"}</Typography>
+              </MenuItem>
+              )}
             </Menu>
           </Box> 
         </div>
