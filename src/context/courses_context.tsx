@@ -1,7 +1,7 @@
 import React, { useEffect} from "react";
 import { CourseContextType, CourseType } from "../@types/sideBarType.tsx";
 import {getCategories} from "../login/backend-api";
-
+import test_courses from "../utils/data.tsx";
 export const CoursesContext = React.createContext<CourseContextType | null> (null);
 interface Props {
     children: React.ReactNode;
@@ -21,16 +21,17 @@ const CoursesProvider: React.FC<Props> = ({children}) => {
             category: "test",
         },
     ]);
-
     const getCourses = () => {
         return courses;
     }
-
-    const getCourse = (id: number) => {
-        const singleCourse = courses.find(course => course.id === id);
+    // this should be a promise to get the data from de backend
+    const getCourse = (id: any) => {
+        console.log("searching for course:", id);
+        const singleCourse = test_courses.find(course => course.id === id);
+        console.log("found course:", singleCourse);
+        
         return singleCourse;
     }
-
     const getCategorys = () => {
         const data = getCategories();
         data.then(categorias => {

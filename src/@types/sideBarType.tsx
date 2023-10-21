@@ -13,6 +13,17 @@ export interface SidebarType {
     name: string;
     description: string;
     category: string;
+    image: string;
+    rating_star: number;
+    rating_count: number;
+    students: number;
+    creator: string;
+    updated_date: string;
+    lang: string;
+    actual_price: number;
+    discounted_price: number;
+    what_you_will_learn: string[];
+    content: string[];
   }
   export type CourseContextType = {
     courses: CourseType[];
@@ -20,5 +31,6 @@ export interface SidebarType {
     updateCourse:(course: CourseType) => void;
     getCourses:() => CourseType[];
     getCourse:(id: number) => CourseType | undefined;
-    getCategorys:() => {id: Number, name: String}[];
+    getCategorys:() => {id: number, name: string}[];
   };
+

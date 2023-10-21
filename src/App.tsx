@@ -7,7 +7,8 @@ import SignUp from './login/signup.tsx';
 import SignIn from './login/signin.tsx';
 import HomePage from './pages/HomePage.tsx';
 import NewCourse from './pages/NewCourse.tsx';
-
+import Courses from './pages/CoursesPage.tsx';
+import SingleCourse from './pages/SingleCoursePage.tsx';
 
 class App extends Component {
   render() {
@@ -20,6 +21,8 @@ class App extends Component {
           <Route path="/Courses" element={<NewCourse />} />
           <Route path="/signUp" element={<SignUp />} /> 
           <Route path="/signIn" element={<SignIn />} />
+          <Route path = "/category/:category" element = {<Courses />} />
+          <Route path = "/courses/:id" element = {<SingleCourse />} />
         </Routes>
       </BrowserRouter>
     );
