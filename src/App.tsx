@@ -9,6 +9,7 @@ import HomePage from './pages/HomePage.tsx';
 import NewCourse from './pages/NewCourse.tsx';
 import Courses from './pages/CoursesPage.tsx';
 import SingleCourse from './pages/SingleCoursePage.tsx';
+import EditCourse from './pages/EditCourse.tsx';
 
 class App extends Component {
   render() {
@@ -23,6 +24,7 @@ class App extends Component {
           <Route path="/signIn" element={<SignIn />} />
           <Route path = "/category/:category" element = {<Courses />} />
           <Route path = "/courses/:id" element = {<SingleCourse />} />
+          <Route path = "/editCourse/:id" element = {<EditCourse />} />
         </Routes>
       </BrowserRouter>
     );

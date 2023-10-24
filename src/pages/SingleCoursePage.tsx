@@ -8,6 +8,7 @@ import {TbWorld} from "react-icons/tb";
 import {RiClosedCaptioningFill} from "react-icons/ri";
 import {BiCheck} from "react-icons/bi";
 import { CourseContextType, CourseType } from '../@types/sideBarType';
+import { Button } from '@mui/material';
 
 const SingleCoursePage = () => {
   const {id} = useParams();
@@ -22,17 +23,17 @@ const SingleCoursePage = () => {
   if (!single_course) {
     return <h2 className='section-title'>no course to display</h2>
   }
-  const {name, category, description, rating_star, rating_count, students, updated_date, lang, discounted_price, actual_price, creator, image, what_you_will_learn, content} = single_course || {};
+  const {course_name, category, description, rating_star, rating_count, students, updated_date, lang, discounted_price, actual_price, creator, image, what_you_will_learn, content} = single_course || {};
   return (
     <SingleCourseWrapper>
       <div className='course-intro mx-auto grid'>
         <div className='course-img'>
-          <img src = {image} alt = {name} />
+          <img src = {image} alt = {course_name} />
         </div>
         <div className='course-details'>
           <div className='course-category bg-white text-dark text-capitalize fw-6 fs-12 d-inline-block'>{category}</div>
           <div className='course-head'>
-            <h5>{name}</h5>
+            <h5>{course_name}</h5>
           </div>
           <div className='course-body'>
             <p className='course-para fs-18'>{description}</p>
@@ -68,7 +69,12 @@ const SingleCoursePage = () => {
               <span className='old-price fs-26 fw-6'>${actual_price}</span>
             </div>
           </div>
-
+          <Button
+            href={'/editCourse/' + id}
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}>
+            Editar curso
+          </Button> 
           
         </div>
       </div>
@@ -104,6 +110,7 @@ const SingleCoursePage = () => {
             }
           </ul>
         </div>
+       
       </div>
     </SingleCourseWrapper>
   )
