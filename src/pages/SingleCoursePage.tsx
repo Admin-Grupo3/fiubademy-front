@@ -13,6 +13,7 @@ import { Button } from '@mui/material';
 const SingleCoursePage = () => {
   const {id} = useParams();
   const {getCourse} = React.useContext(CoursesContext) as CourseContextType;
+  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true'
   const single_course = getCourse(id);
   useEffect(() => {
     if (id) {
@@ -69,12 +70,13 @@ const SingleCoursePage = () => {
               <span className='old-price fs-26 fw-6'>${actual_price}</span>
             </div>
           </div>
-          <Button
+          {isLoggedIn && <Button
             href={'/editCourse/' + id}
             variant="contained"
             sx={{ mt: 3, mb: 2 }}>
             Editar curso
           </Button> 
+          }
           
         </div>
       </div>
