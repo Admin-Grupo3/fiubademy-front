@@ -1,5 +1,5 @@
 import axios from 'axios';
-export { signup, signin, getCategories, createCourse, logOut };
+export { signup, signin, getCategories, createCourse, logOut, editCourse };
 //const url = 'http://localhost:3300';
 
 const instance = axios.create({
@@ -93,6 +93,26 @@ function getCategories(): Promise<{ id: number; name: string }[]> {
 }
 
 function createCourse(title: any, language: any, categoryIds: any) {
+  let payload = {
+    title: title,
+    language: convertToISO6391(language),
+    categoryIds: categoryIds
+  };
+  //instance.post(`/courses`, payload)
+  //.then(response => {
+  // if(response.status == 201){
+  //   window.location.href = "/";
+  // }
+  // else{
+  //   console.error('Error al crear el curso:');
+  // }
+  // })
+  // .catch(error => {
+  //   console.error('Error al crear el curso:', error);
+  // });
+}
+
+function editCourse(title: any, language: any, categoryIds: any) {
   let payload = {
     title: title,
     language: convertToISO6391(language),

@@ -7,7 +7,7 @@ import {
 } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { createCourse } from "../../login/backend-api";
+import { editCourse } from "../../login/backend-api";
 
 interface CourseFormProps {
   formData: {
@@ -57,7 +57,7 @@ const CourseForm: React.FC<CourseFormProps> = ({
     setFormSubmitted(true);
 
     if (isFormValid()) {
-      createCourse(
+      editCourse(
         formData.title,
         formData.language,
         [formData.category]
@@ -216,3 +216,4 @@ const CourseForm: React.FC<CourseFormProps> = ({
 };
 
 export default CourseForm;
+
