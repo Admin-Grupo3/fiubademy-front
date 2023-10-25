@@ -13,6 +13,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { Button } from '@mui/material';
 import { logOut } from '../login/backend-api.ts';
+import SearchBar from './SearchBar.tsx';
 
 const settings = ['signIn', 'signUp'];
 const pages = ['About', 'Contact'];
@@ -71,6 +72,9 @@ const Navbar = () => {
               </Button>
             ))}
           </Box>
+          <div style={{ marginRight: '20px' }}>
+      <SearchBar/>
+    </div>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
