@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import styled from "styled-components";
 import { CoursesContext } from '../context/courses_context';
 import StarRating from '../components/StarRating';
@@ -9,7 +9,10 @@ import {RiClosedCaptioningFill} from "react-icons/ri";
 import {BiCheck} from "react-icons/bi";
 import { CourseContextType, CourseType } from '../@types/sideBarType';
 import { Button } from '@mui/material';
-
+const handleGetCourse = () => {
+  console.log("get course")
+  // Add here call to function to call endpoint
+}
 const SingleCoursePage = () => {
   const {id} = useParams();
   const {getCourse} = React.useContext(CoursesContext) as CourseContextType;
@@ -77,7 +80,15 @@ const SingleCoursePage = () => {
             Editar curso
           </Button> 
           }
+          {isLoggedIn && <Button
+            onClick={handleGetCourse}
+            style={{marginLeft: '20px'}}
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}>
+            Obtener curso
+          </Button> 
           
+          }
         </div>
       </div>
 
@@ -249,6 +260,40 @@ const SingleCourseWrapper = styled.div`
         }
       }
     }
+    .item-btns{
+      justify-self: flex-start;
+      padding: 4px 8px 30px 18px;
+      margin-top: auto;
+      .item-btn{
+        font-size: 15px;
+        display: inline-block;
+        padding: 6px 16px;
+        font-weight: 700;
+        transition: var(--transition);
+        white-space: nowrap;
+  
+        &.see-details-btn{
+          background-color: transparent;
+          border: 1px solid var(--clr-black);
+          margin-right: 5px;
+  
+          &:hover{
+            background-color: rgba(0, 0, 0, 0.9);
+            color: var(--clr-white);
+          }
+        }
+  
+        &.add-to-cart-btn{
+          background: rgba(0, 0, 0, 0.9);
+          color: var(--clr-white);
+          border: 1px solid rgba(0, 0, 0, 0.9);
+  
+          &:hover{
+            background-color: transparent;
+            color: rgba(0, 0, 0, 0.9);
+          }
+        }
+      }
   }
 
 `;
