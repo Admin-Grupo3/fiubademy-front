@@ -33,6 +33,13 @@ const Navbar = () => {
     if (setting == 'logOut') {
       logOut()
     }
+    else if (setting == 'Profile') {
+      window.location.href = '/profile';
+    }
+    else if (setting == 'courses') {
+      window.location.href = '/mycourses';
+    }
+    else
     window.location.href = '/' + setting;
   }
 
@@ -95,7 +102,17 @@ const Navbar = () => {
               <MenuItem key={'logOut'} onClick={() => handleOptionSelected("logOut")}>
                   <Typography textAlign="center">{"logOut"}</Typography>
               </MenuItem>
-              )}
+              ) }
+              {isLoggedIn && (
+              <MenuItem key={'logOut'} onClick={() => handleOptionSelected("Profile")}>
+                  <Typography textAlign="center">{"Profile"}</Typography>
+              </MenuItem>
+              ) }
+              {isLoggedIn && (
+              <MenuItem key={'logOut'} onClick={() => handleOptionSelected("courses")}>
+                  <Typography textAlign="center">{"My courses"}</Typography>
+              </MenuItem>
+              ) }
             </Menu>
           </Box> 
         </div>

@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import styled from "styled-components";
 import Course from "./Course.tsx";
 import {PYTHON, WEB_DEVELOPMENT, DATA_SCIENCE, AWS, DESIGN, MARKETING} from "../utils/constants";
-import courses from '../utils/data.tsx';
+import test_courses from '../utils/data.tsx';
 import { CourseType } from '../@types/sideBarType.tsx';
 
 const Tabs = () => {
@@ -37,7 +37,7 @@ const Tabs = () => {
 
         <div className='tabs-body'>
           {
-            courses.filter(course => course.category === activeTab).map((course) => (
+            test_courses.filter(course => course.category === activeTab).map((course) => (
               <Course key = {course.id} {...course} />
             ))
           }
