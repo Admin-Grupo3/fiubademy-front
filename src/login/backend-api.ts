@@ -1,5 +1,5 @@
 import axios from 'axios';
-export { signup, signin, getCategories, createCourse, logOut, editCourse };
+export { signup, signin, getCategories, createCourse, logOut, editCourse, createExam };
 //const url = 'http://localhost:3300';
 
 const instance = axios.create({
@@ -111,7 +111,12 @@ function createCourse(title: any, language: any, categoryIds: any) {
     console.error('Error al crear el curso:', error);
   });
 }
+function createExam(title: any, questions: any) {
+  console.log("createExam");
+  console.log(title);
+  console.log(questions);
 
+}
 function editCourse(title: any, language: any, categoryIds: any) {
   let payload = {
     title: title,

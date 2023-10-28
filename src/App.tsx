@@ -11,6 +11,7 @@ import Courses from './pages/CoursesPage.tsx';
 import SingleCourse from './pages/SingleCoursePage.tsx';
 import EditCourse from './pages/EditCourse.tsx';
 import ExamsPage from './pages/ExamsPage.tsx';
+import ExamCreationPage from './pages/ExamCreationPage.tsx';
 class App extends Component {
   render() {
     return (
@@ -26,6 +27,7 @@ class App extends Component {
           <Route path = "/courses/:id" element = {<SingleCourse />} />
           <Route path = "/editCourse/:id" element = {<EditCourse />} />
           <Route path = "/exam" element = {<ExamsPage />} />
+          <Route path = "/examCreation" element = {<ExamCreationPage />} />
         </Routes>
       </BrowserRouter>
     );
