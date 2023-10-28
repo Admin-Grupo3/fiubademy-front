@@ -98,26 +98,6 @@ function createCourse(title: any, language: any, categoryIds: any) {
     language: convertToISO6391(language),
     categoryIds: categoryIds
   };
-  //instance.post(`/courses`, payload)
-  //.then(response => {
-  // if(response.status == 201){
-  //   window.location.href = "/";
-  // }
-  // else{
-  //   console.error('Error al crear el curso:');
-  // }
-  // })
-  // .catch(error => {
-  //   console.error('Error al crear el curso:', error);
-  // });
-}
-
-function editCourse(title: any, language: any, categoryIds: any) {
-  let payload = {
-    title: title,
-    language: convertToISO6391(language),
-    categoryIds: categoryIds
-  };
   instance.post(`/courses`, payload)
   .then(response => {
   if(response.status == 201){
@@ -132,3 +112,22 @@ function editCourse(title: any, language: any, categoryIds: any) {
   });
 }
 
+function editCourse(title: any, language: any, categoryIds: any) {
+  let payload = {
+    title: title,
+    language: convertToISO6391(language),
+    categoryIds: categoryIds
+  };
+  // instance.post(`/courses`, payload)
+  // .then(response => {
+  // if(response.status == 201){
+  //   window.location.href = "/";
+  // }
+  // else{
+  //   console.error('Error al crear el curso:');
+  // }
+  // })
+  // .catch(error => {
+  //   console.error('Error al crear el curso:', error);
+  // });
+}
