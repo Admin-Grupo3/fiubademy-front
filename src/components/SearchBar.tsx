@@ -24,7 +24,7 @@ export default function SearchBar() {
           id="search-course"
           disableClearable
           options={test_courses.map((course) => course.course_name)}
-          onChange={handleCourseSelect} // Añade este prop para manejar la selección de curso
+          onChange={handleCourseSelect} 
           renderInput={(params) => (
             <TextField
               {...params}

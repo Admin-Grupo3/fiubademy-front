@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import { Link, useParams } from 'react-router-dom';
 import styled from "styled-components";
 import { CoursesContext } from '../context/courses_context';
@@ -9,11 +9,26 @@ import {RiClosedCaptioningFill} from "react-icons/ri";
 import {BiCheck} from "react-icons/bi";
 import { CourseContextType, CourseType } from '../@types/sideBarType';
 import { Button } from '@mui/material';
-const handleGetCourse = () => {
-  console.log("get course")
-  // Add here call to function to call endpoint
-}
+
 const SingleCoursePage = () => {
+  const [showModal, setShowModal] = useState(false);
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  }
+
+  const handleConfirm = () => {
+    setShowModal(false);
+    console.log("Curso adquirido!");
+    // Call backend 
+    window.location.href = '/mycourses'; // Redirigir a MyCourses y que se vea el curso recien adquirido
+  }
+
+  const handleGetCourse = () => {
+    setShowModal(true);
+    console.log("get course")
+  }
+  
   const {id} = useParams();
   const {getCourse} = React.useContext(CoursesContext) as CourseContextType;
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true'
@@ -89,6 +104,17 @@ const SingleCoursePage = () => {
           </Button> 
           
           }
+          {showModal && (
+        <ModalWrapper>
+          <div className="modal-content">
+            <p>
+              Usted va a adquirir el curso <strong>{course_name}</strong> al precio de <strong>${actual_price}</strong>
+            </p>
+            <button onClick={handleCloseModal}>Cancelar</button>
+            <button onClick={handleConfirm}>Confirmar</button>
+          </div>
+        </ModalWrapper>
+      )}
         </div>
       </div>
 
@@ -128,6 +154,33 @@ const SingleCoursePage = () => {
     </SingleCourseWrapper>
   )
 }
+
+const ModalWrapper = styled.div`
+  background: rgba(0, 0, 0, 0.5);
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+
+  .modal-content {
+    color: black;
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+  }
+
+  Button {
+    margin-top: 10px;
+    margin-right: 10px;
+  }
+`;
 
 const SingleCourseWrapper = styled.div`
   background: var(--clr-dark);
