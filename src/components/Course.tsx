@@ -4,24 +4,25 @@ import {Link} from "react-router-dom";
 import StarRating from "./StarRating.tsx";
 
 const Course = (props) => {
-  const {id, image, course_name, creator, actual_price, discounted_price, rating_count, rating_star, category} = props;
+  const {id, image, title, creator, price, discount, rating_count, rating_star, categories} = props;
 
+  // TODO: creator.name no existe en la db actualmente, asi que está hardcodeado acá por el momento
   return (
     <CourseCard>
       <div className='item-img'>
-        <img src = {image} alt = {course_name} />
+        <img src = {`/src/assets/images/${image}.jpg`} alt = {title} />
       </div>
       <div className='item-body'>
-        <h5 className='item-name'>{course_name}</h5>
-        <span className='item-creator'>{creator}</span>
+        <h5 className='item-name'>{title}</h5>
+        <span className='item-creator'>{(creator?.name) || 'Lionel Messi'}</span> 
         <div className='item-rating flex'>
           <span className='rating-star-val'>{rating_star}</span>
           <StarRating rating_star = {rating_star} />
           <span className='rating-count'>({rating_count})</span>
         </div>
         <div className='item-price'>
-          <span className='item-price-new'>${discounted_price}</span>
-          <span className='item-price-old'>${actual_price}</span>
+          <span className='item-price-new'>${price - discount}</span>
+          <span className='item-price-old'>${price}</span>
         </div>
       </div>
       <div className='item-btns flex'>
