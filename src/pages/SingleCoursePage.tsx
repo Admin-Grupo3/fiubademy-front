@@ -8,7 +8,7 @@ import { TbWorld } from "react-icons/tb";
 import { RiClosedCaptioningFill } from "react-icons/ri";
 import { BiCheck } from "react-icons/bi";
 import { CourseContextType } from "../@types/sideBarType";
-import { Alert, Button, Rating, Snackbar } from "@mui/material";
+import { Alert, Button, Rating, Snackbar, TextField } from "@mui/material";
 
 const SingleCoursePage = () => {
   const [showModal, setShowModal] = useState(false);
@@ -45,13 +45,15 @@ const SingleCoursePage = () => {
 
   const [userRating, setUserRating] = useState(null);
   const [isRated, setIsRated] = useState(false);
+  const [comment, setComment] = useState("");
 
   const handleConfirmRating = () => {
     setIsRated(true);
     setShowModalRating(false);
 
     console.log("Calificación seleccionada:", userRating);
-    //Send calificacion to backend
+    console.log("Comentario:", comment);
+    //Send calificacion y comentario to backend
   };
 
   const { id } = useParams();
@@ -198,13 +200,25 @@ const SingleCoursePage = () => {
             <ModalWrapper>
               <div className="modal-content">
                 <h3>¿Cómo calificarías este curso?</h3>
-                <p>Eligir calificación</p>
+                <p style={{ marginTop: "10px" }}>Eligir calificación</p>
                 <Rating
+                  style={{ marginTop: "10px" }}
                   size="large"
                   value={userRating}
                   onChange={(_event, newValue) => {
                     setUserRating(newValue);
                   }}
+                />
+                <TextField
+                  id="comment"
+                  label="Comentario"
+                  name="comment"
+                  fullWidth
+                  multiline
+                  rows={4}
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                  margin="normal"
                 />
                 <div
                   style={{
@@ -273,10 +287,11 @@ const ModalWrapper = styled.div`
   .modal-content {
     color: black;
     background-color: white;
-    padding: 20px;
+    padding: 50px;
     border: 1px solid #ccc;
     border-radius: 5px;
     text-align: center;
+    max-height: 500vh;
   }
 
   Button {
