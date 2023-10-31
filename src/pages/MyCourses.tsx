@@ -9,6 +9,7 @@ const MyCourses = () => {
     <MyCoursesWrapper>
       <div className="container">
         <div className="tabs">
+        <h2> Mis cursos </h2>
           <div className="tabs-body">
             {test_courses.map((course) => (
               // Pedirle al back los cursos que compró el usuario
