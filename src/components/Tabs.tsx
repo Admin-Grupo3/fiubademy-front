@@ -3,7 +3,6 @@ import styled from "styled-components";
 import Course from "./Course.tsx";
 import {PYTHON, WEB_DEVELOPMENT, DATA_SCIENCE, AWS, DESIGN, MARKETING} from "../utils/constants";
 import { CoursesContext } from '../context/courses_context';
-import test_courses from '../utils/data.tsx';
 import { CourseType } from '../@types/sideBarType.tsx';
 
 const Tabs = () => {

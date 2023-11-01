@@ -2,14 +2,8 @@ import { Box, Button, Stack, TextField } from '@mui/material';
 import { create } from 'axios';
 import React, { useState } from 'react';
 import { createExam } from '../../login/backend-api';
+import { useParams } from 'react-router-dom';
 
-
-      
-const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    console.log('Submitted');
-    console.log
-  
-};
 
 const QuestionCreationForm = ( {
     formData = {
@@ -18,6 +12,7 @@ const QuestionCreationForm = ( {
     },
     setFormData
 }) => {
+    const {id} = useParams();
     const [title, setTitle] = useState('');
     const [question, setQuestion] = useState('');
     const [answer, setAnswer] = useState('');
@@ -40,7 +35,7 @@ const QuestionCreationForm = ( {
     const addQuestion = () => {
         if (question.trim() === '' || answerChoices.length < 2) return;
 
-        handleQuestionAdd({ question, choices: answerChoices });
+        handleQuestionAdd({ question, answers: answerChoices, correctAnswer: answerChoices[0] });
         setQuestion('');
         setAnswer('');
         setAnswerChoices([]);
@@ -48,7 +43,7 @@ const QuestionCreationForm = ( {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if(formData.questions.length > 0){
-            createExam(title, formData.questions)
+            createExam(title, id, formData.questions)
         }
       
     };

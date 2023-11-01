@@ -2,7 +2,6 @@ import React, { useEffect} from "react";
 import { CourseContextType, CourseType } from "../@types/sideBarType.tsx";
 import {getCategories} from "../login/backend-api";
 import {getCourses} from "../login/backend-api";
-import test_courses from "../utils/data.tsx";
 export const CoursesContext = React.createContext<CourseContextType | null> (null);
 import axios from 'axios';
 

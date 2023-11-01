@@ -9,6 +9,7 @@ import {RiClosedCaptioningFill} from "react-icons/ri";
 import {BiCheck} from "react-icons/bi";
 import { CourseContextType, CourseType } from '../@types/sideBarType';
 import { Button } from '@mui/material';
+import Videos from '../components/Videos';
 const handleGetCourse = () => {
   console.log("get course")
   // Add here call to function to call endpoint
@@ -102,7 +103,7 @@ const SingleCoursePage = () => {
             Dar examen
         </Button> 
         <Button
-            href={'/examCreation'}
+            href={'/examCreation/' + id}
             style={{marginLeft: '20px'}}
             variant="contained"
             sx={{ mt: 3, mb: 2 }}>
@@ -142,8 +143,9 @@ const SingleCoursePage = () => {
             }
           </ul>
         </div>
-       
+        <Videos embedId="tQZy0U8s9LY"/>
       </div>
+     
     </SingleCourseWrapper>
   )
 }

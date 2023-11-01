@@ -27,7 +27,7 @@ class App extends Component {
           <Route path = "/courses/:id" element = {<SingleCourse />} />
           <Route path = "/editCourse/:id" element = {<EditCourse />} />
           <Route path = "/exam" element = {<ExamsPage />} />
-          <Route path = "/examCreation" element = {<ExamCreationPage />} />
+          <Route path = "/examCreation/:id" element = {<ExamCreationPage />} />
         </Routes>
       </BrowserRouter>
     );
