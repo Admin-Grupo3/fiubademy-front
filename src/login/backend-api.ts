@@ -1,5 +1,6 @@
 import axios from 'axios';
-export { signup, signin, getCategories, getCourses, createCourse, logOut, editCourse };
+
+export { signup, signin, getCategories, getCourses, createCourse, logOut, editCourse, createExam };
 //const url = 'http://localhost:3300';
 
 const instance = axios.create({
@@ -113,26 +114,6 @@ function createCourse(title: any, language: any, categoryIds: any) {
     language: convertToISO6391(language),
     categoryIds: categoryIds
   };
-  //instance.post(`/courses`, payload)
-  //.then(response => {
-  // if(response.status == 201){
-  //   window.location.href = "/";
-  // }
-  // else{
-  //   console.error('Error al crear el curso:');
-  // }
-  // })
-  // .catch(error => {
-  //   console.error('Error al crear el curso:', error);
-  // });
-}
-
-function editCourse(title: any, language: any, categoryIds: any) {
-  let payload = {
-    title: title,
-    language: convertToISO6391(language),
-    categoryIds: categoryIds
-  };
   instance.post(`/courses`, payload)
   .then(response => {
   if(response.status == 201){
@@ -146,4 +127,28 @@ function editCourse(title: any, language: any, categoryIds: any) {
     console.error('Error al crear el curso:', error);
   });
 }
+function createExam(title: any, questions: any) {
+  console.log("createExam");
+  console.log(title);
+  console.log(questions);
 
+}
+function editCourse(title: any, language: any, categoryIds: any) {
+  let payload = {
+    title: title,
+    language: convertToISO6391(language),
+    categoryIds: categoryIds
+  };
+  // instance.post(`/courses`, payload)
+  // .then(response => {
+  // if(response.status == 201){
+  //   window.location.href = "/";
+  // }
+  // else{
+  //   console.error('Error al crear el curso:');
+  // }
+  // })
+  // .catch(error => {
+  //   console.error('Error al crear el curso:', error);
+  // });
+}

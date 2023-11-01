@@ -92,9 +92,22 @@ const SingleCoursePage = () => {
             variant="contained"
             sx={{ mt: 3, mb: 2 }}>
             Obtener curso
-          </Button> 
-          
+          </Button>
           }
+          <Button
+            href={'/exam'}
+            style={{marginLeft: '20px'}}
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}>
+            Dar examen
+        </Button> 
+        <Button
+            href={'/examCreation'}
+            style={{marginLeft: '20px'}}
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}>
+            Crear examen
+        </Button> 
         </div>
       </div>
 
