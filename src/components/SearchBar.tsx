@@ -2,12 +2,15 @@ import * as React from 'react';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import Autocomplete from '@mui/material/Autocomplete';
-import test_courses from '../utils/data.tsx';
+import { CoursesContext } from '../context/courses_context';
+import { CourseContextType } from '../@types/sideBarType';
 import { JSX } from 'react/jsx-runtime';
 
 export default function SearchBar() {
+    const {courses} = React.useContext(CoursesContext)
+
     const handleCourseSelect = (event: any, value: any) => {
-        const selectedCourse = test_courses.find(course => course.course_name === value);
+        const selectedCourse = courses.find(course => course.title === value);
         if (selectedCourse) {
             const courseId = selectedCourse.id;
 
@@ -23,7 +26,7 @@ export default function SearchBar() {
           freeSolo
           id="search-course"
           disableClearable
-          options={test_courses.map((course) => course.course_name)}
+          options={courses.map((course) => course.title)}
           onChange={handleCourseSelect} // Añade este prop para manejar la selección de curso
           renderInput={(params) => (
             <TextField

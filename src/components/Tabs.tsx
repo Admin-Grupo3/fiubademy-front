@@ -2,10 +2,13 @@ import React, {useState} from 'react';
 import styled from "styled-components";
 import Course from "./Course.tsx";
 import {PYTHON, WEB_DEVELOPMENT, DATA_SCIENCE, AWS, DESIGN, MARKETING} from "../utils/constants";
+import { CoursesContext } from '../context/courses_context';
 import test_courses from '../utils/data.tsx';
 import { CourseType } from '../@types/sideBarType.tsx';
 
 const Tabs = () => {
+  const coursesContext = React.useContext(CoursesContext)
+
   const [activeTab, setActiveTab] = useState(PYTHON);
   const tabHandler = (category: React.SetStateAction<string>) => {
     setActiveTab(category);
@@ -37,7 +40,7 @@ const Tabs = () => {
 
         <div className='tabs-body'>
           {
-            test_courses.filter(course => course.category === activeTab).map((course) => (
+            coursesContext.courses.filter((course: any) => course.categories.some((category: any) => category.name.toLowerCase() === activeTab)).map((course: any) => (
               <Course key = {course.id} {...course} />
             ))
           }

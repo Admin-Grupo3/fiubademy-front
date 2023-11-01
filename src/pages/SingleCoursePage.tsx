@@ -27,17 +27,23 @@ const SingleCoursePage = () => {
   if (!single_course) {
     return <h2 className='section-title'>no course to display</h2>
   }
-  const {course_name, category, description, rating_star, rating_count, students, updated_date, lang, discounted_price, actual_price, creator, image, what_you_will_learn, content} = single_course || {};
+
+  const {title, categories, description, rating_star, rating_count, students, updatedAt, lang, discount, price, creator, image, what_will_you_learn, content} = single_course || {};
+  
+  // TODO: creator.name no existe en la db actualmente, asi que está hardcodeado acá por el momento
+  // TODO: integrar el lenguaje del curso con la info del back
   return (
     <SingleCourseWrapper>
       <div className='course-intro mx-auto grid'>
         <div className='course-img'>
-          <img src = {image} alt = {course_name} />
+          <img src = {`/src/assets/images/${image}.jpg`} alt = {title} />
         </div>
         <div className='course-details'>
-          <div className='course-category bg-white text-dark text-capitalize fw-6 fs-12 d-inline-block'>{category}</div>
+          {
+            categories.map((category: any) => <div className='course-category bg-white text-dark text-capitalize fw-6 fs-12 d-inline-block'>{category.name}</div>)
+          }
           <div className='course-head'>
-            <h5>{course_name}</h5>
+            <h5>{title}</h5>
           </div>
           <div className='course-body'>
             <p className='course-para fs-18'>{description}</p>
@@ -50,11 +56,11 @@ const SingleCoursePage = () => {
 
             <ul className='course-info'>
               <li>
-                <span className='fs-14'>Created by <span className='fw-6 opacity-08'>{creator}</span></span>
+                <span className='fs-14'>Created by <span className='fw-6 opacity-08'>{creator?.name || 'Lionel Messi'}</span></span>
               </li>
               <li className='flex'>
                 <span><MdInfo /></span>
-                <span className='fs-14 course-info-txt fw-5'>Last updated {updated_date}</span>
+                <span className='fs-14 course-info-txt fw-5'>Last updated {updatedAt}</span>
               </li>
               <li className='flex'>
                 <span><TbWorld /></span>
@@ -69,8 +75,8 @@ const SingleCoursePage = () => {
 
           <div className='course-foot'>
             <div className='course-price'>
-              <span className='new-price fs-26 fw-8'>${discounted_price}</span>
-              <span className='old-price fs-26 fw-6'>${actual_price}</span>
+              <span className='new-price fs-26 fw-8'>${price - discount}</span>
+              <span className='old-price fs-26 fw-6'>${price}</span>
             </div>
           </div>
           {isLoggedIn && <Button
@@ -110,7 +116,7 @@ const SingleCoursePage = () => {
           <div className='course-sc-title'>What you'll learn</div>
           <ul className='course-learn-list grid'>
             {
-              what_you_will_learn && what_you_will_learn.map((learnItem, idx) => {
+              what_will_you_learn && what_will_you_learn.map((learnItem, idx) => {
                 return (
                   <li key = {idx}>
                     <span><BiCheck /></span>

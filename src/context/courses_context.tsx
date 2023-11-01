@@ -1,33 +1,29 @@
 import React, { useEffect} from "react";
 import { CourseContextType, CourseType } from "../@types/sideBarType.tsx";
 import {getCategories} from "../login/backend-api";
+import {getCourses} from "../login/backend-api";
 import test_courses from "../utils/data.tsx";
 export const CoursesContext = React.createContext<CourseContextType | null> (null);
+import axios from 'axios';
+
 interface Props {
     children: React.ReactNode;
   }
 const CoursesProvider: React.FC<Props> = ({children}) => {
-    const [courses, setCourse] = React.useState<CourseType[]>([
-        {
-            id:1,
-            name:"test",
-            description:"test",
-            category:"test",
-        },
-        {
-            id: 2,
-            name: "test2",
-            description: "test2",
-            category: "test",
-        },
-    ]);
-    const getCourses = () => {
-        return courses;
+    const [courses, setCourse] = React.useState<CourseType[]>([]);
+
+    const fetchCourses = () => {
+        const data = getCourses();
+        data.then(coursesData => {
+            setCourse(coursesData.courses);
+          }).catch(error => {
+            console.error('Error al obtener cursos:', error);
+          });
     }
-    // this should be a promise to get the data from de backend
+
     const getCourse = (id: any) => {
         console.log("searching for course:", id);
-        const singleCourse = test_courses.find(course => course.id === id);
+        const singleCourse = courses.find(course => course.id === id);
         console.log("found course:", singleCourse);
         
         return singleCourse;
@@ -63,6 +59,7 @@ const CoursesProvider: React.FC<Props> = ({children}) => {
         })
     }
     useEffect(() => {
+        fetchCourses();
         getCourses();
         getCategorys();
     }, []);

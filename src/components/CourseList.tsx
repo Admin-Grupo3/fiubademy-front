@@ -5,8 +5,6 @@ import { CoursesContext } from '../context/courses_context';
 import { CourseContextType } from '../@types/sideBarType.tsx';
 
 const CourseList = () => {
-  const {courses} = React.useContext(CoursesContext) as CourseContextType;
-
   return (
     <CoursesListWrapper>
       <div className='container'>
