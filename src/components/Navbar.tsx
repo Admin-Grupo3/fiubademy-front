@@ -15,7 +15,7 @@ import { Button } from '@mui/material';
 import { logOut } from '../login/backend-api.ts';
 import SearchBar from './SearchBar.tsx';
 
-const settings = ['signIn', 'signUp'];
+const settings = [{option: 'signIn', name: "Sign In"}, { option: 'signUp', name: "Sign Up"}];
 const pages = ['About', 'Contact'];
 const Navbar = () => {
   const {openSidebar} = React.useContext(SidebarContext) as SideBarContextType;
@@ -98,8 +98,8 @@ const Navbar = () => {
               onClose={handleCloseUserMenu}
             >
               { !isLoggedIn && (settings.map((setting) => (
-                <MenuItem key={setting} onClick={() => handleOptionSelected(setting)}>
-                  <Typography textAlign="center">{setting}</Typography>
+                <MenuItem key={setting.option} onClick={() => handleOptionSelected(setting.option)}>
+                  <Typography textAlign="center">{setting.name}</Typography>
                 </MenuItem>
               )))}
               {isLoggedIn && (
