@@ -127,10 +127,27 @@ function createCourse(title: any, language: any, categoryIds: any) {
     console.error('Error al crear el curso:', error);
   });
 }
-function createExam(title: any, questions: any) {
+function createExam(title: any, courseId, questions: []) {
   console.log("createExam");
   console.log(title);
   console.log(questions);
+  const payload = {
+    name: title,
+    description: "description",
+    questions: questions,
+  }
+  instance.post(`/courses/${courseId}/exams/`, payload)
+  .then(response => {
+    if(response.status == 201){
+      window.location.href = "/";
+    }
+    else{
+      console.error('Error al crear el examen:');
+    }
+    })
+    .catch(error => {
+      console.error('Error al crear el examen:', error);
+    });
 
 }
 function editCourse(title: any, language: any, categoryIds: any) {
