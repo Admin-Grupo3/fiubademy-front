@@ -1,6 +1,5 @@
 import axios from 'axios';
-
-export { signup, signin, getCategories, getCourses, createCourse, logOut, editCourse, createExam };
+export { signup, signin, getCategories, getCourses, createCourse, logOut, editCourse, createExam, purchaseCourse, getPurchaseCourses };
 //const url = 'http://localhost:3300';
 
 const instance = axios.create({
@@ -168,4 +167,37 @@ function editCourse(title: any, language: any, categoryIds: any) {
   // .catch(error => {
   //   console.error('Error al crear el curso:', error);
   // });
+}
+
+function purchaseCourse(courseId: string) {
+  
+  instance.post(`/courses/${courseId}/purchase`)
+  .then(response => {
+  if(response.status == 201){
+    setTimeout(() => {
+      window.location.href = "/mycourses"; // Redirigir a MyCourses después de 2 segundos para ver los cursos comprados
+    }, 2000);
+  }
+  else{
+    console.error('Error al comprar el curso:');
+  }
+  })
+  .catch(error => {
+    console.error('Error al comprar el curso:', error);
+  });
+}
+
+function getPurchaseCourses(): Promise<any> {
+  return instance.get('/courses/purchase', ).then(response => {
+    if (response.status == 200) {
+      return response.data;
+    }
+    else {
+      return [];
+    }
+  }).catch(error => {
+    console.error('Error al obtener cursos:', error);
+    return [];
+  });
+
 }

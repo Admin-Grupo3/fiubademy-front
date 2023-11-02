@@ -10,6 +10,8 @@ import {BiCheck} from "react-icons/bi";
 import { CourseContextType, CourseType } from '../@types/sideBarType';
 import { Alert, Button, Rating, Snackbar, TextField } from '@mui/material';
 import Videos from '../components/Videos';
+import { purchaseCourse } from "../login/backend-api";
+
 const handleGetCourse = () => {
   console.log("get course")
   // Add here call to function to call endpoint
@@ -27,15 +29,13 @@ const SingleCoursePage = () => {
   };
 
   const [openSnackBar, setOpenSnackBar] = React.useState(false);
+  const { id } = useParams();
 
   const handleConfirm = () => {
     setOpenSnackBar(true);
     setShowModal(false);
     console.log("Curso adquirido!");
-    // Call backend
-    // setTimeout(() => {
-    //   window.location.href = "/mycourses"; // Redirigir a MyCourses después de 2 segundos para ver los cursos comprados
-    // }, 2000);
+    purchaseCourse(id);
   };
 
   const handleGetCourse = () => {
@@ -60,7 +60,6 @@ const SingleCoursePage = () => {
     //Send calificacion y comentario to backend
   };
 
-  const { id } = useParams();
   const { getCourse } = React.useContext(CoursesContext) as CourseContextType;
   const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
   const single_course = getCourse(id);
@@ -138,14 +137,6 @@ const SingleCoursePage = () => {
             Editar curso
           </Button> 
           }
-          {isLoggedIn && <Button
-            onClick={handleGetCourse}
-            style={{marginLeft: '20px'}}
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}>
-            Obtener curso
-          </Button>
-          }
           <Button
             href={'/exam'}
             style={{marginLeft: '20px'}}
@@ -165,6 +156,7 @@ const SingleCoursePage = () => {
             <Button
               href={"/editCourse/" + id}
               variant="contained"
+              style={{marginLeft: '20px', marginRight: '10px'}}
               sx={{ mt: 3, mb: 2 }}
             >
               Editar curso

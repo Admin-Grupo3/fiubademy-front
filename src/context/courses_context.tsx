@@ -1,6 +1,6 @@
 import React, { useEffect} from "react";
 import { CourseContextType, CourseType } from "../@types/sideBarType.tsx";
-import {getCategories} from "../login/backend-api";
+import {getCategories, getPurchaseCourses} from "../login/backend-api";
 import {getCourses} from "../login/backend-api";
 export const CoursesContext = React.createContext<CourseContextType | null> (null);
 import axios from 'axios';
@@ -10,11 +10,22 @@ interface Props {
   }
 const CoursesProvider: React.FC<Props> = ({children}) => {
     const [courses, setCourse] = React.useState<CourseType[]>([]);
+    const [purchaseCourses, setPurchaseCourse] = React.useState<CourseType[]>([]);
 
     const fetchCourses = () => {
         const data = getCourses();
         data.then(coursesData => {
             setCourse(coursesData.courses);
+          }).catch(error => {
+            console.error('Error al obtener cursos:', error);
+          });
+    }
+
+
+    const fetchPurchaseCourses = () => {
+        const data = getPurchaseCourses();
+        data.then(coursesData => {
+            setPurchaseCourse(coursesData.courses);
           }).catch(error => {
             console.error('Error al obtener cursos:', error);
           });
@@ -59,13 +70,14 @@ const CoursesProvider: React.FC<Props> = ({children}) => {
     }
     useEffect(() => {
         fetchCourses();
+        fetchPurchaseCourses();
         getCourses();
         getCategorys();
     }, []);
 
     return (
         <CoursesContext.Provider value = {{
-            courses, getCourse, saveCourse, updateCourse, getCourses, getCategorys
+            courses, getCourse, saveCourse, updateCourse, getCourses, getCategorys, purchaseCourses
         }}>
             {children}
         </CoursesContext.Provider>

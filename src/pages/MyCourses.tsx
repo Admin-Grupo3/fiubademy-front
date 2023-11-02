@@ -3,16 +3,19 @@ import Course from "../components/Course.tsx";
 import CoursesList from "../components/CourseList.tsx";
 import Tabs from "../components/Tabs.tsx";
 import test_courses from "../utils/data.tsx";
+import { CoursesContext } from '../context/courses_context';
+import React from "react";
 
 const MyCourses = () => {
+  const coursesContext = React.useContext(CoursesContext)
+
   return (
     <MyCoursesWrapper>
       <div className="container">
         <div className="tabs">
         <h2> Mis cursos </h2>
           <div className="tabs-body">
-            {test_courses.map((course) => (
-              // Pedirle al back los cursos que compró el usuario
+            {coursesContext.purchaseCourses.map((course: any) => (
               <Course key={course.id} {...course}/>
             ))}
           </div>
