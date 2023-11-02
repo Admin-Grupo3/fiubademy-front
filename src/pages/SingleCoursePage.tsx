@@ -1,5 +1,5 @@
-import React, {useEffect} from 'react';
-import { Link, useParams } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { CoursesContext } from '../context/courses_context';
 import StarRating from '../components/StarRating';
@@ -8,25 +8,70 @@ import {TbWorld} from "react-icons/tb";
 import {RiClosedCaptioningFill} from "react-icons/ri";
 import {BiCheck} from "react-icons/bi";
 import { CourseContextType, CourseType } from '../@types/sideBarType';
-import { Button } from '@mui/material';
+import { Alert, Button, Rating, Snackbar, TextField } from '@mui/material';
 import Videos from '../components/Videos';
 const handleGetCourse = () => {
   console.log("get course")
   // Add here call to function to call endpoint
 }
 const SingleCoursePage = () => {
-  const {id} = useParams();
-  const {getCourse} = React.useContext(CoursesContext) as CourseContextType;
-  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true'
+  const [showModal, setShowModal] = useState(false);
+  const [showModalRating, setShowModalRating] = useState(false);
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  const handleRating = () => {
+    setShowModalRating(true);
+  };
+
+  const [openSnackBar, setOpenSnackBar] = React.useState(false);
+
+  const handleConfirm = () => {
+    setOpenSnackBar(true);
+    setShowModal(false);
+    console.log("Curso adquirido!");
+    // Call backend
+    // setTimeout(() => {
+    //   window.location.href = "/mycourses"; // Redirigir a MyCourses después de 2 segundos para ver los cursos comprados
+    // }, 2000);
+  };
+
+  const handleGetCourse = () => {
+    setShowModal(true);
+    console.log("get course");
+  };
+
+  const handleCloseModalRating = () => {
+    setShowModalRating(false);
+  };
+
+  const [userRating, setUserRating] = useState(null);
+  const [isRated, setIsRated] = useState(false);
+  const [comment, setComment] = useState("");
+
+  const handleConfirmRating = () => {
+    setIsRated(true);
+    setShowModalRating(false);
+
+    console.log("Calificación seleccionada:", userRating);
+    console.log("Comentario:", comment);
+    //Send calificacion y comentario to backend
+  };
+
+  const { id } = useParams();
+  const { getCourse } = React.useContext(CoursesContext) as CourseContextType;
+  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
   const single_course = getCourse(id);
   useEffect(() => {
     if (id) {
       getCourse(id);
-      console
+      console;
     }
   }, [id]);
   if (!single_course) {
-    return <h2 className='section-title'>no course to display</h2>
+    return <h2 className="section-title">no course to display</h2>;
   }
 
   const {title, categories, description, rating_star, rating_count, students, updatedAt, lang, discount, price, creator, image, what_will_you_learn, content} = single_course || {};
@@ -46,16 +91,16 @@ const SingleCoursePage = () => {
           <div className='course-head'>
             <h5>{title}</h5>
           </div>
-          <div className='course-body'>
-            <p className='course-para fs-18'>{description}</p>
-            <div className='course-rating flex'>
-              <span className='rating-star-val fw-8 fs-16'>{rating_star}</span>
+          <div className="course-body">
+            <p className="course-para fs-18">{description}</p>
+            <div className="course-rating flex">
+              <span className="rating-star-val fw-8 fs-16">{rating_star}</span>
               <StarRating rating_star={rating_star} />
-              <span className='rating-count fw-5 fs-14'>({rating_count})</span>
-              <span className='students-count fs-14'>{students}</span>
+              <span className="rating-count fw-5 fs-14">({rating_count})</span>
+              <span className="students-count fs-14">{students}</span>
             </div>
 
-            <ul className='course-info'>
+            <ul className="course-info">
               <li>
                 <span className='fs-14'>Created by <span className='fw-6 opacity-08'>{creator?.name || 'Lionel Messi'}</span></span>
               </li>
@@ -63,13 +108,19 @@ const SingleCoursePage = () => {
                 <span><MdInfo /></span>
                 <span className='fs-14 course-info-txt fw-5'>Last updated {updatedAt}</span>
               </li>
-              <li className='flex'>
-                <span><TbWorld /></span>
-                <span className='fs-14 course-info-txt fw-5'>{lang}</span>
+              <li className="flex">
+                <span>
+                  <TbWorld />
+                </span>
+                <span className="fs-14 course-info-txt fw-5">{lang}</span>
               </li>
-              <li className='flex'>
-                <span><RiClosedCaptioningFill /></span>
-                <span className='fs-14 course-info-txt fw-5'>{lang} [Auto]</span>
+              <li className="flex">
+                <span>
+                  <RiClosedCaptioningFill />
+                </span>
+                <span className="fs-14 course-info-txt fw-5">
+                  {lang} [Auto]
+                </span>
               </li>
             </ul>
           </div>
@@ -108,7 +159,96 @@ const SingleCoursePage = () => {
             variant="contained"
             sx={{ mt: 3, mb: 2 }}>
             Crear examen
-        </Button> 
+        </Button>
+      
+          {isLoggedIn && (
+            <Button
+              href={"/editCourse/" + id}
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Editar curso
+            </Button>
+          )}
+          {isLoggedIn && (
+            <Button
+              onClick={handleGetCourse}
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Obtener curso
+            </Button>
+          )}
+          {showModal && (
+            <ModalWrapper>
+              <div className="modal-content">
+                <p>
+                  Usted va a adquirir el curso <strong>{title}</strong> al
+                  precio de <strong>${price}</strong>
+                </p>
+                <button onClick={handleCloseModal}>Cancelar</button>
+                <button onClick={handleConfirm}>Confirmar</button>
+              </div>
+            </ModalWrapper>
+          )}
+          <Snackbar
+            onClose={() => setOpenSnackBar(false)}
+            anchorOrigin={{ vertical: "top", horizontal: "center" }}
+            open={openSnackBar}
+            autoHideDuration={2000}
+          >
+            <Alert severity="success" sx={{ width: "100%", fontSize: "15px" }}>
+              Usted adquirió el curso <strong>{title}</strong>
+            </Alert>
+          </Snackbar>
+          {isLoggedIn && (
+            <Button
+              onClick={handleRating}
+              style={{ marginLeft: "20px" }}
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              disabled={isRated}
+            >
+              Calificar curso
+            </Button>
+          )}
+          {showModalRating && (
+            <ModalWrapper>
+              <div className="modal-content">
+                <h3>¿Cómo calificarías este curso?</h3>
+                <p style={{ marginTop: "10px" }}>Eligir calificación</p>
+                <Rating
+                  style={{ marginTop: "10px" }}
+                  size="large"
+                  value={userRating}
+                  onChange={(_event, newValue) => {
+                    setUserRating(newValue);
+                  }}
+                />
+                <TextField
+                  id="comment"
+                  label="Comentario"
+                  name="comment"
+                  fullWidth
+                  multiline
+                  rows={4}
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                  margin="normal"
+                />
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    marginTop: "10px",
+                  }}
+                >
+                  <button onClick={handleCloseModalRating}>Cancelar</button>
+                  <button onClick={handleConfirmRating}>Confirmar</button>
+                </div>
+              </div>
+            </ModalWrapper>
+          )}
         </div>
       </div>
 
@@ -147,8 +287,37 @@ const SingleCoursePage = () => {
       </div>
      
     </SingleCourseWrapper>
-  )
-}
+  );
+};
+
+const ModalWrapper = styled.div`
+  background: rgba(0, 0, 0, 0.5);
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+
+  .modal-content {
+    color: black;
+    background-color: white;
+    padding: 50px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+    max-height: 500vh;
+  }
+
+  Button {
+    // margin-top: 10px;
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+`;
 
 const SingleCourseWrapper = styled.div`
   background: var(--clr-dark);
@@ -319,4 +488,4 @@ const SingleCourseWrapper = styled.div`
 
 `;
 
-export default SingleCoursePage
+export default SingleCoursePage;

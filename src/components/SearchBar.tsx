@@ -14,7 +14,7 @@ export default function SearchBar() {
         if (selectedCourse) {
             const courseId = selectedCourse.id;
 
-            window.location.href = `courses/${courseId}`;
+            window.location.href = `/courses/${courseId}`;
             console.log(`Curso seleccionado: ${value}`);
         }
         
