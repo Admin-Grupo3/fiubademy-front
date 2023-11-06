@@ -11,7 +11,7 @@ const ExamCreationPage = () => {
     });
     return (
         <ExamsCreationWrapper>
-            <h1 className="title">Createing a new exam</h1>
+            <h1 className="title">Creating a new exam</h1>
             <QuestionCreationForm formData={formData} setFormData={setFormData} />
         </ExamsCreationWrapper>
     )

@@ -61,6 +61,15 @@ const Navbar = () => {
           {"New course"}
         </Button>
       )}
+      {isLoggedIn && (
+        <Button
+          key={"New learning path"}
+          href={'/learningPath'} 
+          sx={{ my: 2, display: 'block' }}
+        >
+          {"New learning path"}
+        </Button>
+      )}
           
             {pages.map((page) => (
               <Button
