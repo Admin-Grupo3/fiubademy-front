@@ -31,7 +31,7 @@ interface CourseFormProps {
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const languages = ["English", "Spanish"];
+const languages = ["english", "spanish"];
 
 const CourseForm: React.FC<CourseFormProps> = ({
   formData,
@@ -100,7 +100,6 @@ const CourseForm: React.FC<CourseFormProps> = ({
             required
             id="language"
             name="language"
-            defaultValue="English"
             select
             margin="normal"
             label="Idioma"
@@ -119,25 +118,6 @@ const CourseForm: React.FC<CourseFormProps> = ({
             ))}
           </TextField>
         </FormControl>
-        <TextField
-          required
-          label="Horas Estimadas"
-          id="hours"
-          name="hours"
-          fullWidth
-          type="number"
-          InputProps={{
-            inputProps: { min: 0 },
-          }}
-          onChange={handleChange}
-          margin="normal"
-          error={formSubmitted && formData.hours === ""}
-          helperText={
-            formSubmitted && formData.hours === ""
-              ? "Este campo es requerido"
-              : ""
-          }
-        />
         <TextField
           required
           label="Importe"

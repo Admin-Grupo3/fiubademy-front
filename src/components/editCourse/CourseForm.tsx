@@ -29,6 +29,7 @@ interface CourseFormProps {
   setFormSubmitted: React.Dispatch<React.SetStateAction<boolean>>;
   categories: { id: number; name: string }[];
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  courseId: string;
 }
 
 const languages = ["english", "spanish"];
@@ -40,9 +41,16 @@ const CourseForm: React.FC<CourseFormProps> = ({
   setFormSubmitted,
   categories,
   handleChange,
+  courseId
 }) => {
   const isFormValid = () => {
     return Object.values(formData).every((value) => value !== "");
+  };
+  const handleCategoriesChange = (
+    event: React.SyntheticEvent,
+    newValue: { id: number; name: string }[]
+  ) => {
+    setFormData({ ...formData, categories: newValue });
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -50,7 +58,7 @@ const CourseForm: React.FC<CourseFormProps> = ({
     setFormSubmitted(true);
 
     if (isFormValid()) {
-      editCourse(formData.title, formData.language, formData.categories);
+      editCourse(courseId, formData.title, formData.language, formData.categories.map((categories) => categories.id), formData.description, formData.price);
       console.log("Formulario enviado", formData);
     }
   };
@@ -110,26 +118,6 @@ const CourseForm: React.FC<CourseFormProps> = ({
         </FormControl>
         <TextField
           required
-          label="Horas Estimadas"
-          id="hours"
-          name="hours"
-          fullWidth
-          type="number"
-          InputProps={{
-            inputProps: { min: 0 },
-          }}
-          value={formData.hours}
-          onChange={handleChange}
-          margin="normal"
-          error={formSubmitted && formData.hours === ""}
-          helperText={
-            formSubmitted && formData.hours === ""
-              ? "Este campo es requerido"
-              : ""
-          }
-        />
-        <TextField
-          required
           label="Importe"
           id="price"
           name="price"
@@ -173,6 +161,7 @@ const CourseForm: React.FC<CourseFormProps> = ({
             value={formData.categories}
             options={categories}
             getOptionLabel={(option) => option.name}
+            onChange={handleCategoriesChange}
             filterSelectedOptions
             renderInput={(params) => (
               <TextField

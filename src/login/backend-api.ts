@@ -9,8 +9,8 @@ const instance = axios.create({
 
 function convertToISO6391(language: string): string | null {
   const languageMap: { [key: string]: string } = {
-    'English': 'en',
-    'Spanish': 'es'
+    'english': 'en',
+    'spanish': 'es'
     // Agregar más mapeos según sea necesario
   };
 
@@ -156,24 +156,26 @@ function createExam(title: any, courseId: string | undefined, questions: []) {
     });
 
 }
-function editCourse(title: any, language: any, categoryIds: any) {
+function editCourse(courseId: string | undefined, title: any, language: any, categoryIds: any, description: any, price: any) {
   let payload = {
     title: title,
     language: convertToISO6391(language),
-    categoryIds: categoryIds
+    categoryIds: categoryIds,
+    description: description,
+    price: price
   };
-  // instance.post(`/courses`, payload)
-  // .then(response => {
-  // if(response.status == 201){
-  //   window.location.href = "/";
-  // }
-  // else{
-  //   console.error('Error al crear el curso:');
-  // }
-  // })
-  // .catch(error => {
-  //   console.error('Error al crear el curso:', error);
-  // });
+  instance.post(`/courses/${courseId}`, payload)
+  .then(response => {
+  if(response.status == 201){
+    window.location.href = `/courses/${courseId}`;
+  }
+  else{
+    console.error('Error al editar el curso:');
+  }
+  })
+  .catch(error => {
+    console.error('Error al editar el curso:', error);
+  });
 }
 
 function purchaseCourse(courseId: string) {

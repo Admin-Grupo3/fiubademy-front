@@ -80,7 +80,7 @@ const EditCourse: React.FC = () => {
                 setFormSubmitted={setFormSubmitted}
                 categories={course_categories}
                 handleChange={handleChange}
-                
+                courseId={id || ""}
             />
             </Grid>
             <Grid item xs={6}>
