@@ -13,6 +13,8 @@ import EditCourse from './pages/EditCourse.tsx';
 import ExamsPage from './pages/ExamsPage.tsx';
 import ExamCreationPage from './pages/ExamCreationPage.tsx';
 import MyCourses from './pages/MyCourses.tsx';
+import Profile from './pages/Profile.tsx';
+
 
 class App extends Component {
   render() {
@@ -31,6 +33,7 @@ class App extends Component {
           <Route path = "/exam" element = {<ExamsPage />} />
           <Route path = "/examCreation/:id" element = {<ExamCreationPage />} />
           <Route path = "/mycourses" element = {<MyCourses />} />
+          <Route path = "/profile" element = {<Profile />} />
         </Routes>
       </BrowserRouter>
     );

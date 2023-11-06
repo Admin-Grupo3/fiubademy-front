@@ -19,10 +19,12 @@ function convertToISO6391(language: string): string | null {
 
 // Replace with your desired payload
 
-function signup(email: any, password: any, setSigninFailed: any){
+function signup(email: any, password: any, name: any, last_name: any, setSigninFailed: any){
     let payload = {
         email: email,
         password: password,
+        // firstName: name,
+        // lastName: last_name
       };
     instance.post(`/users/signup`, payload)
   .then(response => {
@@ -63,6 +65,8 @@ else{
 }
 
 function logOut(){
+  localStorage.setItem('isLoggedIn', 'false');
+  localStorage.removeItem('userData');
   instance.post(`/users/logout`)
   .then(response => {
     if(response.status == 201){
@@ -107,12 +111,15 @@ function getCourses(): Promise<any> {
   
 }
 
-function createCourse(title: any, language: any, categoryIds: any) {
+function createCourse(title: any, language: any, categoryIds: any, description: any, price: any) {
   let payload = {
     title: title,
     language: convertToISO6391(language),
-    categoryIds: categoryIds
+    categoryIds: categoryIds, 
+    description: description,
+    price: price
   };
+
   instance.post(`/courses`, payload)
   .then(response => {
   if(response.status == 201){
@@ -126,7 +133,7 @@ function createCourse(title: any, language: any, categoryIds: any) {
     console.error('Error al crear el curso:', error);
   });
 }
-function createExam(title: any, courseId, questions: []) {
+function createExam(title: any, courseId: string | undefined, questions: []) {
   console.log("createExam");
   console.log(title);
   console.log(questions);

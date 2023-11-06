@@ -12,27 +12,44 @@ const EditCourse: React.FC = () => {
     const {id} = useParams();
     console.log("id", id);
     const {getCourse} = React.useContext(CoursesContext) as CourseContextType;
-    const single_course = getCourse(id);
-    const {course_name, category, description, rating_star, rating_count, students, updated_date, lang, discounted_price, actual_price, creator, image, what_you_will_learn, content} = single_course || {};
-  
     const [formData, setFormData] = useState({
-        title: course_name,
-        language: "English",
+        title: '',
+        language: '',
         hours: "",
-        price: actual_price,
-        description: description,
-        category: category,
+        price: '',
+        description: '' ,
+        categories:  [] as { id: number; name: string }[],
         image: undefined as File | undefined,
     });
 
-    const [categories, setCategories] = useState<{ id: number; name: string }[]>(
+    useEffect(() => {
+        const single_course = getCourse(id);
+
+        if (single_course) {
+            const initialFormData = {
+                title: single_course.title || '',
+                language: single_course.language?.name || '',
+                hours: "",
+                price: single_course.price?.toString() || '',
+                description: single_course.description || '' ,
+                categories:  single_course.categories || [] ,
+                image: undefined as File | undefined,
+            };
+            setFormData(initialFormData);
+        } else {
+            // Manejar el caso en el que no se encuentra ningún curso con el id proporcionado.
+        }
+    }, [id, getCourse]);
+    console.log("FORM DATA:", formData)
+
+    const [course_categories, setCategories] = useState<{ id: number; name: string }[]>(
         []
     );
 
     useEffect(() => {
         getCategories()
-        .then((categories) => {
-            setCategories(categories);
+        .then((course_categories) => {
+            setCategories(course_categories);
         })
         .catch((error) => console.error("Error al obtener categorías:", error));
     }, []);
@@ -61,7 +78,7 @@ const EditCourse: React.FC = () => {
                 setFormData={setFormData}
                 formSubmitted={formSubmitted}
                 setFormSubmitted={setFormSubmitted}
-                categories={categories}
+                categories={course_categories}
                 handleChange={handleChange}
                 
             />
