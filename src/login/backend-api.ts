@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export { signup, signin, getCategories, getCourses, createCourse, logOut, editCourse, createExam, purchaseCourse, getPurchaseCourses, getExams, sendExam , createLearningPath};
+export { signup, signin, getCategories, getCourses, createCourse, logOut, editCourse, createExam, purchaseCourse, getPurchaseCourses, getExams, sendExam , createLearningPath, getUserProfile};
 
 //const url = 'http://localhost:3300';
 
@@ -214,17 +214,32 @@ function getPurchaseCourses(): Promise<any> {
 
 }
 
-function getExams(courseId):Promise<any>{
-  
-  return instance.get(`/courses/${courseId}/exams`, ).then(response => {
+function getUserProfile(): Promise<any> {
+  return instance.get('/users/profile').then(response => {
+    console.log(response.data)
     if (response.status == 200) {
-      console.log(response.data);
       return response.data;
     }
     else {
       return [];
     }
   }).catch(error => {
+    console.error('Error al obtener el usurio:', error);
+    return [];
+  });
+function getExams(courseId):Promise<any>{
+  
+  return instance.get(`/courses/${courseId}/exams`, ).then(response => {
+    if (response.status == 200) {
+      console.log(response.data);
+
+      return response.data;
+    }
+    else {
+      return [];
+    }
+  }).catch(error => {
+
     console.error('Error al obtener los examenes:', error);
     return [];
   });
