@@ -149,11 +149,22 @@ const SingleCoursePage = () => {
             href={'/examCreation/' + id}
             style={{marginLeft: '20px'}}
             variant="contained"
-            sx={{ mt: 3, mb: 2 }}>
+            sx={{ mt: 3, mb: 2, marginRight: '20px'}}>
             Crear examen
         </Button>}
       
-         
+
+          {/* {isLoggedIn && (
+            <Button
+              href={"/editCourse/" + id}
+              variant="contained"
+              style={{marginLeft: '20px', marginRight: '10px'}}
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Editar curso
+            </Button>
+          )} */}
+
           {isLoggedIn && (
             <Button
               onClick={handleGetCourse}
@@ -189,7 +200,7 @@ const SingleCoursePage = () => {
           {isLoggedIn && (
             <Button
               onClick={handleRating}
-              style={{ marginLeft: "20px" }}
+              // style={{ marginLeft: "20px" }}
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
               disabled={isRated}

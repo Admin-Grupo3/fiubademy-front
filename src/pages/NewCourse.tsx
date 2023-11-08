@@ -12,7 +12,7 @@ const NewCourse: React.FC = () => {
     hours: "",
     price: "",
     description: "",
-    category: "",
+    categories: [],
     image: undefined as File | undefined,
   });
 

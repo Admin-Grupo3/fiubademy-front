@@ -8,7 +8,7 @@ interface ImageUploadProps {
     hours: string;
     price: string;
     description: string;
-    category: string;
+    categories: {id: number, name: string}[];
     image: File | undefined;
   };
   handleImageUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
