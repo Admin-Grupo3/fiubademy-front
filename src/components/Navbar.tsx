@@ -11,15 +11,19 @@ import Menu from '@mui/material/Menu';
 import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import { Button } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import { logOut } from '../login/backend-api.ts';
 import SearchBar from './SearchBar.tsx';
+import { RoleContext } from '../context/roles_context.tsx';
 
 const settings = [{option: 'signIn', name: "Sign In"}, { option: 'signUp', name: "Sign Up"}];
+const roles = [{option: 'student', name: "Student"}, { option: 'teacher', name: "Teacher"}, { option: 'admin', name: "Admin"}, { option: 'company', name: "Company"}];
 const pages = ['About', 'Contact'];
 const Navbar = () => {
   const {openSidebar} = React.useContext(SidebarContext) as SideBarContextType;
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+  const { role, setRole } = React.useContext(RoleContext);
+
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -30,6 +34,7 @@ const Navbar = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
   function handleOptionSelected(setting: string){
     if (setting == 'logOut') {
       logOut()
@@ -43,7 +48,11 @@ const Navbar = () => {
     else
     window.location.href = '/' + setting;
   }
-
+  function handleRolSelected(setting){
+    console.log(setting)
+    setRole(setting.name)
+    console.log(role)
+  }
   return (
     <NavbarWrapper className = "bg-white-dark flex">
       <div className='container w-100'>
@@ -52,7 +61,7 @@ const Navbar = () => {
             <span>F</span>iubademy
           </Link>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, paddingLeft:"50px"}}>
-          {isLoggedIn && (
+          {role === "Teacher" && (
         <Button
           key={"New course"}
           href={'/courses'} 
@@ -75,7 +84,21 @@ const Navbar = () => {
           <div style={{ marginRight: '20px' }}>
       <SearchBar/>
     </div>
-          <Box sx={{ flexGrow: 0 }}>
+        {isLoggedIn && (<TextField
+          id="roles-dropdown"
+          select
+          label="Rol"
+          defaultValue={role}
+
+        >
+          {roles.map((option) => (
+            <MenuItem key={option.option} value={option.name} onClick={() => handleRolSelected(option)}>
+              {option.name}
+            </MenuItem>
+          ))}
+        </TextField>)}
+
+          <Box sx={{ flexGrow: 0 , padding:2}}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
