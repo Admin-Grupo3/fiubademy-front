@@ -35,7 +35,9 @@ export default function SignUp() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    signup(data.get('email'), data.get("password"), setSigninFailed)
+    const name = data.get("firstName");
+    const last_name = data.get("firstName");
+    signup(data.get('email'), data.get("password"), name, last_name, setSigninFailed)
   };
 
   return (

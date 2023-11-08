@@ -8,22 +8,30 @@ export interface SidebarType {
     closeSidebar: () => void;
   };
 
-  export interface CourseType {
+  interface Language {
     id: number;
     name: string;
+    createdAt: Date;
+    updatedAt: Date;
+  }
+  
+  export interface CourseType {
+    id: number;
+    title: string;
     description: string;
-    category: string;
+    categories: {id: number, name: string}[];
     image: string;
     rating_star: number;
     rating_count: number;
     students: number;
     creator: string;
     updated_date: string;
-    lang: string;
-    actual_price: number;
-    discounted_price: number;
-    what_you_will_learn: string[];
+    language: Language;
+    price: number;
+    discount: number;
+    what_will_you_learn: string[];
     content: string[];
+    updatedAt: string
   }
   export type CourseContextType = {
     courses: CourseType[];

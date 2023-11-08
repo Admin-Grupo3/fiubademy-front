@@ -15,6 +15,14 @@ const CoursesProvider: React.FC<Props> = ({children}) => {
     const fetchCourses = () => {
         const data = getCourses();
         data.then(coursesData => {
+            coursesData.courses = coursesData.courses.map((course: { categories: { id: any; name: any; }[]; } ) => ({
+                ...course,
+                categories: course.categories.map((category: { id: any; name: any; }) => ({
+                    id: category.id,
+                    name: category.name
+                  })),
+              }))
+
             setCourse(coursesData.courses);
           }).catch(error => {
             console.error('Error al obtener cursos:', error);
@@ -52,18 +60,31 @@ const CoursesProvider: React.FC<Props> = ({children}) => {
     const saveCourse = (course: CourseType) => {
         const newCourse: CourseType = {
             id: Math.random(),
-            name: course.name,
+            title: course.title,
             description: course.description,
-            category: course.category,
+            categories: course.categories,
+            image: "",
+            rating_star: 0,
+            rating_count: 0,
+            students: 0,
+            creator: "",
+            updated_date: "",
+            language: course.language,
+            price: course.price,
+            discount: 0,
+            what_will_you_learn: [],
+            content: [],
+            updatedAt: ""
         };
         setCourse([...courses, newCourse]);
     }
     const updateCourse = (course: CourseType) => {
         courses.filter((item:CourseType) => {
             if(item.id === course.id){
-                item.name = course.name;
+                item.title = course.title;
                 item.description = course.description;
-                item.category = course.category;
+                item.categories = course.categories;
+                item.language = course.language
                 setCourse([...courses]);
             }
         })
