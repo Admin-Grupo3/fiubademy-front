@@ -1,5 +1,7 @@
 import axios from 'axios';
-export { signup, signin, getCategories, getCourses, createCourse, logOut, editCourse, createExam, purchaseCourse, getPurchaseCourses, createLearningPath };
+
+export { signup, signin, getCategories, getCourses, createCourse, logOut, editCourse, createExam, purchaseCourse, getPurchaseCourses, getExams, sendExam , createLearningPath};
+
 //const url = 'http://localhost:3300';
 
 const instance = axios.create({
@@ -211,6 +213,42 @@ function getPurchaseCourses(): Promise<any> {
   });
 
 }
+
+function getExams(courseId):Promise<any>{
+  
+  return instance.get(`/courses/${courseId}/exams`, ).then(response => {
+    if (response.status == 200) {
+      console.log(response.data);
+      return response.data;
+    }
+    else {
+      return [];
+    }
+  }).catch(error => {
+    console.error('Error al obtener los examenes:', error);
+    return [];
+  });
+}
+function sendExam(examId, courseId, answers){
+  console.log("sendExam");
+  console.log(answers);
+  const payload = {
+    answers: answers,
+  }
+  return instance.post(`users/course/${courseId}/exams/${examId}`, payload)
+  .then(response => {
+    if(response.status == 201){
+      console.log(response.data);
+      return response.data;
+    }
+    else{
+      console.error('Error al enviar el examen:');
+      return null;
+    }
+    })
+    .catch(error => {
+      console.error('Error al enviar el examen:', error);
+
 function createLearningPath(name:string, description:string, courses:[]){
   const payload = {
     name: name,
@@ -228,5 +266,6 @@ function createLearningPath(name:string, description:string, courses:[]){
     })
     .catch(error => {
       console.error('Error al crear el learning path:', error);
+
     });
 }
