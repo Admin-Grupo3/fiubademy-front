@@ -61,6 +61,8 @@ const TabsWrapper = styled.div`
       font-weight: 500;
       font-size: 15px;
       margin-bottom: 10px;
+      color: var(--clr-white);
+
 
       &:hover{
         background-color: var(--clr-black);

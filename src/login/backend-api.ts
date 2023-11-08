@@ -248,7 +248,9 @@ function sendExam(examId, courseId, answers){
     })
     .catch(error => {
       console.error('Error al enviar el examen:', error);
-
+  
+    });
+  }
 function createLearningPath(name:string, description:string, courses:[]){
   const payload = {
     name: name,
