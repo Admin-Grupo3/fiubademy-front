@@ -70,7 +70,15 @@ const Navbar = () => {
           {"New course"}
         </Button>
       )}
-          
+           {role === "Company" && (
+        <Button
+          key={"New Company course"}
+          href={'/companycourses'} 
+          sx={{ my: 2, display: 'block' }}
+        >
+          {"New Company course"}
+        </Button>
+      )}
             {pages.map((page) => (
               <Button
                 key={page}

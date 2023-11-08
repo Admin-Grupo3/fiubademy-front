@@ -1,13 +1,21 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from "styled-components";
 import { categories_images } from '../utils/images';
 import Category from "./Category.tsx";
-import { CoursesContext } from '../context/courses_context';
-import { CourseContextType } from '../@types/sideBarType.tsx';
 
+import { getCategories } from "../login/backend-api";
 const CategoriesList = () => {
-  const {getCategorys} = React.useContext(CoursesContext) as CourseContextType;
-  const categories = getCategorys();
+  const [categories, setCategories] = useState<{ id: number; name: string }[]>(
+    []
+  );
+
+  useEffect(() => {
+    getCategories()
+      .then((categories) => {
+        setCategories(categories);
+      })
+      .catch((error) => console.error("Error al obtener categorías:", error));
+  }, []);
   return (
     <CategoriesListWrapper>
       <div className='container'>
@@ -16,9 +24,9 @@ const CategoriesList = () => {
         </div>
         <div className='categories-list grid'>
           {
-            categories.map((category: string, idx: number) => {
+            categories.map((category, idx: number) => {
               return (
-                <Category image = {categories_images[idx]} category = {category} key = {idx} />
+                <Category image = {categories_images[idx]} category = {category.name} key = {idx} />
               )
             })
           }
