@@ -6,14 +6,17 @@ import { Box, Button, Grid, TextField } from "@mui/material";
 import {
   DatePicker,
   LocalizationProvider,
-  TimePicker,
 } from "@mui/x-date-pickers";
 import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
 import dayjs from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { UsersContext } from "../context/users_context";
 
 export default function Profie() {
   const today = dayjs();
+
+  const usersContext = React.useContext(UsersContext);
+  const user = usersContext?.user
 
   return (
     <React.Fragment>
@@ -63,7 +66,9 @@ export default function Profie() {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
-                />
+                  value={user?.email}
+                  disabled
+                  />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>

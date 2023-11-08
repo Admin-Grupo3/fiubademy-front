@@ -33,6 +33,7 @@ export interface SidebarType {
     content: string[];
     updatedAt: string
   }
+
   export type CourseContextType = {
     courses: CourseType[];
     saveCourse:(course: CourseType) => void;
@@ -43,3 +44,11 @@ export interface SidebarType {
     purchaseCourses: CourseType[];
   };
 
+  export interface UserType {
+    id: string;
+    email: string;
+  }
+
+  export type UserContextType = {
+    user: UserType | undefined;
+  };

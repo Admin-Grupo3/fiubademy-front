@@ -1,5 +1,5 @@
 import axios from 'axios';
-export { signup, signin, getCategories, getCourses, createCourse, logOut, editCourse, createExam, purchaseCourse, getPurchaseCourses };
+export { signup, signin, getCategories, getCourses, createCourse, logOut, editCourse, createExam, purchaseCourse, getPurchaseCourses, getUserProfile };
 //const url = 'http://localhost:3300';
 
 const instance = axios.create({
@@ -198,6 +198,22 @@ function purchaseCourse(courseId: string) {
 
 function getPurchaseCourses(): Promise<any> {
   return instance.get('/courses/purchase', ).then(response => {
+    if (response.status == 200) {
+      return response.data;
+    }
+    else {
+      return [];
+    }
+  }).catch(error => {
+    console.error('Error al obtener cursos:', error);
+    return [];
+  });
+
+}
+
+function getUserProfile(): Promise<any> {
+  return instance.get('/users/profile').then(response => {
+    console.log(response.data)
     if (response.status == 200) {
       return response.data;
     }
