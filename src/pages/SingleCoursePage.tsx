@@ -181,7 +181,7 @@ const SingleCoursePage = () => {
             </Button>
           )}
           <Button
-            href={"/exam"}
+            href={"/exam/" + id}
             style={{ marginLeft: "20px" }}
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
