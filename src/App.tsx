@@ -14,6 +14,7 @@ import ExamsPage from './pages/ExamsPage.tsx';
 import ExamCreationPage from './pages/ExamCreationPage.tsx';
 import MyCourses from './pages/MyCourses.tsx';
 import Profile from './pages/Profile.tsx';
+import SearchResults from './pages/SearchResults.tsx';
 
 
 class App extends Component {
@@ -34,6 +35,7 @@ class App extends Component {
           <Route path = "/examCreation/:id" element = {<ExamCreationPage />} />
           <Route path = "/mycourses" element = {<MyCourses />} />
           <Route path = "/profile" element = {<Profile />} />
+          <Route path = "/search" element = {<SearchResults/>} />
         </Routes>
       </BrowserRouter>
     );

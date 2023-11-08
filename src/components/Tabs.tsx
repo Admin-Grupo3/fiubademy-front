@@ -39,7 +39,7 @@ const Tabs = () => {
 
         <div className='tabs-body'>
           {
-            coursesContext.courses.filter((course: any) => course.categories.some((category: any) => category.name.toLowerCase() === activeTab)).map((course: any) => (
+            coursesContext?.courses.filter((course: any) => course.categories.some((category: any) => category.name.toLowerCase() === activeTab)).map((course: any) => (
               <Course key = {course.id} {...course} />
             ))
           }

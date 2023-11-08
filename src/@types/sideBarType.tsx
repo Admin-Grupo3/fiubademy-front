@@ -40,5 +40,6 @@ export interface SidebarType {
     getCourses:() => CourseType[];
     getCourse:(id: number) => CourseType | undefined;
     getCategorys:() => {id: number, name: string}[];
+    purchaseCourses: CourseType[];
   };
 
