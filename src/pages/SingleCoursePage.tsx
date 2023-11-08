@@ -14,6 +14,7 @@ import { purchaseCourse } from "../login/backend-api";
 import RatingComponent from "../components/Rating";
 import { RoleContext } from "../context/roles_context";
 
+
 const handleGetCourse = () => {
   console.log("get course");
   // Add here call to function to call endpoint
@@ -32,6 +33,7 @@ const SingleCoursePage = () => {
   const [showModal, setShowModal] = useState(false);
   const [showModalRating, setShowModalRating] = useState(false);
   const { role } = React.useContext(RoleContext);
+
   const handleCloseModal = () => {
     setShowModal(false);
   };
@@ -169,30 +171,7 @@ const SingleCoursePage = () => {
               <span className="old-price fs-26 fw-6">${price}</span>
             </div>
           </div>
-          {(role === "Teacher") && <Button
-            href={'/editCourse/' + id}
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}>
-            Editar curso
-          </Button> 
-          }
-          <Button
-            href={'/exam/' + id}
-            style={{marginLeft: '20px'}}
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}>
-            Dar examen
-        </Button> 
-        {(role === "Teacher") && <Button
-            href={'/examCreation/' + id}
-            style={{marginLeft: '20px'}}
-            variant="contained"
-            sx={{ mt: 3, mb: 2, marginRight: '20px'}}>
-            Crear examen
-        </Button>}
-      
-
-          {/* {isLoggedIn && (
+          {(role === "Teacher") && (
             <Button
               href={"/editCourse/" + id}
               variant="contained"
@@ -209,25 +188,20 @@ const SingleCoursePage = () => {
           >
             Dar examen
           </Button>
-          <Button
-            href={"/examCreation/" + id}
-            style={{ marginLeft: "20px" }}
+          {(role === "Teacher") && <Button
+            href={'/examCreation/' + id}
+            style={{marginLeft: '20px'}}
             variant="contained"
-            sx={{ mt: 3, mb: 2, marginRight: "20px" }}
-          >
+            sx={{ mt: 3, mb: 2, marginRight: '20px'}}>
             Crear examen
-          </Button>
+        </Button>}
 
           <div>
           {isLoggedIn && !purchasedCourse &&(
-          )} */}
-
-          {isLoggedIn && (
             <Button
               onClick={handleGetCourse}
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              style={{marginLeft: '20px'}}
             >
               Obtener curso
             </Button>
