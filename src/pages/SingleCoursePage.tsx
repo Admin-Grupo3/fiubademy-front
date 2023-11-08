@@ -11,6 +11,7 @@ import { CourseContextType, CourseType } from '../@types/sideBarType';
 import { Alert, Button, Rating, Snackbar, TextField } from '@mui/material';
 import Videos from '../components/Videos';
 import { purchaseCourse } from "../login/backend-api";
+import { RoleContext } from "../context/roles_context";
 
 const handleGetCourse = () => {
   console.log("get course")
@@ -19,7 +20,7 @@ const handleGetCourse = () => {
 const SingleCoursePage = () => {
   const [showModal, setShowModal] = useState(false);
   const [showModalRating, setShowModalRating] = useState(false);
-
+  const { role } = React.useContext(RoleContext);
   const handleCloseModal = () => {
     setShowModal(false);
   };
@@ -130,7 +131,7 @@ const SingleCoursePage = () => {
               <span className='old-price fs-26 fw-6'>${price}</span>
             </div>
           </div>
-          {isLoggedIn && <Button
+          {(role === "Teacher") && <Button
             href={'/editCourse/' + id}
             variant="contained"
             sx={{ mt: 3, mb: 2 }}>
@@ -144,29 +145,21 @@ const SingleCoursePage = () => {
             sx={{ mt: 3, mb: 2 }}>
             Dar examen
         </Button> 
-        <Button
+        {(role === "Teacher") && <Button
             href={'/examCreation/' + id}
             style={{marginLeft: '20px'}}
             variant="contained"
             sx={{ mt: 3, mb: 2 }}>
             Crear examen
-        </Button>
+        </Button>}
       
-          {isLoggedIn && (
-            <Button
-              href={"/editCourse/" + id}
-              variant="contained"
-              style={{marginLeft: '20px', marginRight: '10px'}}
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Editar curso
-            </Button>
-          )}
+         
           {isLoggedIn && (
             <Button
               onClick={handleGetCourse}
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              style={{marginLeft: '20px'}}
             >
               Obtener curso
             </Button>
