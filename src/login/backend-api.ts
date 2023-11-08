@@ -3,7 +3,7 @@ export { signup, signin, getCategories, getCourses, createCourse, logOut, editCo
 //const url = 'http://localhost:3300';
 
 const instance = axios.create({
-  baseURL: import.meta.env.REACT_APP_API_URL,
+  baseURL: import.meta.env.VITE_API_URL,
   withCredentials: true,
 });
 
