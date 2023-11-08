@@ -1,9 +1,11 @@
 import axios from 'axios';
-export { signup, signin, getCategories, getCourses, createCourse, logOut, editCourse, createExam, purchaseCourse, getPurchaseCourses, getUserProfile };
+
+export { signup, signin, getCategories, getCourses, createCourse, logOut, editCourse, createExam, purchaseCourse, getPurchaseCourses, getExams, sendExam , createLearningPath, getUserProfile};
+
 //const url = 'http://localhost:3300';
 
 const instance = axios.create({
-  baseURL: 'http://localhost:3300',
+  baseURL: import.meta.env.VITE_API_URL,
   withCredentials: true,
 });
 
@@ -142,6 +144,7 @@ function createExam(title: any, courseId: string | undefined, questions: []) {
     description: "description",
     questions: questions,
   }
+  console.log(payload)
   instance.post(`/courses/${courseId}/exams/`, payload)
   .then(response => {
     if(response.status == 201){
@@ -221,8 +224,65 @@ function getUserProfile(): Promise<any> {
       return [];
     }
   }).catch(error => {
-    console.error('Error al obtener cursos:', error);
+    console.error('Error al obtener el usurio:', error);
     return [];
   });
+function getExams(courseId):Promise<any>{
+  
+  return instance.get(`/courses/${courseId}/exams`, ).then(response => {
+    if (response.status == 200) {
+      console.log(response.data);
 
+      return response.data;
+    }
+    else {
+      return [];
+    }
+  }).catch(error => {
+
+    console.error('Error al obtener los examenes:', error);
+    return [];
+  });
+}
+function sendExam(examId, courseId, answers){
+  console.log("sendExam");
+  console.log(answers);
+  const payload = {
+    answers: answers,
+  }
+  return instance.post(`users/course/${courseId}/exams/${examId}`, payload)
+  .then(response => {
+    if(response.status == 201){
+      console.log(response.data);
+      return response.data;
+    }
+    else{
+      console.error('Error al enviar el examen:');
+      return null;
+    }
+    })
+    .catch(error => {
+      console.error('Error al enviar el examen:', error);
+  
+    });
+  }
+function createLearningPath(name:string, description:string, courses:[]){
+  const payload = {
+    name: name,
+    description: description,
+    courses: courses,
+  }
+  instance.post(`/learningPaths`, payload)
+  .then(response => {
+    if(response.status == 201){
+      window.location.href = "/";
+    }
+    else{
+      console.error('Error al crear el learning path:');
+    }
+    })
+    .catch(error => {
+      console.error('Error al crear el learning path:', error);
+
+    });
 }

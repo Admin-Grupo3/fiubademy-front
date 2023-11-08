@@ -1,12 +1,12 @@
 import { Stack } from '@mui/material';
 import React, { useState } from 'react';
 
-const MultipleChoiceQuestion = ({ question, choices, onSelect }) => {
+const MultipleChoiceQuestion = ({ question,questionId ,choices, onSelect }) => {
   const [selectedOption, setSelectedOption] = useState('');
 
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
-    onSelect(question, event.target.value);
+    onSelect(questionId, event.target.value);
   };
 
   return (
@@ -14,15 +14,15 @@ const MultipleChoiceQuestion = ({ question, choices, onSelect }) => {
       <h3>{question}</h3>
       <Stack direction="row" spacing={2}>
       {
-        choices.map((choice) => (
-          <label key={choice}>
+        choices.map((choice, index) => (
+          <label key={choice.id}>
             <input
               type="radio"
-              value={choice}
-              checked={selectedOption === choice}
+              value={choice.id}
+              checked={selectedOption === choice.id}
               onChange={handleOptionChange}
             />
-            {choice}
+            {choice.answer}
           </label>
         ))
       }

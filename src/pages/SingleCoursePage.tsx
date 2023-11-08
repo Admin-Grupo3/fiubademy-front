@@ -12,6 +12,8 @@ import { Alert, Button, Rating, Snackbar, TextField } from "@mui/material";
 import Videos from "../components/Videos";
 import { purchaseCourse } from "../login/backend-api";
 import RatingComponent from "../components/Rating";
+import { RoleContext } from "../context/roles_context";
+
 
 const handleGetCourse = () => {
   console.log("get course");
@@ -30,6 +32,7 @@ const SingleCoursePage = () => {
 
   const [showModal, setShowModal] = useState(false);
   const [showModalRating, setShowModalRating] = useState(false);
+  const { role } = React.useContext(RoleContext);
 
   const handleCloseModal = () => {
     setShowModal(false);
@@ -168,7 +171,7 @@ const SingleCoursePage = () => {
               <span className="old-price fs-26 fw-6">${price}</span>
             </div>
           </div>
-          {isLoggedIn && (
+          {(role === "Teacher") && (
             <Button
               href={"/editCourse/" + id}
               variant="contained"
@@ -185,14 +188,13 @@ const SingleCoursePage = () => {
           >
             Dar examen
           </Button>
-          <Button
-            href={"/examCreation/" + id}
-            style={{ marginLeft: "20px" }}
+          {(role === "Teacher") && <Button
+            href={'/examCreation/' + id}
+            style={{marginLeft: '20px'}}
             variant="contained"
-            sx={{ mt: 3, mb: 2, marginRight: "20px" }}
-          >
+            sx={{ mt: 3, mb: 2, marginRight: '20px'}}>
             Crear examen
-          </Button>
+        </Button>}
 
           <div>
           {isLoggedIn && !purchasedCourse &&(
