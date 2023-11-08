@@ -227,6 +227,7 @@ function getUserProfile(): Promise<any> {
     console.error('Error al obtener el usurio:', error);
     return [];
   });
+}
 function getExams(courseId):Promise<any>{
   
   return instance.get(`/courses/${courseId}/exams`, ).then(response => {
