@@ -8,17 +8,17 @@ interface ImageUploadProps {
     hours: string;
     price: string;
     description: string;
-    categories: {id: number, name: string}[];
+    category: string;
     image: File | undefined;
   };
   handleImageUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const VideoUpload: React.FC<ImageUploadProps> = ({ formData, handleImageUpload }) => {
+const ImageUpload: React.FC<ImageUploadProps> = ({ formData, handleImageUpload }) => {
   return (
     <Paper elevation={3} style={{ padding: "20px" }}>
       <Typography variant="h5" style={{ marginBottom: "10px" }}>
-        Subir video al curso
+        Subir imagen del curso
       </Typography>
       <Paper
         elevation={3}
@@ -46,14 +46,14 @@ const VideoUpload: React.FC<ImageUploadProps> = ({ formData, handleImageUpload }
           <div>
             <input
               type="file"
-              accept="video/*"
+              accept="image/*"
               style={{ display: "none" }}
               id="image-input"
               onChange={handleImageUpload}
             />
             <label htmlFor="image-input">
               <Button variant="contained" component="span">
-                Subir Videos
+                Subir Imagen
               </Button>
             </label>
           </div>
@@ -63,4 +63,4 @@ const VideoUpload: React.FC<ImageUploadProps> = ({ formData, handleImageUpload }
   );
 };
 
-export default VideoUpload;
+export default ImageUpload;

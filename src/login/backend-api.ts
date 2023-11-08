@@ -1,16 +1,18 @@
 import axios from 'axios';
-export { signup, signin, getCategories, getCourses, createCourse, logOut, editCourse, createExam, purchaseCourse, getPurchaseCourses, getExams, sendExam };
+
+export { signup, signin, getCategories, getCourses, createCourse, logOut, editCourse, createExam, purchaseCourse, getPurchaseCourses, getExams, sendExam , createLearningPath};
+
 //const url = 'http://localhost:3300';
 
 const instance = axios.create({
-  baseURL: 'http://localhost:3300',
+  baseURL: import.meta.env.VITE_API_URL,
   withCredentials: true,
 });
 
 function convertToISO6391(language: string): string | null {
   const languageMap: { [key: string]: string } = {
-    'English': 'en',
-    'Spanish': 'es'
+    'english': 'en',
+    'spanish': 'es'
     // Agregar más mapeos según sea necesario
   };
 
@@ -19,10 +21,12 @@ function convertToISO6391(language: string): string | null {
 
 // Replace with your desired payload
 
-function signup(email: any, password: any, setSigninFailed: any){
+function signup(email: any, password: any, name: any, last_name: any, setSigninFailed: any){
     let payload = {
         email: email,
         password: password,
+        // firstName: name,
+        // lastName: last_name
       };
     instance.post(`/users/signup`, payload)
   .then(response => {
@@ -63,6 +67,8 @@ else{
 }
 
 function logOut(){
+  localStorage.setItem('isLoggedIn', 'false');
+  localStorage.removeItem('userData');
   instance.post(`/users/logout`)
   .then(response => {
     if(response.status == 201){
@@ -107,12 +113,15 @@ function getCourses(): Promise<any> {
   
 }
 
-function createCourse(title: any, language: any, categoryIds: any) {
+function createCourse(title: any, language: any, categoryIds: any, description: any, price: any) {
   let payload = {
     title: title,
     language: convertToISO6391(language),
-    categoryIds: categoryIds
+    categoryIds: categoryIds, 
+    description: description,
+    price: price
   };
+
   instance.post(`/courses`, payload)
   .then(response => {
   if(response.status == 201){
@@ -126,7 +135,7 @@ function createCourse(title: any, language: any, categoryIds: any) {
     console.error('Error al crear el curso:', error);
   });
 }
-function createExam(title: any, courseId, questions: []) {
+function createExam(title: any, courseId: string | undefined, questions: []) {
   console.log("createExam");
   console.log(title);
   console.log(questions);
@@ -135,6 +144,7 @@ function createExam(title: any, courseId, questions: []) {
     description: "description",
     questions: questions,
   }
+  console.log(payload)
   instance.post(`/courses/${courseId}/exams/`, payload)
   .then(response => {
     if(response.status == 201){
@@ -149,24 +159,26 @@ function createExam(title: any, courseId, questions: []) {
     });
 
 }
-function editCourse(title: any, language: any, categoryIds: any) {
+function editCourse(courseId: string | undefined, title: any, language: any, categoryIds: any, description: any, price: any) {
   let payload = {
     title: title,
     language: convertToISO6391(language),
-    categoryIds: categoryIds
+    categoryIds: categoryIds,
+    description: description,
+    price: price
   };
-  // instance.post(`/courses`, payload)
-  // .then(response => {
-  // if(response.status == 201){
-  //   window.location.href = "/";
-  // }
-  // else{
-  //   console.error('Error al crear el curso:');
-  // }
-  // })
-  // .catch(error => {
-  //   console.error('Error al crear el curso:', error);
-  // });
+  instance.post(`/courses/${courseId}`, payload)
+  .then(response => {
+  if(response.status == 201){
+    window.location.href = `/courses/${courseId}`;
+  }
+  else{
+    console.error('Error al editar el curso:');
+  }
+  })
+  .catch(error => {
+    console.error('Error al editar el curso:', error);
+  });
 }
 
 function purchaseCourse(courseId: string) {
@@ -201,6 +213,7 @@ function getPurchaseCourses(): Promise<any> {
   });
 
 }
+
 function getExams(courseId):Promise<any>{
   
   return instance.get(`/courses/${courseId}/exams`, ).then(response => {
@@ -235,5 +248,24 @@ function sendExam(examId, courseId, answers){
     })
     .catch(error => {
       console.error('Error al enviar el examen:', error);
+
+function createLearningPath(name:string, description:string, courses:[]){
+  const payload = {
+    name: name,
+    description: description,
+    courses: courses,
+  }
+  instance.post(`/learningPaths`, payload)
+  .then(response => {
+    if(response.status == 201){
+      window.location.href = "/";
+    }
+    else{
+      console.error('Error al crear el learning path:');
+    }
+    })
+    .catch(error => {
+      console.error('Error al crear el learning path:', error);
+
     });
 }
