@@ -1,5 +1,5 @@
 import axios from 'axios';
-export { signup, signin, getCategories, getCourses, createCourse, logOut, editCourse, createExam, purchaseCourse, getPurchaseCourses };
+export { signup, signin, getCategories, getCourses, createCourse, logOut, editCourse, createExam, purchaseCourse, getPurchaseCourses, createLearningPath };
 //const url = 'http://localhost:3300';
 
 const instance = axios.create({
@@ -142,6 +142,7 @@ function createExam(title: any, courseId: string | undefined, questions: []) {
     description: "description",
     questions: questions,
   }
+  console.log(payload)
   instance.post(`/courses/${courseId}/exams/`, payload)
   .then(response => {
     if(response.status == 201){
@@ -209,4 +210,23 @@ function getPurchaseCourses(): Promise<any> {
     return [];
   });
 
+}
+function createLearningPath(name:string, description:string, courses:[]){
+  const payload = {
+    name: name,
+    description: description,
+    courses: courses,
+  }
+  instance.post(`/learningPaths`, payload)
+  .then(response => {
+    if(response.status == 201){
+      window.location.href = "/";
+    }
+    else{
+      console.error('Error al crear el learning path:');
+    }
+    })
+    .catch(error => {
+      console.error('Error al crear el learning path:', error);
+    });
 }
