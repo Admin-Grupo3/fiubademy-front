@@ -13,6 +13,8 @@ import EditCourse from './pages/EditCourse.tsx';
 import ExamsPage from './pages/ExamsPage.tsx';
 import ExamCreationPage from './pages/ExamCreationPage.tsx';
 import MyCourses from './pages/MyCourses.tsx';
+import NewCompanyCourse from './pages/NewCompanyCourse .tsx';
+import LearningPathCreation from './pages/LearningPathCreation.tsx';
 import Profile from './pages/Profile.tsx';
 import SearchResults from './pages/SearchResults.tsx';
 
@@ -34,8 +36,11 @@ class App extends Component {
           <Route path = "/exam" element = {<ExamsPage />} />
           <Route path = "/examCreation/:id" element = {<ExamCreationPage />} />
           <Route path = "/mycourses" element = {<MyCourses />} />
+          <Route path="/companycourses" element={<NewCompanyCourse />} />
+          <Route path = "/learningPath" element = {<LearningPathCreation />} />
           <Route path = "/profile" element = {<Profile />} />
           <Route path = "/search" element = {<SearchResults/>} />
+
         </Routes>
       </BrowserRouter>
     );
