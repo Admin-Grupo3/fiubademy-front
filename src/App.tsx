@@ -16,6 +16,7 @@ import MyCourses from './pages/MyCourses.tsx';
 import NewCompanyCourse from './pages/NewCompanyCourse .tsx';
 import LearningPathCreation from './pages/LearningPathCreation.tsx';
 import Profile from './pages/Profile.tsx';
+import SearchResults from './pages/SearchResults.tsx';
 
 
 class App extends Component {
@@ -38,6 +39,7 @@ class App extends Component {
           <Route path="/companycourses" element={<NewCompanyCourse />} />
           <Route path = "/learningPath" element = {<LearningPathCreation />} />
           <Route path = "/profile" element = {<Profile />} />
+          <Route path = "/search" element = {<SearchResults/>} />
 
         </Routes>
       </BrowserRouter>

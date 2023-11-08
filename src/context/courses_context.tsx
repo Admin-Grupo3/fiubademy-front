@@ -3,7 +3,6 @@ import { CourseContextType, CourseType } from "../@types/sideBarType.tsx";
 import {getCategories, getPurchaseCourses} from "../login/backend-api";
 import {getCourses} from "../login/backend-api";
 export const CoursesContext = React.createContext<CourseContextType | null> (null);
-import axios from 'axios';
 
 interface Props {
     children: React.ReactNode;

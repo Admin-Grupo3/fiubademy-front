@@ -1,23 +1,34 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { CoursesContext } from '../context/courses_context';
-import StarRating from '../components/StarRating';
-import {MdInfo} from "react-icons/md";
-import {TbWorld} from "react-icons/tb";
-import {RiClosedCaptioningFill} from "react-icons/ri";
-import {BiCheck} from "react-icons/bi";
-import { CourseContextType, CourseType } from '../@types/sideBarType';
-import { Alert, Button, Rating, Snackbar, TextField } from '@mui/material';
-import Videos from '../components/Videos';
+import { CoursesContext } from "../context/courses_context";
+import StarRating from "../components/StarRating";
+import { MdInfo } from "react-icons/md";
+import { TbWorld } from "react-icons/tb";
+import { RiClosedCaptioningFill } from "react-icons/ri";
+import { BiCheck } from "react-icons/bi";
+import { CourseContextType, CourseType } from "../@types/sideBarType";
+import { Alert, Button, Rating, Snackbar, TextField } from "@mui/material";
+import Videos from "../components/Videos";
 import { purchaseCourse } from "../login/backend-api";
+import RatingComponent from "../components/Rating";
 import { RoleContext } from "../context/roles_context";
 
 const handleGetCourse = () => {
-  console.log("get course")
+  console.log("get course");
   // Add here call to function to call endpoint
-}
+};
+
+const ratings = [4, 5, 3, 2];
+const reviews = [
+  "Excelente curso!",
+  "Muy satisfecho con el curso.",
+  "Regular, podría mejorar.",
+  "No cumplió mis expectativas.",
+];
+
 const SingleCoursePage = () => {
+
   const [showModal, setShowModal] = useState(false);
   const [showModalRating, setShowModalRating] = useState(false);
   const { role } = React.useContext(RoleContext);
@@ -61,7 +72,8 @@ const SingleCoursePage = () => {
     //Send calificacion y comentario to backend
   };
 
-  const { getCourse } = React.useContext(CoursesContext) as CourseContextType;
+  const { getCourse, purchaseCourses } = React.useContext(CoursesContext) as CourseContextType;
+  const purchasedCourse = purchaseCourses.find(course => String(course.id) === id);
   const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
   const single_course = getCourse(id);
   useEffect(() => {
@@ -74,21 +86,38 @@ const SingleCoursePage = () => {
     return <h2 className="section-title">no course to display</h2>;
   }
 
-  const {title, categories, description, rating_star, rating_count, students, updatedAt, lang, discount, price, creator, image, what_will_you_learn, content} = single_course || {};
-  
+  const {
+    title,
+    categories,
+    description,
+    rating_star,
+    rating_count,
+    students,
+    updatedAt,
+    language,
+    discount,
+    price,
+    creator,
+    image,
+    what_will_you_learn,
+    content,
+  } = single_course || {};
+
   // TODO: creator.name no existe en la db actualmente, asi que está hardcodeado acá por el momento
   // TODO: integrar el lenguaje del curso con la info del back
   return (
     <SingleCourseWrapper>
-      <div className='course-intro mx-auto grid'>
-        <div className='course-img'>
-          <img src = {`/src/assets/images/${image}.jpg`} alt = {title} />
+      <div className="course-intro mx-auto grid">
+        <div className="course-img">
+          <img src={`/src/assets/images/${image}.jpg`} alt={title} />
         </div>
-        <div className='course-details'>
-          {
-            categories.map((category: any) => <div className='course-category bg-white text-dark text-capitalize fw-6 fs-12 d-inline-block'>{category.name}</div>)
-          }
-          <div className='course-head'>
+        <div className="course-details">
+          {categories.map((category: any) => (
+            <div className="course-category bg-white text-dark text-capitalize fw-6 fs-12 d-inline-block">
+              {category.name}
+            </div>
+          ))}
+          <div className="course-head">
             <h5>{title}</h5>
           </div>
           <div className="course-body">
@@ -102,33 +131,42 @@ const SingleCoursePage = () => {
 
             <ul className="course-info">
               <li>
-                <span className='fs-14'>Created by <span className='fw-6 opacity-08'>{creator?.name || 'Lionel Messi'}</span></span>
+                <span className="fs-14">
+                  Created by{" "}
+                  <span className="fw-6 opacity-08">
+                    {creator?.name || "Lionel Messi"}
+                  </span>
+                </span>
               </li>
-              <li className='flex'>
-                <span><MdInfo /></span>
-                <span className='fs-14 course-info-txt fw-5'>Last updated {updatedAt}</span>
+              <li className="flex">
+                <span>
+                  <MdInfo />
+                </span>
+                <span className="fs-14 course-info-txt fw-5">
+                  Last updated {updatedAt}
+                </span>
               </li>
               <li className="flex">
                 <span>
                   <TbWorld />
                 </span>
-                <span className="fs-14 course-info-txt fw-5">{lang}</span>
+                <span className="fs-14 course-info-txt fw-5">{language.name}</span>
               </li>
               <li className="flex">
                 <span>
                   <RiClosedCaptioningFill />
                 </span>
                 <span className="fs-14 course-info-txt fw-5">
-                  {lang} [Auto]
+                  {language.name} [Auto]
                 </span>
               </li>
             </ul>
           </div>
 
-          <div className='course-foot'>
-            <div className='course-price'>
-              <span className='new-price fs-26 fw-8'>${price - discount}</span>
-              <span className='old-price fs-26 fw-6'>${price}</span>
+          <div className="course-foot">
+            <div className="course-price">
+              <span className="new-price fs-26 fw-8">${price - discount}</span>
+              <span className="old-price fs-26 fw-6">${price}</span>
             </div>
           </div>
           {(role === "Teacher") && <Button
@@ -158,11 +196,30 @@ const SingleCoursePage = () => {
             <Button
               href={"/editCourse/" + id}
               variant="contained"
-              style={{marginLeft: '20px', marginRight: '10px'}}
               sx={{ mt: 3, mb: 2 }}
             >
               Editar curso
             </Button>
+          )}
+          <Button
+            href={"/exam"}
+            style={{ marginLeft: "20px" }}
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
+            Dar examen
+          </Button>
+          <Button
+            href={"/examCreation/" + id}
+            style={{ marginLeft: "20px" }}
+            variant="contained"
+            sx={{ mt: 3, mb: 2, marginRight: "20px" }}
+          >
+            Crear examen
+          </Button>
+
+          <div>
+          {isLoggedIn && !purchasedCourse &&(
           )} */}
 
           {isLoggedIn && (
@@ -175,6 +232,7 @@ const SingleCoursePage = () => {
               Obtener curso
             </Button>
           )}
+          </div>
           {showModal && (
             <ModalWrapper>
               <div className="modal-content">
@@ -197,17 +255,20 @@ const SingleCoursePage = () => {
               Usted adquirió el curso <strong>{title}</strong>
             </Alert>
           </Snackbar>
-          {isLoggedIn && (
+          <div>
+          {isLoggedIn && purchasedCourse && (
             <Button
               onClick={handleRating}
               // style={{ marginLeft: "20px" }}
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
               disabled={isRated}
+
             >
               Calificar curso
             </Button>
           )}
+          </div>
           {showModalRating && (
             <ModalWrapper>
               <div className="modal-content">
@@ -248,40 +309,46 @@ const SingleCoursePage = () => {
         </div>
       </div>
 
-      <div className='course-full bg-white text-dark'>
-        <div className='course-learn mx-auto'>
-          <div className='course-sc-title'>What you'll learn</div>
-          <ul className='course-learn-list grid'>
-            {
-              what_will_you_learn && what_will_you_learn.map((learnItem, idx) => {
+      <div className="course-full bg-white text-dark">
+        <div className="course-learn mx-auto">
+          <div className="course-sc-title">What you'll learn</div>
+          <ul className="course-learn-list grid">
+            {what_will_you_learn &&
+              what_will_you_learn.map((learnItem, idx) => {
                 return (
-                  <li key = {idx}>
-                    <span><BiCheck /></span>
-                    <span className='fs-14 fw-5 opacity-09'>{learnItem}</span>
+                  <li key={idx}>
+                    <span>
+                      <BiCheck />
+                    </span>
+                    <span className="fs-14 fw-5 opacity-09">{learnItem}</span>
                   </li>
-                )
-              })
-            }
+                );
+              })}
           </ul>
         </div>
 
-        <div className='course-content mx-auto'>
-          <div className='course-sc-title'>Course content</div>
-          <ul className='course-content-list'>
-            {
-              content && content.map((contentItem, idx) => {
+        <div className="course-content mx-auto">
+          <div className="course-sc-title">Course content</div>
+          <ul className="course-content-list">
+            {content &&
+              content.map((contentItem, idx) => {
                 return (
-                  <li key = {idx}>
+                  <li key={idx}>
                     <span>{contentItem}</span>
                   </li>
-                )
-              })
-            }
+                );
+              })}
           </ul>
         </div>
-        <Videos embedId="tQZy0U8s9LY"/>
+        {purchasedCourse && (
+        <div className="container" style={{ marginTop: "20px" }}>
+          <Videos embedId="tQZy0U8s9LY" />
+        </div>)}
+        
+        <div className="container" style={{ marginTop: "20px" }}>
+          <RatingComponent ratings={ratings} reviews={reviews} />
+        </div>
       </div>
-     
     </SingleCourseWrapper>
   );
 };
