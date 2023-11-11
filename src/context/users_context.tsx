@@ -7,7 +7,7 @@ interface Props {
     children: React.ReactNode;
   }
 
-const UsersProvider: React.FC<Props> = ({children}) => {
+export const UsersProvider: React.FC<Props> = ({children}) => {
     const [user, setUser] = React.useState<UserType >();
 
     const fetchUserProfile = () => {
