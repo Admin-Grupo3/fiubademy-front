@@ -103,6 +103,7 @@ const SingleCoursePage = () => {
     image,
     what_will_you_learn,
     content,
+    video
   } = single_course || {};
 
   // TODO: creator.name no existe en la db actualmente, asi que está hardcodeado acá por el momento
@@ -316,7 +317,7 @@ const SingleCoursePage = () => {
         </div>
         {purchasedCourse && (
         <div className="container" style={{ marginTop: "20px" }}>
-          <Videos embedId="tQZy0U8s9LY" />
+          <Videos embedId={video} />
         </div>)}
         
         <div className="container" style={{ marginTop: "20px" }}>
