@@ -111,7 +111,7 @@ const SingleCoursePage = () => {
     <SingleCourseWrapper>
       <div className="course-intro mx-auto grid">
         <div className="course-img">
-          <img src={`/src/assets/images/${image}.jpg`} alt={title} />
+          <img src={image} alt={title} />
         </div>
         <div className="course-details">
           {categories.map((category: any) => (
