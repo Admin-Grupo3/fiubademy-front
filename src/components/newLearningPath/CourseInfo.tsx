@@ -12,7 +12,7 @@ const CourseInfo = ({ id, image, title, creator, description, addCourse, courses
     
     <CourseCard>
       <div className='item-img'>
-        <img src = {`/src/assets/images/${image}.jpg`} alt = {title} />
+        <img src = {`https://github.com/Admin-Grupo3/fiubademy-front/tree/main/src/assets/images/${image}.jpg`} alt = {title} />
       </div>
       <div className='item-body'>
         <h5 className='item-name'>{title}</h5>

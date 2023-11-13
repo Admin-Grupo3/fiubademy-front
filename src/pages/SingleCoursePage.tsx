@@ -111,7 +111,7 @@ const SingleCoursePage = () => {
     <SingleCourseWrapper>
       <div className="course-intro mx-auto grid">
         <div className="course-img">
-          <img src={`/src/assets/images/${image}.jpg`} alt={title} />
+          <img src={`https://github.com/Admin-Grupo3/fiubademy-front/tree/main/src/assets/images/${image}.jpg`} alt={title} />
         </div>
         <div className="course-details">
           {categories.map((category: any) => (
