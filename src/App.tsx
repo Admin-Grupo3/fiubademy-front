@@ -17,8 +17,8 @@ import NewCompanyCourse from './pages/NewCompanyCourse .tsx';
 import LearningPathCreation from './pages/LearningPathCreation.tsx';
 import Profile from './pages/Profile.tsx';
 import SearchResults from './pages/SearchResults.tsx';
-import { Create } from '@mui/icons-material';
 import CreateCategory from './pages/CreateCategory.tsx';
+import CoursesModeration from './pages/CoursesModeration.tsx';
 
 
 class App extends Component {
@@ -42,7 +42,8 @@ class App extends Component {
           <Route path = "/learningPath" element = {<LearningPathCreation />} />
           <Route path = "/profile" element = {<Profile />} />
           <Route path = "/search" element = {<SearchResults/>} />
-          <Route path= "/category" element = {<CreateCategory/>} />
+          <Route path = "/category" element = {<CreateCategory/>} />
+          <Route path = "/moderateCourses" element = {<CoursesModeration/>} />
         </Routes>
       </BrowserRouter>
     );
