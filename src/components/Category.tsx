@@ -1,13 +1,12 @@
-import React from 'react';
 import styled from "styled-components";
 import {Link} from "react-router-dom";
 
-const Category = ({image, category}) => {
+const Category = ({image, category}: {image: string, category: string}) => {
   return (
     <Link to = {`/category/${category}`}>
       <CategoryItemWrapper className='flex flex-column bg-alice-blue'>
         <div className='category-item-img'>
-          <img src={`https://raw.githubusercontent.com/${image}`} alt={category} />
+          <img src={image} alt={category} />
         </div>
         <div className='category-item-name'>
           <h6>{category}</h6>
