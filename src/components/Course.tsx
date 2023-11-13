@@ -10,7 +10,7 @@ const Course = (props) => {
   return (
     <CourseCard>
       <div className='item-img'>
-        <img src = {`/src/assets/images/${image}.jpg`} alt = {title} />
+        <img src = {image} alt = {title} />
       </div>
       <div className='item-body'>
         <h5 className='item-name'>{title}</h5>
