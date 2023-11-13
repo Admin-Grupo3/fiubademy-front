@@ -12,7 +12,7 @@ const CourseInfo = ({ id, image, title, creator, description, addCourse, courses
     
     <CourseCard>
       <div className='item-img'>
-        <img src={"https://raw.githubusercontent.com/" + image} alt={title} />
+        <img src={`https://raw.githubusercontent.com/${image}`} alt={title} />
       </div>
       <div className='item-body'>
         <h5 className='item-name'>{title}</h5>
