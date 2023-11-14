@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from "styled-components";
 import {Link} from 'react-router-dom';
 import { SidebarContext } from '../context/sidebar_context.tsx';
@@ -46,10 +46,9 @@ const Navbar = () => {
     else
     window.location.href = '/' + setting;
   }
-  function handleRolSelected(setting){
-    console.log(setting)
-    setRole(setting.name)
-    console.log(role)
+  function handleRolSelected(event: React.ChangeEvent<HTMLInputElement>){
+    console.log(event.target.value)
+    setRole(event.target.value.toLowerCase())
   }
   return (
     <NavbarWrapper className = "bg-white-dark flex">
@@ -127,14 +126,15 @@ const Navbar = () => {
         select
         label="Rol"
         defaultValue={role}
-
+        onChange={handleRolSelected}
       >
         {roles.map((option) => (
-          <MenuItem key={option.option} value={option.name} onClick={() => handleRolSelected(option)}>
+          <MenuItem key={option.option} value={option.name}>
             {option.name}
           </MenuItem>
         ))}
       </TextField>
+
       <Box sx={{ flexGrow: 0, padding: 2 }}>
           <Tooltip title="Open settings">
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
