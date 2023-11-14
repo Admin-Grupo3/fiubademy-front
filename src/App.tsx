@@ -17,6 +17,7 @@ import NewCompanyCourse from './pages/NewCompanyCourse .tsx';
 import LearningPathCreation from './pages/LearningPathCreation.tsx';
 import Profile from './pages/Profile.tsx';
 import SearchResults from './pages/SearchResults.tsx';
+import Interests from './pages/Interests.tsx';
 
 
 class App extends Component {
@@ -40,7 +41,7 @@ class App extends Component {
           <Route path = "/learningPath" element = {<LearningPathCreation />} />
           <Route path = "/profile" element = {<Profile />} />
           <Route path = "/search" element = {<SearchResults/>} />
-
+          <Route path = "/interests" element = {<Interests/>} />
         </Routes>
       </BrowserRouter>
     );
