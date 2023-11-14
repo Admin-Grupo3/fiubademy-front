@@ -38,9 +38,7 @@ const CategoriesList = () => {
           {
             categories.map((category, idx: number) => {
               const name = category.name;
-              console.log(name);
               const imageKeyName = name.toLowerCase().replace(" ", "_") as keyof typeof categories_images;
-              console.log(categories_images[imageKeyName]);
               return (
                 <Category image = {categories_images[imageKeyName]} category={name} key={idx} />
               )
