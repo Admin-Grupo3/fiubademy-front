@@ -9,10 +9,11 @@ const NewCompanyCourse: React.FC = () => {
   const [formData, setFormData] = useState({
     title: "",
     language: "English",
+    empresa: "",
     hours: "",
     price: "",
     description: "",
-    category: "",
+    categories: [],
     image: undefined as File | undefined,
   });
 

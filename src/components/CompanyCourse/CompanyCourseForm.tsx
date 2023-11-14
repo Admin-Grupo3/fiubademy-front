@@ -4,9 +4,11 @@ import {
   Paper,
   FormControl,
   MenuItem,
+  Autocomplete,
 } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import { createCompanyCourse } from "../../login/backend-api";
 
 
 interface CourseFormProps {
@@ -18,7 +20,7 @@ interface CourseFormProps {
     hours: string;
     price: string;
     description: string;
-    category: string;
+    categories: { id: number; name: string }[];
     image: File | undefined;
   };
   setFormData: React.Dispatch<
@@ -30,7 +32,7 @@ interface CourseFormProps {
       hours: string;
       price: string;
       description: string;
-      category: string;
+      categories: { id: number; name: string }[];
       image: File | undefined;
     }>
   >;
@@ -40,7 +42,7 @@ interface CourseFormProps {
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const languages = ["English", "Spanish"];
+const languages = ["english", "spanish"];
 
 const CompanyCourseForm: React.FC<CourseFormProps> = ({
   formData,
@@ -53,13 +55,25 @@ const CompanyCourseForm: React.FC<CourseFormProps> = ({
   const isFormValid = () => {
     return Object.values(formData).every((value) => value !== "");
   };
+  const handleCategoriesChange = (
+    event: React.SyntheticEvent,
+    newValue: { id: number; name: string }[]
+  ) => {
+    setFormData({ ...formData, categories: newValue });
+  };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setFormSubmitted(true);
 
     if (isFormValid()) {
-      //createCourse(formData.title,.language,[formData.category]);
+      createCompanyCourse( formData.title,
+        formData.language,
+        formData.categories.map((categories) => categories.id),
+        formData.description,
+        formData.price,
+        formData.empresa);
+
       console.log("Formulario enviado", formData);
     }
   };
@@ -112,7 +126,7 @@ const CompanyCourseForm: React.FC<CourseFormProps> = ({
         required
         id="empresa"
         label="Empresa certificante"
-        name="title"
+        name="empresa"
         fullWidth
         onChange={handleChange}
         margin="normal"
@@ -128,7 +142,6 @@ const CompanyCourseForm: React.FC<CourseFormProps> = ({
           required
           id="language"
           name="language"
-          defaultValue="English"
           select
           margin="normal"
           label="Idioma"
@@ -204,27 +217,28 @@ const CompanyCourseForm: React.FC<CourseFormProps> = ({
         }
       />
       <FormControl fullWidth>
-        <TextField
-          required
-          id="category"
-          name="category"
-          select
-          margin="normal"
-          label="Categoria"
-          onChange={handleChange}
-          error={formSubmitted && formData.category === ""}
-          helperText={
-            formSubmitted && formData.category === ""
-              ? "Este campo es requerido"
-              : ""
-          }
-        >
-          {categories.map((category) => (
-            <MenuItem key={category.id} value={category.id}>
-              {category.name}
-            </MenuItem>
-          ))}
-        </TextField>
+      <Autocomplete
+            multiple
+            options={categories}
+            getOptionLabel={(option) => option.name}
+            filterSelectedOptions
+            onChange={handleCategoriesChange}
+            renderInput={(params) => (
+              <TextField
+                margin="normal"
+                required
+                {...params}
+                onChange={handleChange}
+                label="Categorias"
+                error={formSubmitted && formData.categories.length === 0}
+                helperText={
+                  formSubmitted && formData.categories.length === 0
+                    ? "Este campo es requerido"
+                    : ""
+                }
+              />
+            )}
+          />
       </FormControl>
       <Button
         type="submit"

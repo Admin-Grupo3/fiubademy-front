@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export { signup, signin, getCategories, getCourses, createCourse, logOut, editCourse, createExam, purchaseCourse, getPurchaseCourses, getExams, sendExam , createLearningPath, getUserProfile};
+export { signup, signin, getCategories, getCourses, createCourse, createCompanyCourse, logOut, editCourse, createExam, purchaseCourse, getPurchaseCourses, getExams, sendExam , createLearningPath, getUserProfile};
 
 //const url = 'http://localhost:3300';
 
@@ -122,6 +122,30 @@ function createCourse(title: any, language: any, categoryIds: any, description: 
     price: price
   };
 
+  instance.post(`/courses`, payload)
+  console.log(categoryIds)
+  .then(response => {
+  if(response.status == 201){
+    window.location.href = "/";
+  }
+  else{
+    console.error('Error al crear el curso:');
+  }
+  })
+  .catch(error => {
+    console.error('Error al crear el curso:', error);
+  });
+}
+function createCompanyCourse(title: any, language: any, categoryIds: any, description: any, price: any, company:String) {
+  let payload = {
+    title: title,
+    language: convertToISO6391(language),
+    categoryIds: categoryIds, 
+    description: description,
+    price: price,
+    companyName: company
+  };
+  console.log(payload)
   instance.post(`/courses`, payload)
   .then(response => {
   if(response.status == 201){
