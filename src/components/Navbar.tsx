@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from "styled-components";
-import {MdMenu} from "react-icons/md";
-import {Link, redirect} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import { SidebarContext } from '../context/sidebar_context.tsx';
 import { SideBarContextType } from "../@types/sideBarType.tsx";
 import Box from '@mui/material/Box';
@@ -16,7 +15,6 @@ import { logOut } from '../login/backend-api.ts';
 import SearchBar from './SearchBar.tsx';
 import { RoleContext } from '../context/roles_context.tsx';
 
-const settings = [{option: 'signIn', name: "Sign In"}, { option: 'signUp', name: "Sign Up"}];
 const roles = [{option: 'student', name: "Student"}, { option: 'teacher', name: "Teacher"}, { option: 'admin', name: "Admin"}, { option: 'company', name: "Company"}];
 const pages = ['About', 'Contact'];
 const Navbar = () => {
@@ -48,10 +46,9 @@ const Navbar = () => {
     else
     window.location.href = '/' + setting;
   }
-  function handleRolSelected(setting){
-    console.log(setting)
-    setRole(setting.name)
-    console.log(role)
+  function handleRolSelected(event: React.ChangeEvent<HTMLInputElement>){
+    console.log(event.target.value)
+    setRole(event.target.value.toLowerCase())
   }
   return (
     <NavbarWrapper className = "bg-white-dark flex">
@@ -103,64 +100,75 @@ const Navbar = () => {
           <div style={{ marginRight: '20px' }}>
       <SearchBar/>
     </div>
-        {isLoggedIn && (<TextField
-          id="roles-dropdown"
-          select
-          label="Rol"
-          defaultValue={role}
-
+    {/* add two buttons for sign in and sign up */}
+    { !isLoggedIn
+      &&
+      <>
+        <Button
+          key={"Sign In"}
+          onClick={() => handleOptionSelected("signIn")}
+          sx={{ fontSize: '14px', display: 'block' }}
         >
-          {roles.map((option) => (
-            <MenuItem key={option.option} value={option.name} onClick={() => handleRolSelected(option)}>
-              {option.name}
-            </MenuItem>
-          ))}
-        </TextField>)}
+          {"Sign In"}
+          </Button>
+          <Button
+          key={"Sign Up"}
+          onClick={() => handleOptionSelected("signUp")}
+          sx={{ fontSize: '10px', display: 'block' }}
+        >
+          {"Sign Up"}
+        </Button>
+      </>
+    }
+    {isLoggedIn && (<>
+      <TextField
+        id="roles-dropdown"
+        select
+        label="Rol"
+        defaultValue={role}
+        onChange={handleRolSelected}
+      >
+        {roles.map((option) => (
+          <MenuItem key={option.option} value={option.name}>
+            {option.name}
+          </MenuItem>
+        ))}
+      </TextField>
 
-          <Box sx={{ flexGrow: 0 , padding:2}}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              { !isLoggedIn && (settings.map((setting) => (
-                <MenuItem key={setting.option} onClick={() => handleOptionSelected(setting.option)}>
-                  <Typography textAlign="center">{setting.name}</Typography>
-                </MenuItem>
-              )))}
-              {isLoggedIn && (
-              <MenuItem key={'logOut'} onClick={() => handleOptionSelected("logOut")}>
-                  <Typography textAlign="center">{"logOut"}</Typography>
-              </MenuItem>
-              ) }
-              {isLoggedIn && (
-              <MenuItem key={'logOut'} onClick={() => handleOptionSelected("Profile")}>
-                  <Typography textAlign="center">{"Profile"}</Typography>
-              </MenuItem>
-              ) }
-              {isLoggedIn && (
-              <MenuItem key={'logOut'} onClick={() => handleOptionSelected("courses")}>
-                  <Typography textAlign="center">{"My courses"}</Typography>
-              </MenuItem>
-              ) }
-            </Menu>
-          </Box> 
+      <Box sx={{ flexGrow: 0, padding: 2 }}>
+          <Tooltip title="Open settings">
+            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+              <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+            </IconButton>
+          </Tooltip>
+          <Menu
+            sx={{ mt: '45px' }}
+            id="menu-appbar"
+            anchorEl={anchorElUser}
+            anchorOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+            keepMounted
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+            open={Boolean(anchorElUser)}
+            onClose={handleCloseUserMenu}
+          >
+            <MenuItem key={'logOut'} onClick={() => handleOptionSelected("logOut")}>
+              <Typography textAlign="center">{"log Out"}</Typography>
+            </MenuItem>
+            <MenuItem key={'Profile'} onClick={() => handleOptionSelected("Profile")}>
+              <Typography textAlign="center">{"Profile"}</Typography>
+            </MenuItem>
+            <MenuItem key={'Courses'} onClick={() => handleOptionSelected("courses")}>
+              <Typography textAlign="center">{"My courses"}</Typography>
+            </MenuItem>
+          </Menu>
+      </Box></>)
+    }
         </div>
       </div>
     </NavbarWrapper>

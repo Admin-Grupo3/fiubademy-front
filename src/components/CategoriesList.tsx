@@ -6,7 +6,7 @@ import { getCategories } from "../login/backend-api";
 
 const categories_images = {
   python: "https://raw.githubusercontent.com/Admin-Grupo3/fiubademy-front/2f52439352fea932a23aaea7ed533bb399f8d708/src/assets/images/cat_python.png",
-  ciencia: "https://raw.githubusercontent.com/Admin-Grupo3/fiubademy-front/2f52439352fea932a23aaea7ed533bb399f8d708/src/assets/images/cat_ciencia.png",
+  ciencia: "https://raw.githubusercontent.com/Admin-Grupo3/fiubademy-front/main/src/assets/images/cat_ciencia.png",
   web_development: "https://raw.githubusercontent.com/Admin-Grupo3/fiubademy-front/2f52439352fea932a23aaea7ed533bb399f8d708/src/assets/images/cat_web_development.png",
   programacion: "https://raw.githubusercontent.com/Admin-Grupo3/fiubademy-front/2f52439352fea932a23aaea7ed533bb399f8d708/src/assets/images/cat_web_development.png",
   data_science: "https://raw.githubusercontent.com/Admin-Grupo3/fiubademy-front/2f52439352fea932a23aaea7ed533bb399f8d708/src/assets/images/cat_data_science.png",
@@ -38,9 +38,7 @@ const CategoriesList = () => {
           {
             categories.map((category, idx: number) => {
               const name = category.name;
-              console.log(name);
               const imageKeyName = name.toLowerCase().replace(" ", "_") as keyof typeof categories_images;
-              console.log(categories_images[imageKeyName]);
               return (
                 <Category image = {categories_images[imageKeyName]} category={name} key={idx} />
               )
