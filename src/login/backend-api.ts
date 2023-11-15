@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export { signup, signin, getCategories, getCourses, createCourse, logOut, editCourse, createExam, purchaseCourse, getPurchaseCourses, getExams, sendExam , createLearningPath, getUserProfile};
+export { signup, signin, getCategories, getCourses, createCourse, logOut, editCourse, createExam, purchaseCourse, getPurchaseCourses, getExams, sendExam , createLearningPath, getLearningPaths, getUserProfile};
 
 //const url = 'http://localhost:3300';
 
@@ -267,23 +267,40 @@ function sendExam(examId, courseId, answers){
   
     });
   }
-function createLearningPath(name:string, description:string, courses:[]){
+function createLearningPath(title:string, description:string, courses:string[]){
   const payload = {
-    name: name,
+    title: title,
     description: description,
     courses: courses,
   }
-  instance.post(`/learningPaths`, payload)
+  instance.post(`/learning-paths`, payload)
   .then(response => {
     if(response.status == 201){
       window.location.href = "/";
     }
     else{
-      console.error('Error al crear el learning path:');
+      console.error('Error al crear el camino de aprendizaje:');
     }
     })
     .catch(error => {
-      console.error('Error al crear el learning path:', error);
+      console.error('Error al crear el camino de aprendizaje:', error);
 
     });
+}
+
+function getLearningPaths(): Promise<any> {
+  return instance.get('/learning-paths', ).then(response => {
+    if (response.status == 200) {
+      console.log("DATA");
+      console.log(response.data);
+      return response.data;
+    }
+    else {
+      return [];
+    }
+  }).catch(error => {
+    console.error('Error al obtener los caminos de aprendizaje:', error);
+    return [];
+  });
+  
 }

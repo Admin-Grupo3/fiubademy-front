@@ -44,6 +44,19 @@ export interface SidebarType {
     purchaseCourses: CourseType[];
   };
 
+  export interface LearningPathType {
+    id: number;
+    title: string;
+    description: string;
+    courses: CourseType[];
+  }
+
+  export type LearningPathContextType = {
+    learningPaths: LearningPathType[];
+    getLearningPaths:() => Promise<any>;
+    getLearningPath:(id: number) => LearningPathType | undefined;
+  };
+
   export interface UserType {
     id: string;
     email: string;
