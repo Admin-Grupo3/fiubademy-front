@@ -13,6 +13,7 @@ import Videos from "../components/Videos";
 import { purchaseCourse } from "../login/backend-api";
 import RatingComponent from "../components/Rating";
 import { RoleContext } from "../context/roles_context";
+import UsersProvider, { UsersContext } from "../context/users_context";
 
 
 const handleGetCourse = () => {
@@ -78,6 +79,8 @@ const SingleCoursePage = () => {
   const purchasedCourse = purchaseCourses.find(course => String(course.id) === id);
   const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
   const single_course = getCourse(id);
+  const usersContext = React.useContext(UsersContext);
+  const user = usersContext?.user;
   useEffect(() => {
     if (id) {
       getCourse(id);
@@ -105,7 +108,7 @@ const SingleCoursePage = () => {
     content,
     video
   } = single_course || {};
-
+  console.log("Course creator is:" , creator)
   // TODO: creator.name no existe en la db actualmente, asi que está hardcodeado acá por el momento
   // TODO: integrar el lenguaje del curso con la info del back
   return (
@@ -172,7 +175,7 @@ const SingleCoursePage = () => {
               <span className="old-price fs-26 fw-6">${price}</span>
             </div>
           </div>
-          {(role === "Teacher") && (
+          {(creator?.id && creator.id === user.id) && (
             <Button
               href={"/editCourse/" + id}
               variant="contained"
@@ -181,6 +184,7 @@ const SingleCoursePage = () => {
               Editar curso
             </Button>
           )}
+           {isLoggedIn && purchasedCourse &&(
           <Button
             href={"/exam/" + id}
             style={{ marginLeft: "20px" }}
@@ -189,7 +193,8 @@ const SingleCoursePage = () => {
           >
             Dar examen
           </Button>
-          {(role === "Teacher") && <Button
+           )}
+          {(creator?.id && creator.id === user.id) && <Button
             href={'/examCreation/' + id}
             style={{marginLeft: '20px'}}
             variant="contained"

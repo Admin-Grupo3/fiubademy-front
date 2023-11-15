@@ -77,8 +77,7 @@ const Navbar = () => {
           {"New Company course"}
         </Button>
       )}
-      
-      {isLoggedIn && (
+      {role === "Teacher" && (
         <Button
           key={"New learning path"}
           href={'/learningPath'} 
@@ -86,6 +85,26 @@ const Navbar = () => {
         >
           {"New learning path"}
         </Button>
+      )}
+      {role === "Admin" && (
+        <Button
+          key={"New category"}
+          href={'/category'} 
+          sx={{ my: 2, display: 'block' }}
+        >
+          {"New category"}
+        </Button>
+        
+      )}
+      {role === "Admin" && (
+        <Button
+          key={"Moderate courses"}
+          href={'/moderateCourses'} 
+          sx={{ my: 2, display: 'block' }}
+        >
+          {"Moderate courses"}
+        </Button>
+        
       )}
       {role === "Student" && isLoggedIn && (
         <Button

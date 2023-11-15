@@ -1,19 +1,14 @@
 import React, { useState, useEffect } from "react";
-import CompanyCourseForm from "../components/CompanyCourse/CompanyCourseForm";
-import ImageUpload from "../components/newCourse/ImageUpload";
+import CategoryForm from "../components/newCategory/CategoryForm";
+import ImageUpload from "../components/newCategory/ImageUpload";
 import { getCategories } from "../login/backend-api";
 import styled from "styled-components";
 import { Grid, Typography } from "@mui/material";
 
-const NewCompanyCourse: React.FC = () => {
+const CreateCategory: React.FC = () => {
   const [formData, setFormData] = useState({
     title: "",
-    language: "English",
-    empresa: "",
-    hours: "",
-    price: "",
     description: "",
-    categories: [],
     image: undefined as File | undefined,
   });
 
@@ -44,11 +39,11 @@ const NewCompanyCourse: React.FC = () => {
   return (
     <NewCourseWrapper>
       <Typography variant="h3" align="center" color={"black"} gutterBottom>
-        Crear curso de una empresa
+        Crear categoria
       </Typography>
       <Grid container spacing={2}>
         <Grid item xs={6}>
-          <CompanyCourseForm
+          <CategoryForm
             formData={formData}
             setFormData={setFormData}
             formSubmitted={formSubmitted}
@@ -76,4 +71,4 @@ const NewCourseWrapper = styled.div`
   background-color: var(--clr-white);
 `;
 
-export default NewCompanyCourse;
+export default CreateCategory;

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import dayjs from 'dayjs';
 
-export { signup, signin, getCategories, getCourses, createCourse, logOut, editCourse, createExam, purchaseCourse, getPurchaseCourses, getExams, sendExam , createLearningPath, getLearningPaths, getUserProfile, updateUser};
+export { signup, signin, getCategories, getCourses, createCourse, createCompanyCourse, logOut, editCourse, createExam, purchaseCourse, getPurchaseCourses, getExams, sendExam , createLearningPath, getLearningPaths, getUserProfile, createCategory, rejectCourse, updateUser}
 
 //const url = 'http://localhost:3300';
 
@@ -125,6 +125,30 @@ function createCourse(title: any, language: any, categoryIds: any, description: 
     content: content,
     video: video
   };
+  instance.post(`/courses`, payload)
+  console.log(categoryIds)
+  .then(response => {
+  if(response.status == 201){
+    window.location.href = "/";
+  }
+  else{
+    console.error('Error al crear el curso:');
+  }
+  })
+  .catch(error => {
+    console.error('Error al crear el curso:', error);
+  });
+}
+function createCompanyCourse(title: any, language: any, categoryIds: any, description: any, price: any, company:String) {
+  let payload = {
+    title: title,
+    language: convertToISO6391(language),
+    categoryIds: categoryIds, 
+    description: description,
+    price: price,
+    companyName: company
+  };
+  console.log(payload)
   instance.post(`/courses`, payload)
   .then(response => {
   if(response.status == 201){
@@ -289,6 +313,40 @@ function createLearningPath(title:string, description:string, courses:string[]){
     })
     .catch(error => {
       console.error('Error al crear el camino de aprendizaje:', error);
+
+    });
+}
+function createCategory(categoryData: any){
+  const payload = { name : categoryData.title }
+  console.log("creting category ", payload)
+  instance.post(`/categories`, payload)
+  .then(response => {
+    if(response.status == 201){
+      window.location.href = "/";
+    }
+    else{
+      console.error('Error al crear la categoria:');
+    }
+    })
+    .catch(error => {
+      console.error('Error al crear la categoria:', error);
+
+    });
+}
+function rejectCourse(courseId:any){
+  console.log("Deleting course: ", courseId)
+  instance.delete(`/courses/${courseId}`)
+  .then(response => {
+    if(response.status == 201 || response.status == 200){
+      window.location.href = "/";
+      console.log("Course deleted")
+    }
+    else{
+      console.error('Error al eliminar el curso status:', response.status);
+    }
+    })
+    .catch(error => {
+      console.error('Error al eliminar el curso: ', error);
 
     });
 }
