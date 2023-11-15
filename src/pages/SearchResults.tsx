@@ -1,25 +1,30 @@
 import styled from "styled-components";
 import Course from "../components/Course.tsx";
-import CoursesList from "../components/CourseList.tsx";
-import Tabs from "../components/Tabs.tsx";
-import test_courses from "../utils/data.tsx";
 import { CoursesContext } from '../context/courses_context';
 import React from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const SearchResults = () => {
   const coursesContext = React.useContext(CoursesContext)
   const location = useLocation();
   const query = new URLSearchParams(location.search).get('query');
+  const language = new URLSearchParams(location.search).get('language'); // Obtener el parámetro del idioma
+
+  let filteredCourses = coursesContext?.courses;
+  filteredCourses = filteredCourses?.filter((course: any) => course.title.toLowerCase().includes(query?.toLowerCase()));
+
+  if (language && language !== 'All languages') {
+    filteredCourses = filteredCourses?.filter((course: any) => course.language.name === language.toLowerCase());
+  }
 
   return (
     <SearchResultsWrapper>
       <div className="container">
         <div className="tabs">
-        <h2> Resultados para "{query}" </h2>
+        <h2> Resultados para "{query}" en "{language}"</h2>
           <div className="tabs-body">
           {
-            coursesContext?.courses.filter((course: any) => course.title.toLowerCase().includes(query?.toLowerCase())).map((course: any) => (
+            filteredCourses?.map((course: any) => (
               <Course key = {course.id} {...course} />
             ))
           }

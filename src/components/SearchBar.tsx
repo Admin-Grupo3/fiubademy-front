@@ -4,18 +4,23 @@ import Stack from '@mui/material/Stack';
 import Autocomplete from '@mui/material/Autocomplete';
 import { CoursesContext } from '../context/courses_context';
 import { useEffect } from 'react';
+import { MenuItem, Select } from '@mui/material';
+const languages = ["All languages", "English", "Spanish"];
 
 export default function SearchBar() {
-    const {courses} = React.useContext(CoursesContext)
+    const coursesContext = React.useContext(CoursesContext);
+
+    const courses = coursesContext ? coursesContext.courses : [];
 
     const [searchValue, setSearchValue] = React.useState('');
-    
-    const handleSearch = () => {
-        if (searchValue.trim() !== '') {
-          window.location.href = `/search?query=${encodeURIComponent(searchValue)}`;
-        }
+    const [selectedLanguage, setSelectedLanguage] = React.useState('All languages');
 
-      
+    const handleSearch = () => {
+      let url = `/search?query=${encodeURIComponent(searchValue)}&language=${encodeURIComponent(selectedLanguage)}`;
+      if (searchValue.trim() !== '') {
+        window.location.href = url;
+      }
+
     };
 
     useEffect(() => {
@@ -30,10 +35,11 @@ export default function SearchBar() {
       return () => {
         window.removeEventListener('keydown', handleKeyPress);
       };
-    }, [searchValue]);
+    }, [searchValue, selectedLanguage]);
     
     const handleCourseSelect = (event: any, value: any) => {
-        const selectedCourse = courses.find((course: { title: any; }) => course.title === value);
+        
+      const selectedCourse = courses.find((course: { title: any; }) => course.title === value);
         if (selectedCourse) {
             const courseId = selectedCourse.id;
 
@@ -43,9 +49,17 @@ export default function SearchBar() {
         
     }
 
+    const handleLanguageChange = (event: any) => {
+      setSelectedLanguage(event.target.value);
+    };
+
     return (
-      <Stack spacing={2} sx={{ width: 300 }}>
+      <Stack 
+      display="flex"
+      flexDirection="row"
+      >
         <Autocomplete
+        sx={{ width: 300 }}
           freeSolo
           id="search-course"
           disableClearable
@@ -64,6 +78,19 @@ export default function SearchBar() {
             />
           )}
         />
+        <Select
+        sx={{ width: 110 }}
+        defaultValue="All languages"
+        id="language-select"
+        value={selectedLanguage}
+        onChange={handleLanguageChange}
+      >
+        {languages.map((language: string) => (
+          <MenuItem key={language} value={language}>
+            {language}
+          </MenuItem>
+        ))}
+      </Select>
       </Stack>
     );
 }
