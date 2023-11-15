@@ -17,7 +17,7 @@ const CertificationsList = () => {
       <div className='tabs'>
         <div className='tabs-body'>
           {
-            coursesContext.courses.filter((course: any) => course.company_id).map((course: any) => (
+            coursesContext.courses.filter((course: any) => course.company).map((course: any) => (
               <Course key = {course.id} {...course} />
             ))
           }
