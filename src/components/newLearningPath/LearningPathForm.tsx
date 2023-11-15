@@ -34,7 +34,7 @@ const LearningPathForm = () => {
    
 
     if (isFormValid()) {
-      createLearningPath(formData.title, formData.description, coursesSelected);
+      createLearningPath(formData.title, formData.description, coursesSelected.map((course) => course.id));
 
     }
   };
@@ -86,7 +86,7 @@ const LearningPathForm = () => {
             : ""
         }
       />
-      <CoursesSelection coursesSelected coursesSelected={coursesSelected} setCoursesSelected={setCoursesSelected}/>
+      <CoursesSelection coursesSelected={coursesSelected} setCoursesSelected={setCoursesSelected}/>
       <Button
         type="submit"
         variant="contained"
