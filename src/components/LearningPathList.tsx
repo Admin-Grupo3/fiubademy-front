@@ -11,16 +11,17 @@ const LearningPathList = () => {
   
   return (
     <LearningPathListWrapper>
-      <div className='container'>
+      <div className='tabs'>
         <div className='learning-paths-list-top'>
           <h2>Follow a learning path</h2>
         </div>
-
+        <div className='tabs-body'>
         {
           learningPathsContext?.learningPaths.map((learningPath: any) => (
             <LearningPath key = {learningPath.id} {...learningPath} />
           ))
         }
+        </div>
       </div>
     </LearningPathListWrapper>
   )
@@ -32,6 +33,49 @@ const LearningPathListWrapper = styled.div`
     font-size: 1.8rem;
   }
   background-color: var(--clr-white);
+  .tabs{
+    margin-top: 16px;
+    .tabs-head-item button{
+      border: 1px solid rgba(0, 0, 0, 0.7);
+      padding: 10px 13px;
+      margin-right: 6px;
+      transition: var(--transition);
+      font-weight: 500;
+      font-size: 15px;
+      margin-bottom: 10px;
+      color: var(--clr-white);
+
+
+      &:hover{
+        background-color: var(--clr-black);
+        color: var(--clr-white);
+      }
+    }
+
+    .tabs-body{
+      margin-top: 32px;
+    }
+
+    @media screen and (min-width: 600px){
+      .tabs-body{
+        display: grid;
+        gap: 26px;
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media screen and (min-width: 992px){
+      .tabs-body{
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media screen and (min-width: 1400px){
+      .tabs-body{
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+  }
 `;
 
 export default LearningPathList
