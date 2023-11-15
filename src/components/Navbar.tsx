@@ -48,7 +48,7 @@ const Navbar = () => {
   }
   function handleRolSelected(event: React.ChangeEvent<HTMLInputElement>){
     console.log(event.target.value)
-    setRole(event.target.value.toLowerCase())
+    setRole(event.target.value)
   }
   return (
     <NavbarWrapper className = "bg-white-dark flex">
