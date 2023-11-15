@@ -1,32 +1,34 @@
 import React from "react";
 import { Box, Paper, FormControl, MenuItem, Autocomplete } from "@mui/material";
 import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import { createCourse } from "../../login/backend-api";
+import ImageUpload from "./ImageUpload";
 
 interface CourseFormProps {
   formData: {
     title: string;
     language: string;
-    hours: string;
     price: string;
     description: string;
     categories: { id: number; name: string }[];
     image: File | undefined;
+    what_will_you_learn: string[];
+    content: string[];
+    video: string;
   };
   setFormData: React.Dispatch<
     React.SetStateAction<{
       title: string;
       language: string;
-      hours: string;
       price: string;
       description: string;
       categories: { id: number; name: string }[];
       image: File | undefined;
+      what_will_you_learn: string[];
+      content: string[];
+      video: string;
     }>
   >;
   formSubmitted: boolean;
-  setFormSubmitted: React.Dispatch<React.SetStateAction<boolean>>;
   categories: { id: number; name: string }[];
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
@@ -37,41 +39,25 @@ const CourseForm: React.FC<CourseFormProps> = ({
   formData,
   setFormData,
   formSubmitted,
-  setFormSubmitted,
   categories,
   handleChange,
 }) => {
-  const isFormValid = () => {
-    return Object.values(formData).every((value) => value !== "");
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    setFormData({ ...formData, image: file });
   };
 
   const handleCategoriesChange = (
-    event: React.SyntheticEvent,
+    _event: React.SyntheticEvent,
     newValue: { id: number; name: string }[]
   ) => {
     setFormData({ ...formData, categories: newValue });
-  };
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setFormSubmitted(true);
-    if (isFormValid()) {
-      createCourse(
-        formData.title,
-        formData.language,
-        formData.categories.map((categories) => categories.id),
-        formData.description,
-        formData.price
-      );
-      console.log("Formulario enviado", formData);
-    }
   };
 
   return (
     <Box
       component="form"
       noValidate
-      onSubmit={handleSubmit}
       autoComplete="off"
       style={{
         display: "flex",
@@ -178,10 +164,13 @@ const CourseForm: React.FC<CourseFormProps> = ({
               />
             )}
           />
+          <ImageUpload
+            formData={formData}
+            handleImageUpload={handleImageUpload}
+          />
         </FormControl>
-        <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
-          Crear curso
-        </Button>
+
+
       </Paper>
     </Box>
   );

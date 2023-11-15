@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import CourseForm from "../components/editCourse/CourseForm";
-import { getCategories } from "../login/backend-api";
+import { editCourse, getCategories } from "../login/backend-api";
 import styled from "styled-components";
-import { Grid, Typography } from "@mui/material";
+import { Box, Button, Grid, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 import VideoUpload from "../components/editCourse/VideoUpload";
 import { CoursesContext } from "../context/courses_context";
 import { CourseContextType } from "../@types/sideBarType";
+import Content from "../components/editCourse/ContentForm";
 
 const EditCourse: React.FC = () => {
     const {id} = useParams();
@@ -15,11 +16,13 @@ const EditCourse: React.FC = () => {
     const [formData, setFormData] = useState({
         title: '',
         language: '',
-        hours: "",
         price: '',
         description: '' ,
         categories:  [] as { id: number; name: string }[],
         image: undefined as File | undefined,
+        what_will_you_learn: [""],
+        content: [""],
+        video: ''
     });
 
     useEffect(() => {
@@ -29,18 +32,19 @@ const EditCourse: React.FC = () => {
             const initialFormData = {
                 title: single_course.title || '',
                 language: single_course.language?.name || '',
-                hours: "",
                 price: single_course.price?.toString() || '',
                 description: single_course.description || '' ,
                 categories:  single_course.categories || [] ,
                 image: undefined as File | undefined,
+                what_will_you_learn: ["", ...single_course.what_will_you_learn],
+                content: ["", ...single_course.content],
+                video: `https://www.youtube.com/embed/${single_course.video}` || '',
             };
             setFormData(initialFormData);
         } else {
             // Manejar el caso en el que no se encuentra ningún curso con el id proporcionado.
         }
     }, [id, getCourse]);
-    console.log("FORM DATA:", formData)
 
     const [course_categories, setCategories] = useState<{ id: number; name: string }[]>(
         []
@@ -61,13 +65,35 @@ const EditCourse: React.FC = () => {
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        setFormData({ ...formData, image: file });
-    };
+    const isFormValid = () => {
+        return Object.values(formData).every((value) => value !== "");
+      };
 
+      const extractVideoId = (url: string) => {
+        const embedMatch = url.match(/youtube\.com\/embed\/([^/?]+)/);
+        const watchMatch = url.match(/youtube\.com\/watch\?v=([^&]+)/);
+      
+        if (embedMatch) {
+          return embedMatch[1];
+        } else if (watchMatch) {
+          return watchMatch[1];
+        }
+      
+        return "";
+      };
+
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        setFormSubmitted(true);
+        if (isFormValid()) {
+          editCourse(id, formData.title, formData.language, formData.categories.map((categories) => categories.id), formData.description, formData.price, formData.what_will_you_learn.slice(1), formData.content.slice(1), extractVideoId(formData.video));
+          console.log("Formulario enviado", formData);
+        }
+    };
     return (
         <NewCourseWrapper>
+        <form onSubmit={handleSubmit}>
+
         <Typography variant="h3" align="center" color={"black"} gutterBottom>
             Editar Curso
         </Typography>
@@ -77,19 +103,28 @@ const EditCourse: React.FC = () => {
                 formData={formData}
                 setFormData={setFormData}
                 formSubmitted={formSubmitted}
-                setFormSubmitted={setFormSubmitted}
                 categories={course_categories}
                 handleChange={handleChange}
-                courseId={id || ""}
             />
             </Grid>
             <Grid item xs={6}>
             <VideoUpload
                 formData={formData}
-                handleImageUpload={handleImageUpload}
+                formSubmitted
+                handleChange={handleChange}
             />
+            <Content
+            formData={formData}
+            setFormData={setFormData}
+          />
             </Grid>
         </Grid>
+        <Box sx={{ display: 'flex', justifyContent: 'center'}}>
+            <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2, fontSize: '1rem', padding: '1.5rem 3rem' }}>
+              Actualizar curso
+            </Button>
+          </Box>
+        </form>
         </NewCourseWrapper>
     );
     };

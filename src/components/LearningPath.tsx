@@ -3,36 +3,35 @@ import styled from 'styled-components';
 import {Link} from "react-router-dom";
 import StarRating from "./StarRating.tsx";
 
-const Course = (props) => {
-  const {id, image, title, creator, price, discount, rating_count, rating_star, categories} = props;
+const LearningPath = (props) => {
+  const {id, title, description, courses, creator} = props;
 
   // TODO: creator.name no existe en la db actualmente, asi que está hardcodeado acá por el momento
   return (
-    <CourseCard>
-      <div className='item-img'>
-        <img src={`https://raw.githubusercontent.com/${image}`} alt={title} />
-      </div>
+    <LearningPathCard>
+      {
+        courses.length > 0 && (
+          <div className='item-img'>
+            <img src = {`/src/assets/images/${courses[0].image}.jpg`} alt = {courses[0].title} />
+          </div>
+        )
+      }
       <div className='item-body'>
         <h5 className='item-name'>{title}</h5>
         <span className='item-creator'>{(creator?.name) || 'Lionel Messi'}</span> 
-        <div className='item-rating flex'>
-          <span className='rating-star-val'>{rating_star}</span>
-          <StarRating rating_star = {rating_star} />
-          <span className='rating-count'>({rating_count})</span>
-        </div>
         <div className='item-price'>
-          <span className='item-price-new'>${price - discount}</span>
-          <span className='item-price-old'>${price}</span>
+          <span className='item-price-new'>${courses.reduce((sum, course) => sum + (course.price - course.discount), 0)}</span>
+          <span className='item-price-old'>${courses.reduce((sum, course) => sum + course.price, 0)}</span>
         </div>
       </div>
       <div className='item-btns flex'>
-        <Link to = {`/courses/${id}`} className = "item-btn see-details-btn">See details</Link>
+        <Link to = {`/learning-paths/${id}`} className = "item-btn see-details-btn">See details</Link>
       </div>
-    </CourseCard>
+    </LearningPathCard>
   )
 }
 
-const CourseCard = styled.div`
+const LearningPathCard = styled.div`
   margin-bottom: 20px;
   border: 1px solid rgba(0, 0, 0, 0.1);
   box-shadow: rgba(149, 157, 165, 0.1) 0px 8px 24px;
@@ -115,4 +114,4 @@ const CourseCard = styled.div`
   }
 `;
 
-export default Course
+export default LearningPath

@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 // @types.todo.ts
 export interface SidebarType {
     isOpen: boolean;
@@ -31,7 +33,8 @@ export interface SidebarType {
     discount: number;
     what_will_you_learn: string[];
     content: string[];
-    updatedAt: string
+    updatedAt: string;
+    video: string;
   }
 
   export type CourseContextType = {
@@ -44,9 +47,26 @@ export interface SidebarType {
     purchaseCourses: CourseType[];
   };
 
+  export interface LearningPathType {
+    id: number;
+    title: string;
+    description: string;
+    courses: CourseType[];
+  }
+
+  export type LearningPathContextType = {
+    learningPaths: LearningPathType[];
+    getLearningPaths:() => Promise<any>;
+    getLearningPath:(id: number) => LearningPathType | undefined;
+  };
+
   export interface UserType {
     id: string;
     email: string;
+    firstName: string;
+    lastName: string;
+    birthDate: dayjs.Dayjs;
+    interests: {id: number, name: string}[];
   }
 
   export type UserContextType = {

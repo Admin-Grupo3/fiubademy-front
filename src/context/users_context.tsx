@@ -16,11 +16,14 @@ export const UsersProvider: React.FC<Props> = ({children}) => {
                 if (data) { 
                     const transformedUser = {
                         id: data.id,
-                        email: data.email
+                        email: data.email,
+                        firstName: data.firstName,
+                        lastName: data.lastName,
+                        birthDate: data.birthDate,
+                        interests: data.interests
                     };
                     setUser(transformedUser);
                 }
-                console.log("DATA", data)
             })
             .catch(error => {
                 console.error('Error al obtener el perfil del usuario:', error);

@@ -19,6 +19,9 @@ import Profile from './pages/Profile.tsx';
 import SearchResults from './pages/SearchResults.tsx';
 import CreateCategory from './pages/CreateCategory.tsx';
 import CoursesModeration from './pages/CoursesModeration.tsx';
+import LearningPath from './components/LearningPath.tsx';
+import SingleLearningPath from './pages/SingleLearningPath.tsx';
+import Interests from './pages/Interests.tsx';
 
 
 class App extends Component {
@@ -44,6 +47,8 @@ class App extends Component {
           <Route path = "/search" element = {<SearchResults/>} />
           <Route path = "/category" element = {<CreateCategory/>} />
           <Route path = "/moderateCourses" element = {<CoursesModeration/>} />
+          <Route path = "/learning-paths/:id" element = {<SingleLearningPath />} />
+          <Route path = "/interests" element = {<Interests/>} />
         </Routes>
       </BrowserRouter>
     );

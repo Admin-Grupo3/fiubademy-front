@@ -11,14 +11,17 @@ interface VideoUploadProps {
     image: File | undefined;
     what_will_you_learn: string[];
     content: string[];
-    video: string;
+    video: string
   };
-  formSubmitted: boolean;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-
+  formSubmitted: boolean;
 }
 
 const VideoUpload: React.FC<VideoUploadProps> = ({ formData, formSubmitted, handleChange }) => {
+
+  const linkRegex = /^(ftp|http|https):\/\/[^ "]+$/;
+  
+  const isLinkValid = (link: string) => linkRegex.test(link);
 
   return (
     <Paper elevation={3} style={{ padding: "20px", marginBottom: "10px" }}>
@@ -27,21 +30,20 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ formData, formSubmitted, hand
       </Typography>
       
       <TextField
-          required
-          id="video"
-          label="Link al video"
-          name="video"
-          fullWidth
-          onChange={handleChange}
-          margin="normal"
-          value={formData.video}          
-          error={formSubmitted && formData.video === ""}
-          helperText={
-            formSubmitted && formData.video === ""
-              ? "Este campo es requerido"
-              : ""
-          }
-        />  
+        required
+        id="video"
+        label="Link al video"
+        name="video"
+        fullWidth
+        onChange={handleChange}
+        margin="normal"
+        error={formSubmitted && (!formData.video || !isLinkValid(formData.video))}
+        helperText={
+          formSubmitted && (!formData.video || !isLinkValid(formData.video))
+            ? "Por favor, ingrese un enlace válido"
+            : ""
+        }
+      />
     </Paper>
   );
 };

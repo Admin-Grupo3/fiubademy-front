@@ -106,6 +106,7 @@ const SingleCoursePage = () => {
     image,
     what_will_you_learn,
     content,
+    video
   } = single_course || {};
   console.log("Course creator is:" , creator)
   // TODO: creator.name no existe en la db actualmente, asi que está hardcodeado acá por el momento
@@ -114,7 +115,7 @@ const SingleCoursePage = () => {
     <SingleCourseWrapper>
       <div className="course-intro mx-auto grid">
         <div className="course-img">
-          <img src={`/src/assets/images/${image}.jpg`} alt={title} />
+          <img src={`https://raw.githubusercontent.com/${image}`} alt={title} />
         </div>
         <div className="course-details">
           {categories.map((category: any) => (
@@ -321,7 +322,7 @@ const SingleCoursePage = () => {
         </div>
         {purchasedCourse && (
         <div className="container" style={{ marginTop: "20px" }}>
-          <Videos embedId="tQZy0U8s9LY" />
+          <Videos embedId={video} />
         </div>)}
         
         <div className="container" style={{ marginTop: "20px" }}>
@@ -355,9 +356,10 @@ const ModalWrapper = styled.div`
   }
 
   Button {
-    // margin-top: 10px;
+    margin-top: 10px;
     margin-right: 10px;
     margin-left: 10px;
+    color: white
   }
 `;
 
