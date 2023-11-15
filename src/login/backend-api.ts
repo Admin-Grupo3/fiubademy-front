@@ -2,7 +2,6 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 
 export { signup, signin, getCategories, getCourses, createCourse, logOut, editCourse, createExam, purchaseCourse, getPurchaseCourses, getExams, sendExam , createLearningPath, getLearningPaths, getUserProfile, updateUser};
-export { signup, signin, getCategories, getCourses, createCourse, logOut, editCourse, createExam, purchaseCourse, getPurchaseCourses, getExams, sendExam , createLearningPath, getUserProfile, updateUser};
 
 //const url = 'http://localhost:3300';
 
