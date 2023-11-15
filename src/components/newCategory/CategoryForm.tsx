@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Paper, FormControl, MenuItem, Autocomplete } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { createCourse } from "../../login/backend-api";
+import { createCategory } from "../../login/backend-api";
 
 interface CourseFormProps {
   formData: {
@@ -48,7 +48,7 @@ const CourseForm: React.FC<CourseFormProps> = ({
     event.preventDefault();
     setFormSubmitted(true);
     if (isFormValid()) {
-      //createCategory(formData);
+      createCategory(formData);
       console.log("Formulario enviado, creando categoria", formData);
     }
   };

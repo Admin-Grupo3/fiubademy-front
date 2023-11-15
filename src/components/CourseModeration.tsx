@@ -3,12 +3,11 @@ import styled from 'styled-components';
 import {Link} from "react-router-dom";
 import StarRating from "./StarRating.tsx";
 import { Button } from '@mui/material';
+import { rejectCourse } from '../login/backend-api.ts';
 
-const handleAcceptCourse = () => {
-    console.log("accepting course")
-}
-const handleRejectCourse = () => {
-    console.log("rejecting course")
+
+const handleRejectCourse = (id) => {
+    rejectCourse(id)
 }
 const CourseModeration = (props) => {
   const {id, image, title, creator, price, discount, rating_count, rating_star, categories} = props;
@@ -34,8 +33,7 @@ const CourseModeration = (props) => {
       </div>
       <div className='item-btns flex'>
         <Link to = {`/courses/${id}`} className = "item-btn see-details-btn">See details</Link>
-        <Button onClick={handleAcceptCourse} className = "item-btn see-details-btn">Accept</Button>
-        <Button onClick={handleRejectCourse}className = "item-btn see-details-btn">Reject</Button>
+        <Button onClick={() => handleRejectCourse(id)}className = "item-btn see-details-btn">Reject</Button>
       </div>
       
     </CourseCard>
