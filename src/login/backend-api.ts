@@ -1,6 +1,7 @@
 import axios from 'axios';
+import dayjs from 'dayjs';
 
-export { signup, signin, getCategories, getCourses, createCourse, logOut, editCourse, createExam, purchaseCourse, getPurchaseCourses, getExams, sendExam , createLearningPath, getUserProfile};
+export { signup, signin, getCategories, getCourses, createCourse, logOut, editCourse, createExam, purchaseCourse, getPurchaseCourses, getExams, sendExam , createLearningPath, getUserProfile, updateUser};
 
 //const url = 'http://localhost:3300';
 
@@ -25,8 +26,8 @@ function signup(email: any, password: any, name: any, last_name: any, setSigninF
     let payload = {
         email: email,
         password: password,
-        // firstName: name,
-        // lastName: last_name
+        firstName: name,
+        lastName: last_name
       };
     instance.post(`/users/signup`, payload)
   .then(response => {
@@ -221,7 +222,6 @@ function getPurchaseCourses(): Promise<any> {
 
 function getUserProfile(): Promise<any> {
   return instance.get('/users/profile').then(response => {
-    console.log(response.data)
     if (response.status == 200) {
       return response.data;
     }
@@ -291,4 +291,25 @@ function createLearningPath(name:string, description:string, courses:[]){
       console.error('Error al crear el learning path:', error);
 
     });
+}
+
+function updateUser(firstName: string, lastName: string, birthDate: dayjs.Dayjs | null, interests: any ) {
+  let payload = {
+    firstName: firstName,
+    lastName: lastName,
+    birthDate: birthDate?.toISOString(),
+    interests: interests
+  };
+  instance.post(`/users/update/profile`, payload)
+  .then(response => {
+  if(response.status == 201){
+    window.location.href = `/`;
+  }
+  else{
+    console.error('Error al editar el usuario:');
+  }
+  })
+  .catch(error => {
+    console.error('Error al editar el usuario:', error);
+  });
 }

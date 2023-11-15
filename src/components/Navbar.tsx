@@ -77,6 +77,7 @@ const Navbar = () => {
           {"New Company course"}
         </Button>
       )}
+      
       {isLoggedIn && (
         <Button
           key={"New learning path"}
@@ -86,7 +87,15 @@ const Navbar = () => {
           {"New learning path"}
         </Button>
       )}
-  
+      {role === "Student" && isLoggedIn && (
+        <Button
+          key={"My interests"}
+          href={'/interests'} 
+          sx={{ my: 2, display: 'block' }}
+        >
+          {"My interests"}
+        </Button>
+      )}
             {pages.map((page) => (
               <Button
                 key={page}

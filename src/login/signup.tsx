@@ -36,7 +36,7 @@ export default function SignUp() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const name = data.get("firstName");
-    const last_name = data.get("firstName");
+    const last_name = data.get("lastName");
     signup(data.get('email'), data.get("password"), name, last_name, setSigninFailed)
   };
 

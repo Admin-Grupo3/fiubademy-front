@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 // @types.todo.ts
 export interface SidebarType {
     isOpen: boolean;
@@ -48,6 +50,10 @@ export interface SidebarType {
   export interface UserType {
     id: string;
     email: string;
+    firstName: string;
+    lastName: string;
+    birthDate: dayjs.Dayjs;
+    interests: {id: number, name: string}[];
   }
 
   export type UserContextType = {
