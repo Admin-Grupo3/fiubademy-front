@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from "styled-components";
-import { other_images } from '../utils/images';
 
 const Hero = () => {
   return (
@@ -16,7 +15,7 @@ const Hero = () => {
 }
 
 const HeroWrapper = styled.div`
-  background: url(${other_images.hero_img}) center/cover no-repeat;
+  background: url("https://github.com/Admin-Grupo3/fiubademy-front/blob/2f52439352fea932a23aaea7ed533bb399f8d708/src/assets/images/hero_img.png?raw=true") center/cover no-repeat;
   height: 300px;
 
   .container{

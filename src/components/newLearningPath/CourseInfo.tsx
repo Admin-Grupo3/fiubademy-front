@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 import StarRating from "../StarRating.js";
 import { Button } from '@mui/material';
 
-const CourseInfo = ({ id, image, title, creator, description, addCourse, coursesSelected } ) => {
+const CourseInfo = ({ id, image, title, creator, description, addCourse, coursesSelected }) => {
 
   
   // TODO: creator.name no existe en la db actualmente, asi que está hardcodeado acá por el momento
@@ -12,7 +12,7 @@ const CourseInfo = ({ id, image, title, creator, description, addCourse, courses
     
     <CourseCard>
       <div className='item-img'>
-        <img src = {`/src/assets/images/${image}.jpg`} alt = {title} />
+        <img src={`https://raw.githubusercontent.com/${image}`} alt={title} />
       </div>
       <div className='item-body'>
         <h5 className='item-name'>{title}</h5>

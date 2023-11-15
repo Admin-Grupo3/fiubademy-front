@@ -19,6 +19,7 @@ import Profile from './pages/Profile.tsx';
 import SearchResults from './pages/SearchResults.tsx';
 import LearningPath from './components/LearningPath.tsx';
 import SingleLearningPath from './pages/SingleLearningPath.tsx';
+import Interests from './pages/Interests.tsx';
 
 
 class App extends Component {
@@ -43,6 +44,7 @@ class App extends Component {
           <Route path = "/profile" element = {<Profile />} />
           <Route path = "/search" element = {<SearchResults/>} />
           <Route path = "/learning-paths/:id" element = {<SingleLearningPath />} />
+          <Route path = "/interests" element = {<Interests/>} />
         </Routes>
       </BrowserRouter>
     );

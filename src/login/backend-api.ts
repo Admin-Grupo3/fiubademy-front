@@ -1,6 +1,8 @@
 import axios from 'axios';
+import dayjs from 'dayjs';
 
-export { signup, signin, getCategories, getCourses, createCourse, logOut, editCourse, createExam, purchaseCourse, getPurchaseCourses, getExams, sendExam , createLearningPath, getLearningPaths, getUserProfile};
+export { signup, signin, getCategories, getCourses, createCourse, logOut, editCourse, createExam, purchaseCourse, getPurchaseCourses, getExams, sendExam , createLearningPath, getLearningPaths, getUserProfile, updateUser};
+export { signup, signin, getCategories, getCourses, createCourse, logOut, editCourse, createExam, purchaseCourse, getPurchaseCourses, getExams, sendExam , createLearningPath, getUserProfile, updateUser};
 
 //const url = 'http://localhost:3300';
 
@@ -25,8 +27,8 @@ function signup(email: any, password: any, name: any, last_name: any, setSigninF
     let payload = {
         email: email,
         password: password,
-        // firstName: name,
-        // lastName: last_name
+        firstName: name,
+        lastName: last_name
       };
     instance.post(`/users/signup`, payload)
   .then(response => {
@@ -113,15 +115,17 @@ function getCourses(): Promise<any> {
   
 }
 
-function createCourse(title: any, language: any, categoryIds: any, description: any, price: any) {
+function createCourse(title: any, language: any, categoryIds: any, description: any, price: any, what_will_you_learn: string[], content: string[], video: string) {
   let payload = {
     title: title,
     language: convertToISO6391(language),
     categoryIds: categoryIds, 
     description: description,
-    price: price
+    price: price,
+    what_will_you_learn: what_will_you_learn,
+    content: content,
+    video: video
   };
-
   instance.post(`/courses`, payload)
   .then(response => {
   if(response.status == 201){
@@ -159,13 +163,16 @@ function createExam(title: any, courseId: string | undefined, questions: []) {
     });
 
 }
-function editCourse(courseId: string | undefined, title: any, language: any, categoryIds: any, description: any, price: any) {
+function editCourse(courseId: string | undefined, title: any, language: any, categoryIds: any, description: any, price: any, what_will_you_learn: string[], content: string[], video: string) {
   let payload = {
     title: title,
     language: convertToISO6391(language),
     categoryIds: categoryIds,
     description: description,
-    price: price
+    price: price,
+    what_will_you_learn: what_will_you_learn,
+    content: content,
+    video: video
   };
   instance.post(`/courses/${courseId}`, payload)
   .then(response => {
@@ -216,7 +223,6 @@ function getPurchaseCourses(): Promise<any> {
 
 function getUserProfile(): Promise<any> {
   return instance.get('/users/profile').then(response => {
-    console.log(response.data)
     if (response.status == 200) {
       return response.data;
     }
@@ -302,5 +308,25 @@ function getLearningPaths(): Promise<any> {
     console.error('Error al obtener los caminos de aprendizaje:', error);
     return [];
   });
-  
+}
+
+function updateUser(firstName: string, lastName: string, birthDate: dayjs.Dayjs | null, interests: any ) {
+  let payload = {
+    firstName: firstName,
+    lastName: lastName,
+    birthDate: birthDate?.toISOString(),
+    interests: interests
+  };
+  instance.post(`/users/update/profile`, payload)
+  .then(response => {
+  if(response.status == 201){
+    window.location.href = `/`;
+  }
+  else{
+    console.error('Error al editar el usuario:');
+  }
+  })
+  .catch(error => {
+    console.error('Error al editar el usuario:', error);
+  });
 }

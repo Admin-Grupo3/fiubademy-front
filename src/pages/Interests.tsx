@@ -1,41 +1,44 @@
 import styled from "styled-components";
 import Course from "../components/Course.tsx";
-import { CoursesContext } from '../context/courses_context';
+import { CoursesContext } from "../context/courses_context";
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { UsersContext } from "../context/users_context.tsx";
 
-const SearchResults = () => {
-  const coursesContext = React.useContext(CoursesContext)
-  const location = useLocation();
-  const query = new URLSearchParams(location.search).get('query');
-  const language = new URLSearchParams(location.search).get('language'); // Obtener el parámetro del idioma
+const Interests = () => {
+  const coursesContext = React.useContext(CoursesContext);
+  const usersContext = React.useContext(UsersContext);
+  const user = usersContext?.user;
 
-  let filteredCourses = coursesContext?.courses;
-  filteredCourses = filteredCourses?.filter((course: any) => course.title.toLowerCase().includes(query?.toLowerCase()));
+  const interestsIds =
+    user?.interests.map((interest: { id: any }) => interest.id) || [];
 
-  if (language && language !== 'All languages') {
-    filteredCourses = filteredCourses?.filter((course: any) => course.language.name === language.toLowerCase());
-  }
-
+  const filteredCourses = coursesContext?.courses.filter((course) =>
+    course.categories.some((category) => interestsIds.includes(category.id))
+  );
   return (
-    <SearchResultsWrapper>
+    <InterestsWrapper>
       <div className="container">
         <div className="tabs">
-        <h2> Resultados para "{query}" en "{language}"</h2>
+          <h2>Mis intereses</h2>
+          <h3>
+            {user &&
+              user.interests
+                .map((interest: { name: any }) => interest.name)
+                .join(", ")}
+          </h3>{" "}
           <div className="tabs-body">
-          {
-            filteredCourses?.map((course: any) => (
-              <Course key = {course.id} {...course} />
-            ))
-          }
+            {filteredCourses &&
+              filteredCourses.map((course) => (
+                <Course key={course.id} {...course} />
+              ))}
           </div>
         </div>
       </div>
-    </SearchResultsWrapper>
+    </InterestsWrapper>
   );
 };
 
-const SearchResultsWrapper = styled.div`
+const InterestsWrapper = styled.div`
   .tabs {
     margin-top: 16px;
     .tabs-head-item button {
@@ -78,4 +81,4 @@ const SearchResultsWrapper = styled.div`
     }
   }
 `;
-export default SearchResults;
+export default Interests;
