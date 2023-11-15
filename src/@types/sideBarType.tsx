@@ -31,7 +31,8 @@ export interface SidebarType {
     discount: number;
     what_will_you_learn: string[];
     content: string[];
-    updatedAt: string
+    updatedAt: string;
+    video: string;
   }
 
   export type CourseContextType = {

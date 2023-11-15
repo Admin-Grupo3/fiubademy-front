@@ -113,15 +113,17 @@ function getCourses(): Promise<any> {
   
 }
 
-function createCourse(title: any, language: any, categoryIds: any, description: any, price: any) {
+function createCourse(title: any, language: any, categoryIds: any, description: any, price: any, what_will_you_learn: string[], content: string[], video: string) {
   let payload = {
     title: title,
     language: convertToISO6391(language),
     categoryIds: categoryIds, 
     description: description,
-    price: price
+    price: price,
+    what_will_you_learn: what_will_you_learn,
+    content: content,
+    video: video
   };
-
   instance.post(`/courses`, payload)
   .then(response => {
   if(response.status == 201){
@@ -159,13 +161,16 @@ function createExam(title: any, courseId: string | undefined, questions: []) {
     });
 
 }
-function editCourse(courseId: string | undefined, title: any, language: any, categoryIds: any, description: any, price: any) {
+function editCourse(courseId: string | undefined, title: any, language: any, categoryIds: any, description: any, price: any, what_will_you_learn: string[], content: string[], video: string) {
   let payload = {
     title: title,
     language: convertToISO6391(language),
     categoryIds: categoryIds,
     description: description,
-    price: price
+    price: price,
+    what_will_you_learn: what_will_you_learn,
+    content: content,
+    video: video
   };
   instance.post(`/courses/${courseId}`, payload)
   .then(response => {

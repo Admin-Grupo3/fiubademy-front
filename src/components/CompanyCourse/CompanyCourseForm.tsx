@@ -15,7 +15,6 @@ interface CourseFormProps {
     certificion: string;
     empresa:string;
     language: string;
-    hours: string;
     price: string;
     description: string;
     category: string;
@@ -27,7 +26,6 @@ interface CourseFormProps {
       certificion: string;
       empresa:string;
       language: string;
-      hours: string;
       price: string;
       description: string;
       category: string;
@@ -147,25 +145,6 @@ const CompanyCourseForm: React.FC<CourseFormProps> = ({
           ))}
         </TextField>
       </FormControl>
-      <TextField
-        required
-        label="Horas Estimadas"
-        id="hours"
-        name="hours"
-        fullWidth
-        type="number"
-        InputProps={{
-          inputProps: { min: 0 },
-        }}
-        onChange={handleChange}
-        margin="normal"
-        error={formSubmitted && formData.hours === ""}
-        helperText={
-          formSubmitted && formData.hours === ""
-            ? "Este campo es requerido"
-            : ""
-        }
-      />
       <TextField
         required
         label="Importe"

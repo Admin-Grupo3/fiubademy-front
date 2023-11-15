@@ -1,19 +1,22 @@
 import React, { useState, useEffect } from "react";
 import CourseForm from "../components/newCourse/CourseForm";
-import ImageUpload from "../components/newCourse/ImageUpload";
-import { getCategories } from "../login/backend-api";
+import { createCourse, getCategories } from "../login/backend-api";
 import styled from "styled-components";
-import { Grid, Typography } from "@mui/material";
+import { Box, Button, Grid, Typography } from "@mui/material";
+import Content from "../components/newCourse/ContentForm";
+import VideoUpload from "../components/newCourse/VideoUpload";
 
 const NewCourse: React.FC = () => {
   const [formData, setFormData] = useState({
     title: "",
     language: "English",
-    hours: "",
     price: "",
     description: "",
-    categories: [],
+    categories: [] as { id: number; name: string }[],
     image: undefined as File | undefined,
+    what_will_you_learn: [""],
+    content: [""],
+    video: ""
   });
 
   const [categories, setCategories] = useState<{ id: number; name: string }[]>(
@@ -35,13 +38,31 @@ const NewCourse: React.FC = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    setFormData({ ...formData, image: file });
+  const isFormValid = () => {
+    return Object.values(formData).every((value) => value !== " ");
   };
 
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setFormSubmitted(true);
+    if (isFormValid()) {
+      createCourse(
+        formData.title,
+        formData.language,
+        formData.categories.map((categories) => categories.id),
+        formData.description,
+        formData.price,
+        formData.what_will_you_learn.slice(1),
+        formData.content.slice(1),
+        formData.video.split("=").pop()
+      );
+      console.log("Formulario enviado", formData);
+    }
+  };
   return (
     <NewCourseWrapper>
+      <form onSubmit={handleSubmit}>
+
       <Typography variant="h3" align="center" color={"black"} gutterBottom>
         Crear curso
       </Typography>
@@ -51,18 +72,31 @@ const NewCourse: React.FC = () => {
             formData={formData}
             setFormData={setFormData}
             formSubmitted={formSubmitted}
-            setFormSubmitted={setFormSubmitted}
             categories={categories}
             handleChange={handleChange}
           />
         </Grid>
         <Grid item xs={6}>
-          <ImageUpload
+          <VideoUpload
             formData={formData}
-            handleImageUpload={handleImageUpload}
+            formSubmitted={formSubmitted}
+            handleChange={handleChange}
+          ></VideoUpload>
+          <Content
+            formData={formData}
+            setFormData={setFormData}
+            formSubmitted={formSubmitted}
           />
+                  
         </Grid>
+
       </Grid>
+      <Box sx={{ display: 'flex', justifyContent: 'center'}}>
+            <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2, fontSize: '1rem', padding: '1.5rem 3rem' }}>
+              Crear curso
+            </Button>
+          </Box>
+         </form>
     </NewCourseWrapper>
   );
 };
