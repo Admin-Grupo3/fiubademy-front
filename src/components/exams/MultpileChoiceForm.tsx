@@ -75,7 +75,6 @@ const MultipleChoiceForm = ({exams, courseId}) => {
         <Button onClick={handleClose}>Close</Button>
       </DialogActions>
     </Dialog>
-    Results: {JSON.stringify(results, null, 2)}
   </pre>
 )}
     </ChoiceWrapper>
