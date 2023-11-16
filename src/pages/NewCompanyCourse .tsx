@@ -8,9 +8,9 @@ import { Grid, Typography } from "@mui/material";
 const NewCompanyCourse: React.FC = () => {
   const [formData, setFormData] = useState({
     title: "",
+    certification: "",
     language: "English",
     empresa: "",
-    hours: "",
     price: "",
     description: "",
     categories: [],

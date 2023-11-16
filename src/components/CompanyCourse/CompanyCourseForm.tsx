@@ -14,7 +14,7 @@ import { createCompanyCourse } from "../../login/backend-api";
 interface CourseFormProps {
   formData: {
     title: string;
-    certificion: string;
+    certification: string;
     empresa:string;
     language: string;
     price: string;
@@ -63,8 +63,9 @@ const CompanyCourseForm: React.FC<CourseFormProps> = ({
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setFormSubmitted(true);
-
+    console.log(formData);
     if (isFormValid()) {
+      console.log("Formulario valido")
       createCompanyCourse( formData.title,
         formData.language,
         formData.categories.map((categories) => categories.id),
@@ -107,9 +108,9 @@ const CompanyCourseForm: React.FC<CourseFormProps> = ({
       />
        <TextField
         required
-        id="certifiacion"
+        id="certification"
         label="Nombre de la certificacion"
-        name="title"
+        name="certification"
         fullWidth
         onChange={handleChange}
         margin="normal"
