@@ -58,7 +58,7 @@ const MultipleChoiceForm = ({exams, courseId}) => {
       <DialogTitle style={{fontSize: '40px'}}>Exam Results</DialogTitle>
       <DialogContent>
         <DialogContentText style={{fontSize: '30px'}}>
-          {results && results.avgScore >= 0.5 ? "You passed the exam and got the certification!" : "You failed the exam!"}
+          {results && results.avgScore >= 0.6 ? "You passed the exam and got the certification!" : "You failed the exam!"}
         </DialogContentText>
         <DialogContentText style={{fontSize: '20px'}}>
           Score: {results && results.avgScore}
