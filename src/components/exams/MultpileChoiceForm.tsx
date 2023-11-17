@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import MultipleChoiceQuestion from './MultipleChoiceQuestion';
-import { Button, Stack } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Stack } from '@mui/material';
 import styled from "styled-components";
 import axios from 'axios';
 import { getExams, sendExam } from '../../login/backend-api';
@@ -9,15 +9,19 @@ import { getExams, sendExam } from '../../login/backend-api';
 const MultipleChoiceForm = ({exams, courseId}) => {
   const [answers, setAnswers] = useState({});
   const [results, setResults] = useState(null);
+  const [showModal, setShowModal] = useState(false);
   const handleSelect = (question, answer) => {
     setAnswers((prevAnswers) => ({ ...prevAnswers, [question]: answer }));
   };
-
+  const handleClose = () => {
+    window.location.href = "/"
+  }
   const handleSubmit = async () => {
     // You can submit the answers or perform any further action here.
     const result = await sendExam(exams.exams[0].id, courseId, answers)
     console.log(result)
     setResults(result)
+    setShowModal(true)
   };
   if (!exams) {
     return <div>Loading...</div>; // or return a loading spinner
@@ -48,9 +52,29 @@ const MultipleChoiceForm = ({exams, courseId}) => {
             Envia Respuestas
         </Button> 
         
-        {results && (
+        {results  && (
   <pre>
-    Results: {JSON.stringify(results, null, 2)}
+    <Dialog open={showModal} onClose={handleClose}>
+      <DialogTitle style={{fontSize: '40px'}}>Exam Results</DialogTitle>
+      <DialogContent>
+        <DialogContentText style={{fontSize: '30px'}}>
+          {results && results.avgScore >= 0.5 ? "You passed the exam and got the certification!" : "You failed the exam!"}
+        </DialogContentText>
+        <DialogContentText style={{fontSize: '20px'}}>
+          Score: {results && results.avgScore}
+          <br />
+          Correct Answers: 
+          <ul>
+              {results && Object.entries(results.correctAnswers).map(([questionId, answer], index) => (
+                <li key={questionId}>{index + 1}) {answer}</li>
+              ))}
+          </ul>
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose}>Close</Button>
+      </DialogActions>
+    </Dialog>
   </pre>
 )}
     </ChoiceWrapper>
