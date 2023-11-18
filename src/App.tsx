@@ -23,34 +23,44 @@ import LearningPath from './components/LearningPath.tsx';
 import SingleLearningPath from './pages/SingleLearningPath.tsx';
 import Interests from './pages/Interests.tsx';
 
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+const theme = createTheme({
+  typography: {
+    fontFamily: 'Rubik, sans-serif',
+    fontSize: 22
+  },
+});
 
 class App extends Component {
   render() {
     return (
-      <BrowserRouter>
+      <ThemeProvider theme={theme}>
+        <BrowserRouter>
           <Navbar />
-        <Routes>  
-          <Route path="/" element={<HomePage />} />
-          <Route path="/Home" element={<HomePage />} />
-          <Route path="/Courses" element={<NewCourse />} />
-          <Route path="/signUp" element={<SignUp />} /> 
-          <Route path="/signIn" element={<SignIn />} />
-          <Route path = "/category/:category" element = {<Courses />} />
-          <Route path = "/courses/:id" element = {<SingleCourse />} />
-          <Route path = "/editCourse/:id" element = {<EditCourse />} />
-          <Route path = "/exam/:id" element = {<ExamsPage />} />
-          <Route path = "/examCreation/:id" element = {<ExamCreationPage />} />
-          <Route path = "/mycourses" element = {<MyCourses />} />
-          <Route path="/companycourses" element={<NewCompanyCourse />} />
-          <Route path = "/learningPath" element = {<LearningPathCreation />} />
-          <Route path = "/profile" element = {<Profile />} />
-          <Route path = "/search" element = {<SearchResults/>} />
-          <Route path = "/category" element = {<CreateCategory/>} />
-          <Route path = "/moderateCourses" element = {<CoursesModeration/>} />
-          <Route path = "/learning-paths/:id" element = {<SingleLearningPath />} />
-          <Route path = "/interests" element = {<Interests/>} />
-        </Routes>
-      </BrowserRouter>
+          <Routes>  
+            <Route path="/" element={<HomePage />} />
+            <Route path="/Home" element={<HomePage />} />
+            <Route path="/Courses" element={<NewCourse />} />
+            <Route path="/signUp" element={<SignUp />} /> 
+            <Route path="/signIn" element={<SignIn />} />
+            <Route path = "/category/:category" element = {<Courses />} />
+            <Route path = "/courses/:id" element = {<SingleCourse />} />
+            <Route path = "/editCourse/:id" element = {<EditCourse />} />
+            <Route path = "/exam/:id" element = {<ExamsPage />} />
+            <Route path = "/examCreation/:id" element = {<ExamCreationPage />} />
+            <Route path = "/mycourses" element = {<MyCourses />} />
+            <Route path="/companycourses" element={<NewCompanyCourse />} />
+            <Route path = "/learningPath" element = {<LearningPathCreation />} />
+            <Route path = "/profile" element = {<Profile />} />
+            <Route path = "/search" element = {<SearchResults/>} />
+            <Route path = "/category" element = {<CreateCategory/>} />
+            <Route path = "/moderateCourses" element = {<CoursesModeration/>} />
+            <Route path = "/learning-paths/:id" element = {<SingleLearningPath />} />
+            <Route path = "/interests" element = {<Interests/>} />
+          </Routes>
+        </BrowserRouter>
+      </ThemeProvider>
     );
   }
 }

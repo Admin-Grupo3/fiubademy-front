@@ -1,4 +1,7 @@
-
+body {
+  font-family: 'Rubik', sans-serif;
+  font-size: 22px;
+}
 
 a {
   font-weight: 500;
