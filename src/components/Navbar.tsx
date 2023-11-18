@@ -16,7 +16,7 @@ import SearchBar from './SearchBar.tsx';
 import { RoleContext } from '../context/roles_context.tsx';
 
 const roles = [{option: 'student', name: "Student"}, { option: 'teacher', name: "Teacher"}, { option: 'admin', name: "Admin"}, { option: 'company', name: "Company"}];
-const pages = ['About', 'Contact'];
+
 const Navbar = () => {
   const {openSidebar} = React.useContext(SidebarContext) as SideBarContextType;
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
@@ -115,15 +115,6 @@ const Navbar = () => {
           {"My interests"}
         </Button>
       )}
-            {pages.map((page) => (
-              <Button
-                key={page}
-                href={'/'+ page} 
-                sx={{ my: 2, display: 'block' }}
-              >
-                {page}
-              </Button>
-            ))}
           </Box>
           <div style={{ marginRight: '20px' }}>
       <SearchBar/>
