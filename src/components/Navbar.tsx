@@ -10,7 +10,7 @@ import Menu from "@mui/material/Menu";
 import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import { Button, TextField } from "@mui/material";
+import { Button, TextField, ThemeProvider, createTheme } from "@mui/material";
 import { logOut } from "../login/backend-api.ts";
 import SearchBar from "./SearchBar.tsx";
 import { RoleContext } from "../context/roles_context.tsx";
@@ -54,164 +54,222 @@ const Navbar = () => {
     console.log(event.target.value);
     setRole(event.target.value);
   }
+
+  const navbarThemeOptions = () => {
+    const defaults = {
+      color: '#000',
+      backgroundColor: '#FFF'
+    };
+  
+    const roleColors = {
+      Student: { backgroundColor: '#87dbf5' },
+      Admin: { backgroundColor: '#bbb9f0' },
+      Company: { backgroundColor: '#f5f187' },
+      Teacher: { backgroundColor: '#FFF' },
+    };
+  
+    return {
+      ...defaults,
+      ...roleColors[role],
+    };
+  };
+  
+  const navbarTheme = createTheme({
+    palette: {
+      background: {
+        default: navbarThemeOptions().backgroundColor,
+      },
+      text: {
+        primary: navbarThemeOptions().color,
+      },
+    },
+    components: {
+      MuiButton: {
+        styleOverrides: {
+          root: {
+            color: navbarThemeOptions().color,
+            backgroundColor: navbarThemeOptions().backgroundColor,
+          },
+        },
+      },
+      MuiAutocomplete: { // Add this section
+        styleOverrides: {
+          root: {
+            color: navbarThemeOptions().color,
+            backgroundColor: navbarThemeOptions().backgroundColor,
+          },
+        },
+      },
+    },
+  });
+
+
   return (
-    <NavbarWrapper className="bg-white-dark flex">
-      <div className="container w-100">
-        <div className="brand-and-toggler flex flex-between w-100">
-          <Link to="/" className="navbar-brand text-uppercase ls-1 fw-8">
-            <span>F</span>iubademy
-          </Link>
-          <Box
-            sx={{
-              display: { xs: "none", md: "flex" },
-              paddingLeft: "20px",
-              marginRight: "10px"
-            }}
-          >
-            {role === "Teacher" && (
-              <Button
-                key={"New course"}
-                href={"/courses"}
-                sx={{ my: 2, display: "block" }}
-              >
-                {"New course"}
-              </Button>
-            )}
-
-            {role === "Company" && (
-              <Button
-                key={"New Company course"}
-                href={"/companycourses"}
-                sx={{ my: 2, display: "block" }}
-              >
-                {"New Company course"}
-              </Button>
-            )}
-            {role === "Teacher" && (
-              <Button
-                key={"New learning path"}
-                href={"/learningPath"}
-                sx={{ my: 2, display: "block" }}
-              >
-                {"New learning path"}
-              </Button>
-            )}
-            {role === "Admin" && (
-              <Button
-                key={"New category"}
-                href={"/category"}
-                sx={{ my: 2, display: "block" }}
-              >
-                {"New category"}
-              </Button>
-            )}
-            {role === "Admin" && (
-              <Button
-                key={"Moderate courses"}
-                href={"/moderateCourses"}
-                sx={{ my: 2, display: "block" }}
-              >
-                {"Moderate courses"}
-              </Button>
-            )}
-            {role === "Student" && isLoggedIn && (
-              <Button
-                key={"My interests"}
-                href={"/interests"}
-                sx={{ my: 2, display: "block" }}
-              >
-                {"My interests"}
-              </Button>
-            )}
-          </Box>
-          <div style={{ marginRight: "20px", flexGrow: 1 }}>
-            <SearchBar />
-          </div>
-          {/* add two buttons for sign in and sign up */}
-          {!isLoggedIn && (
-            <>
-              <Button
-                key={"Sign In"}
-                onClick={() => handleOptionSelected("signIn")}
-                sx={{ fontSize: "14px", display: "block" }}
-              >
-                {"Sign In"}
-              </Button>
-              <Button
-                key={"Sign Up"}
-                onClick={() => handleOptionSelected("signUp")}
-                sx={{ fontSize: "10px", display: "block" }}
-              >
-                {"Sign Up"}
-              </Button>
-            </>
-          )}
-          {isLoggedIn && (
-            <>
-              <TextField
-                id="roles-dropdown"
-                select
-                label="Rol"
-                defaultValue={role}
-                onChange={handleRolSelected}
-              >
-                {roles.map((option) => (
-                  <MenuItem key={option.option} value={option.name}>
-                    {option.name}
-                  </MenuItem>
-                ))}
-              </TextField>
-
-              <Box sx={{ flexGrow: 0, padding: 2 }}>
-                <Tooltip title="Open settings">
-                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar
-                      alt="Remy Sharp"
-                      src="/static/images/avatar/2.jpg"
-                    />
-                  </IconButton>
-                </Tooltip>
-                <Menu
-                  sx={{ mt: "45px" }}
-                  id="menu-appbar"
-                  anchorEl={anchorElUser}
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  open={Boolean(anchorElUser)}
-                  onClose={handleCloseUserMenu}
+    <ThemeProvider theme={navbarTheme}>
+      <NavbarWrapper 
+        className="bg-white-dark flex" 
+        style={{
+          backgroundColor: navbarThemeOptions().backgroundColor,
+          color: navbarThemeOptions().color
+        }}
+      >
+        <div className="container w-100">
+          <div className="brand-and-toggler flex flex-between w-100">
+            <Link to="/" className="navbar-brand text-uppercase ls-1 fw-8">
+              <span>F</span>iubademy
+            </Link>
+            <Box
+              sx={{
+                display: { xs: "none", md: "flex" },
+                paddingLeft: "20px",
+                marginRight: "10px"
+              }}
+            >
+              {role === "Teacher" && (
+                <Button
+                  key={"New course"}
+                  href={"/courses"}
+                  sx={{ my: 2, display: "block" }}
                 >
-                  <MenuItem
-                    key={"logOut"}
-                    onClick={() => handleOptionSelected("logOut")}
+                  {"New course"}
+                </Button>
+              )}
+
+              {role === "Company" && (
+                <Button
+                  key={"New Company course"}
+                  href={"/companycourses"}
+                  sx={{ my: 2, display: "block" }}
+                >
+                  {"New Company course"}
+                </Button>
+              )}
+              {role === "Teacher" && (
+                <Button
+                  key={"New learning path"}
+                  href={"/learningPath"}
+                  sx={{ my: 2, display: "block" }}
+                >
+                  {"New learning path"}
+                </Button>
+              )}
+              {role === "Admin" && (
+                <Button
+                  key={"New category"}
+                  href={"/category"}
+                  sx={{ my: 2, display: "block" }}
+                >
+                  {"New category"}
+                </Button>
+              )}
+              {role === "Admin" && (
+                <Button
+                  key={"Moderate courses"}
+                  href={"/moderateCourses"}
+                  sx={{ my: 2, display: "block" }}
+                >
+                  {"Moderate courses"}
+                </Button>
+              )}
+              {role === "Student" && isLoggedIn && (
+                <Button
+                  key={"My interests"}
+                  href={"/interests"}
+                  sx={{ my: 2, display: "block" }}
+                >
+                  {"My interests"}
+                </Button>
+              )}
+            </Box>
+            <div style={{ marginRight: "20px", flexGrow: 1 }}>
+              <SearchBar />
+            </div>
+            {/* add two buttons for sign in and sign up */}
+            {!isLoggedIn && (
+              <>
+                <Button
+                  key={"Sign In"}
+                  onClick={() => handleOptionSelected("signIn")}
+                  sx={{ fontSize: "14px", display: "block" }}
+                >
+                  {"Sign In"}
+                </Button>
+                <Button
+                  key={"Sign Up"}
+                  onClick={() => handleOptionSelected("signUp")}
+                  sx={{ fontSize: "10px", display: "block" }}
+                >
+                  {"Sign Up"}
+                </Button>
+              </>
+            )}
+            {isLoggedIn && (
+              <>
+                <TextField
+                  id="roles-dropdown"
+                  select
+                  label="Rol"
+                  defaultValue={role}
+                  onChange={handleRolSelected}
+                >
+                  {roles.map((option) => (
+                    <MenuItem key={option.option} value={option.name}>
+                      {option.name}
+                    </MenuItem>
+                  ))}
+                </TextField>
+
+                <Box sx={{ flexGrow: 0, padding: 2 }}>
+                  <Tooltip title="Open settings">
+                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                      <Avatar
+                        alt="Remy Sharp"
+                        src="/static/images/avatar/2.jpg"
+                      />
+                    </IconButton>
+                  </Tooltip>
+                  <Menu
+                    sx={{ mt: "45px" }}
+                    id="menu-appbar"
+                    anchorEl={anchorElUser}
+                    anchorOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
+                    }}
+                    open={Boolean(anchorElUser)}
+                    onClose={handleCloseUserMenu}
                   >
-                    <Typography textAlign="center">{"log Out"}</Typography>
-                  </MenuItem>
-                  <MenuItem
-                    key={"Profile"}
-                    onClick={() => handleOptionSelected("Profile")}
-                  >
-                    <Typography textAlign="center">{"Profile"}</Typography>
-                  </MenuItem>
-                  <MenuItem
-                    key={"Courses"}
-                    onClick={() => handleOptionSelected("courses")}
-                  >
-                    <Typography textAlign="center">{"My courses"}</Typography>
-                  </MenuItem>
-                </Menu>
-              </Box>
-            </>
-          )}
+                    <MenuItem
+                      key={"logOut"}
+                      onClick={() => handleOptionSelected("logOut")}
+                    >
+                      <Typography textAlign="center">{"log Out"}</Typography>
+                    </MenuItem>
+                    <MenuItem
+                      key={"Profile"}
+                      onClick={() => handleOptionSelected("Profile")}
+                    >
+                      <Typography textAlign="center">{"Profile"}</Typography>
+                    </MenuItem>
+                    <MenuItem
+                      key={"Courses"}
+                      onClick={() => handleOptionSelected("courses")}
+                    >
+                      <Typography textAlign="center">{"My courses"}</Typography>
+                    </MenuItem>
+                  </Menu>
+                </Box>
+              </>
+            )}
+          </div>
         </div>
-      </div>
-    </NavbarWrapper>
+      </NavbarWrapper>
+    </ThemeProvider>
   );
 };
 

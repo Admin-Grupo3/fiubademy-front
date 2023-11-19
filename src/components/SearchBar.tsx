@@ -4,7 +4,7 @@ import Stack from '@mui/material/Stack';
 import Autocomplete from '@mui/material/Autocomplete';
 import { CoursesContext } from '../context/courses_context';
 import { useEffect } from 'react';
-import { MenuItem, Select } from '@mui/material';
+import { MenuItem, Select, Box } from '@mui/material';
 const languages = ["All languages", "English", "Spanish"];
 
 export default function SearchBar() {
@@ -63,8 +63,20 @@ export default function SearchBar() {
           freeSolo
           id="search-course"
           disableClearable
-          options={courses.map((course) => course.title)}
-          onChange={handleCourseSelect}
+          options={courses}
+          getOptionLabel={(course) => course.title}
+          onChange={(event, course) => handleCourseSelect(event, course.title)} 
+          renderOption={(props, course, { selected }) => (
+            <Box component="li" sx={{ display: 'flex', alignItems: 'center', height: '50px', color: '#000'}} {...props}>
+              <img
+                loading="lazy"
+                style={{ width: '42px', height: '42px', marginRight: '10px', marginTop: '4px', marginBottom: '4px'}}
+                src={`/src/assets/images/${course.image}.jpg`}
+                alt=""
+              />
+              {course.title}
+            </Box>
+          )}
           renderInput={(params) => (
             <TextField
               {...params}
