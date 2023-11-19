@@ -17,7 +17,7 @@ const HomePage = () => {
       <CategoriesList />
       <LearningPathList />
       <Button
-              onClick={createPdf}
+              onClick={() => createPdf("Certificado de aprobacion", "Juan Perez", "React", 10)}
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >

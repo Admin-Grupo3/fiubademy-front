@@ -1,6 +1,6 @@
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'
 
-    async function createPdf() {
+    async function createPdf(titleText:string, studentName:string, courseName:string, grade:number) {
       // Create a new PDFDocument
       const pdfDoc = await PDFDocument.create()
 
@@ -17,9 +17,6 @@ import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'
       // Calculate the x-coordinate to center the title
       const companyWidth = timesRomanFont.widthOfTextAtSize(companyName, fontSize);
       const copmanyX = (height - companyWidth) / 2;
-      
-      // Draw a string of text centered on the page
-      const titleText = 'Certification name';
 
       // Calculate the x-coordinate to center the title
       const titleWidth = timesRomanFont.widthOfTextAtSize(titleText, fontSize);
@@ -39,7 +36,7 @@ import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'
         font: timesRomanFont,
         color: rgb(0, 0.53, 0.71),
       });
-			page.drawText("Certifico que el alumno: UN NOMBRE ",
+			page.drawText("Certifico que el alumno: " + studentName,
        {
         x: 50,
         y: width - 8 * fontSize,
@@ -48,7 +45,7 @@ import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'
         color: rgb(0, 0 , 0),
       }
       )
-      page.drawText("ha aprobado el curso: NOMBRE DEL CURSO",
+      page.drawText("ha aprobado el curso: " + courseName ,
        {
         x: 50,
         y: width - 9.5 * fontSize,
@@ -57,7 +54,7 @@ import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'
         color: rgb(0, 0, 0 ),
       }
       )
-      page.drawText(" con una calificacion de: NOTA OBTENIDA EN EXAMEN",
+      page.drawText(" con una calificacion de: " + grade ,
        {
         x: 50,
         y: width - 11 * fontSize,
