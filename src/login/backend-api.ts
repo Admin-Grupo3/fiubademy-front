@@ -1,7 +1,7 @@
 import axios from 'axios';
 import dayjs from 'dayjs';
 
-export { signup, signin, getCategories, getCourses, createCourse, createCompanyCourse, logOut, editCourse, createExam, purchaseCourse, getPurchaseCourses, getExams, sendExam , createLearningPath, getLearningPaths, getUserProfile, createCategory, rejectCourse, updateUser}
+export { signup, signin, getCategories, getCourses, createCourse, createCompanyCourse, logOut, editCourse, createExam, purchaseCourse, getPurchaseCourses, getExams, sendExam, createLearningPath, getLearningPaths, getUserProfile, createCategory, rejectCourse, updateUser, getPurchases };
 
 //const url = 'http://localhost:3300';
 
@@ -126,7 +126,6 @@ function createCourse(title: any, language: any, categoryIds: any, description: 
     video: video
   };
   instance.post(`/courses`, payload)
-  console.log(categoryIds)
   .then(response => {
   if(response.status == 201){
     window.location.href = "/";
@@ -385,5 +384,20 @@ function updateUser(firstName: string, lastName: string, birthDate: dayjs.Dayjs 
   })
   .catch(error => {
     console.error('Error al editar el usuario:', error);
+  });
+}
+
+function getPurchases() {
+  return instance.get(`/purchases`, ).then(response => {
+    if (response.status == 200) {
+      return response.data;
+    }
+    else {
+      return [];
+    }
+  }).catch(error => {
+
+    console.error('Error al obtener los examenes:', error);
+    return [];
   });
 }

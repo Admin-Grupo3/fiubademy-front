@@ -5,7 +5,6 @@ interface ImageUploadProps {
   formData: {
     title: string;
     language: string;
-    hours: string;
     price: string;
     description: string;
     categories: { id: number; name: string }[];

@@ -20,7 +20,9 @@ export const UsersProvider: React.FC<Props> = ({children}) => {
                         firstName: data.firstName,
                         lastName: data.lastName,
                         birthDate: data.birthDate,
-                        interests: data.interests
+                        interests: data.interests,
+                        exams_taken: data.exams_taken,
+                        coursesAproved: data.coursesApproved
                     };
                     setUser(transformedUser);
                 }

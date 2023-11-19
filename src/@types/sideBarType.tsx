@@ -26,7 +26,7 @@ export interface SidebarType {
     rating_star: number;
     rating_count: number;
     students: number;
-    creator: string;
+    creator: any;
     updated_date: string;
     language: Language;
     price: number;
@@ -35,8 +35,15 @@ export interface SidebarType {
     content: string[];
     updatedAt: string;
     video: string;
+    exams: any;
+    company: any;
   }
 
+  export interface PurchaseType {
+    course: CourseType,
+    id: number
+  }
+  
   export type CourseContextType = {
     courses: CourseType[];
     saveCourse:(course: CourseType) => void;
@@ -45,6 +52,7 @@ export interface SidebarType {
     getCourse:(id: number) => CourseType | undefined;
     getCategorys:() => {id: number, name: string}[];
     purchaseCourses: CourseType[];
+    purchases: PurchaseType[];
   };
 
   export interface LearningPathType {
@@ -67,6 +75,8 @@ export interface SidebarType {
     lastName: string;
     birthDate: dayjs.Dayjs;
     interests: {id: number, name: string}[];
+    exams_taken: any;
+    coursesAproved: any;
   }
 
   export type UserContextType = {

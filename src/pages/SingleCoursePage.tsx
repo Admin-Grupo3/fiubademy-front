@@ -13,13 +13,7 @@ import Videos from "../components/Videos";
 import { purchaseCourse } from "../login/backend-api";
 import RatingComponent from "../components/Rating";
 import { RoleContext } from "../context/roles_context";
-import UsersProvider, { UsersContext } from "../context/users_context";
-
-
-const handleGetCourse = () => {
-  console.log("get course");
-  // Add here call to function to call endpoint
-};
+import { UsersContext } from "../context/users_context";
 
 const ratings = [4, 5, 3, 2];
 const reviews = [
@@ -184,7 +178,7 @@ const SingleCoursePage = () => {
               Editar curso
             </Button>
           )}
-           {isLoggedIn && purchasedCourse &&(
+           {role === "Student" && isLoggedIn && purchasedCourse &&(
           <Button
             href={"/exam/" + id}
             style={{ marginLeft: "20px" }}
@@ -203,7 +197,7 @@ const SingleCoursePage = () => {
         </Button>}
 
           <div>
-          {isLoggedIn && !purchasedCourse &&(
+          { role === "Student" && isLoggedIn && !purchasedCourse &&(
             <Button
               onClick={handleGetCourse}
               variant="contained"
@@ -236,7 +230,7 @@ const SingleCoursePage = () => {
             </Alert>
           </Snackbar>
           <div>
-          {isLoggedIn && purchasedCourse && (
+          {role === "Student" && isLoggedIn && purchasedCourse && (
             <Button
               onClick={handleRating}
               // style={{ marginLeft: "20px" }}
