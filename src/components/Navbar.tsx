@@ -63,9 +63,9 @@ const Navbar = () => {
           </Link>
           <Box
             sx={{
-              flexGrow: 1,
               display: { xs: "none", md: "flex" },
-              paddingLeft: "50px",
+              paddingLeft: "20px",
+              marginRight: "10px"
             }}
           >
             {role === "Teacher" && (
@@ -124,7 +124,7 @@ const Navbar = () => {
               </Button>
             )}
           </Box>
-          <div style={{ marginRight: "20px" }}>
+          <div style={{ marginRight: "20px", flexGrow: 1 }}>
             <SearchBar />
           </div>
           {/* add two buttons for sign in and sign up */}

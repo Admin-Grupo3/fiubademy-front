@@ -59,7 +59,7 @@ export default function SearchBar() {
       flexDirection="row"
       >
         <Autocomplete
-        sx={{ width: 300 }}
+        sx={{ flexGrow: 1 }}
           freeSolo
           id="search-course"
           disableClearable
