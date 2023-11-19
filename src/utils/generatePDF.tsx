@@ -45,7 +45,7 @@ import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'
         y: width - 8 * fontSize,
         size: 20,
         font: timesRomanFont,
-        color: rgb(0, 0.53, 0.71),
+        color: rgb(0, 0 , 0),
       }
       )
       page.drawText("ha aprobado el curso: NOMBRE DEL CURSO",
@@ -54,7 +54,7 @@ import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'
         y: width - 9.5 * fontSize,
         size: 20,
         font: timesRomanFont,
-        color: rgb(0, 0.53, 0.71),
+        color: rgb(0, 0, 0 ),
       }
       )
       page.drawText(" con una calificacion de: NOTA OBTENIDA EN EXAMEN",
@@ -63,7 +63,7 @@ import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'
         y: width - 11 * fontSize,
         size: 20,
         font: timesRomanFont,
-        color: rgb(0, 0.53, 0.71),
+        color: rgb(0, 0, 0 ),
       }
       )
       // Serialize the PDFDocument to bytes (a Uint8Array)
