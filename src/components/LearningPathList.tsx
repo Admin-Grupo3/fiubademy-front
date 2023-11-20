@@ -11,16 +11,18 @@ const LearningPathList = () => {
   
   return (
     <LearningPathListWrapper>
-      <div className='tabs'>
+      <div className='container'>
         <div className='learning-paths-list-top'>
           <h2>Follow a learning path</h2>
         </div>
-        <div className='tabs-body'>
-        {
-          learningPathsContext?.learningPaths.map((learningPath: any) => (
-            <LearningPath key = {learningPath.id} {...learningPath} />
-          ))
-        }
+        <div className='tabs'>
+          <div className='tabs-body'>
+          {
+            learningPathsContext?.learningPaths.map((learningPath: any) => (
+              <LearningPath key = {learningPath.id} {...learningPath} />
+            ))
+          }
+          </div>
         </div>
       </div>
     </LearningPathListWrapper>
