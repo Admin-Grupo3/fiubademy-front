@@ -1,57 +1,37 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { CoursesContext } from "../context/courses_context";
-import StarRating from "../components/StarRating";
 import { MdInfo } from "react-icons/md";
-import { TbWorld } from "react-icons/tb";
-import { RiClosedCaptioningFill } from "react-icons/ri";
-import { BiCheck } from "react-icons/bi";
 import {LearningPathContextType } from "../@types/sideBarType";
-import { Alert, Button, Rating, Snackbar, TextField } from "@mui/material";
-import Videos from "../components/Videos";
-import { purchaseCourse, purchaseLearningPath } from "../login/backend-api";
-import RatingComponent from "../components/Rating";
+import { Alert, Button, Snackbar } from "@mui/material";
+import { purchaseLearningPath } from "../login/backend-api";
 import { RoleContext } from "../context/roles_context";
 import { LearningPathsContext } from "../context/learningPaths_context";
 import { PYTHON } from "../utils/constants";
-
-
-const handleGetCourse = () => {
-  console.log("get course");
-  // Add here call to function to call endpoint
-};
-
-const ratings = [4, 5, 3, 2];
-const reviews = [
-  "Excelente curso!",
-  "Muy satisfecho con el curso.",
-  "Regular, podría mejorar.",
-  "No cumplió mis expectativas.",
-];
 
 const SingleLearningPath = () => {
   const { role } = React.useContext(RoleContext);
 
   const { id } = useParams();
+  const [showModal, setShowModal] = useState(false);
+  const [openSnackBar, setOpenSnackBar] = React.useState(false);
 
   const handleConfirm = () => {
-    console.log("Learning path adquirido!");
-    purchaseCourse(id);
-  };
-
-  const handleGetCourse = () => {
-    console.log("get course");
-  };
-
-  const handlePurchaseButton = () => {
+    setOpenSnackBar(true);
+    setShowModal(false);
     console.log("Learning path adquirido!");
     purchaseLearningPath(id);
   };
 
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  const handlePurchaseButton = () => {
+    setShowModal(true);
+    };
+
   const { getLearningPath, purchasedLearningPaths } = React.useContext(LearningPathsContext) as LearningPathContextType;
-  console.log("purchased paths");
-  console.log(purchasedLearningPaths);
 
   const isPurchased = purchasedLearningPaths.find(learningPath => String(learningPath.id) === id);
 
@@ -67,8 +47,6 @@ const SingleLearningPath = () => {
   if (!learningPath) {
     return <h2 className="section-title">no course to display</h2>;
   }
-
-
 
   // TODO: creator.name no existe en la db actualmente, asi que está hardcodeado acá por el momento
   // TODO: integrar el lenguaje del curso con la info del back
@@ -101,8 +79,11 @@ const SingleLearningPath = () => {
                 <span className="fs-14 course-info-txt fw-5">
                   Last updated {learningPath.updatedAt}
                 </span>
-
-                {isLoggedIn && !isPurchased &&(
+              </li>
+            </ul>
+          </div>
+          <div>
+                {role === "Student" && isLoggedIn && !isPurchased &&(
                   <Button
                     onClick={handlePurchaseButton}
                     variant="contained"
@@ -111,9 +92,29 @@ const SingleLearningPath = () => {
                     Obtener camino de aprendizaje
                   </Button>
                 )}
-              </li>
-            </ul>
-          </div>
+                </div>
+                {showModal && (
+            <ModalWrapper>
+              <div className="modal-content">
+                <p>
+                  Usted va a adquirir el camino de aprendizaje <strong>{learningPath.title}</strong> al
+                  precio de <strong>${learningPath.courses.reduce((sum, course) => sum + (course.price - course.discount), 0)}</strong>
+                </p>
+                <button onClick={handleCloseModal}>Cancelar</button>
+                <button onClick={handleConfirm}>Confirmar</button>
+              </div>
+            </ModalWrapper>
+          )}
+          <Snackbar
+            onClose={() => setOpenSnackBar(false)}
+            anchorOrigin={{ vertical: "top", horizontal: "center" }}
+            open={openSnackBar}
+            autoHideDuration={2000}
+          >
+            <Alert severity="success" sx={{ width: "100%", fontSize: "15px" }}>
+              Usted adquirió el camino de aprendizaje <strong>{learningPath.title}</strong>
+            </Alert>
+          </Snackbar>
         </div>
       </div>
       <div className="course-full bg-white text-dark">
@@ -134,7 +135,35 @@ const SingleLearningPath = () => {
     </SingleCourseWrapper>
   );
 };
+const ModalWrapper = styled.div`
+  background: rgba(0, 0, 0, 0.5);
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
 
+  .modal-content {
+    color: black;
+    background-color: white;
+    padding: 50px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+    max-height: 500vh;
+  }
+
+  Button {
+    margin-top: 10px;
+    margin-right: 10px;
+    margin-left: 10px;
+    color: white;
+  }
+`;
 
 const SingleCourseWrapper = styled.div`
   background: var(--clr-dark);

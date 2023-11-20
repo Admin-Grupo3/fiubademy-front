@@ -1,10 +1,13 @@
-import React from 'react';
 import styled from 'styled-components';
 import {Link} from "react-router-dom";
 import StarRating from "./StarRating.tsx";
+import { RoleContext } from '../context/roles_context.tsx';
+import React from 'react';
 
-const Course = (props) => {
-  const {id, image, title, creator, price, discount, rating_count, rating_star, categories} = props;
+const Course = (props: { id: any; image: any; title: any; creator: any; price: any; discount: any; rating_count: any; rating_star: any; categories: any; exams: any; user: any; }) => {
+  const {id, image, title, creator, price, discount, rating_count, rating_star, categories, exams, user} = props;
+  const isCourseApproved = user?.coursesAproved.some((course: { courseId: any; }) => course.courseId === id);
+  const { role } = React.useContext(RoleContext);
 
   // TODO: creator.name no existe en la db actualmente, asi que está hardcodeado acá por el momento
   return (
@@ -26,8 +29,21 @@ const Course = (props) => {
         </div>
       </div>
       <div className='item-btns flex'>
-        <Link to = {`/courses/${id}`} className = "item-btn see-details-btn">See details</Link>
-      </div>
+        {(!isCourseApproved && role !== "Student") ? (
+  <div className="item-btn see-details-btn">
+    <Link to={`/courses/${id}`} className="link">See details</Link>
+  </div>
+) : (
+  <>
+    <div className="item-btn see-details-btn">
+      <Link to={`/courses/${id}`} className="link">See details</Link>
+    </div>
+    {(isCourseApproved && role === "Student") && (
+      <div className="item-btn approved-btn" style={{ marginLeft: '10px' }}>Aprobado</div>
+    )}
+  </>
+)}   
+        </div>
     </CourseCard>
   )
 }
@@ -94,6 +110,18 @@ const CourseCard = styled.div`
         background-color: transparent;
         border: 1px solid var(--clr-black);
         margin-right: 5px;
+
+        &:hover{
+          background-color: rgba(0, 0, 0, 0.9);
+          color: var(--clr-white);
+        }
+      }
+
+      &.approved-btn{
+        background-color: transparent;
+        border: 1px solid var(--clr-black);
+        margin-right: 5px;
+        color: green;
 
         &:hover{
           background-color: rgba(0, 0, 0, 0.9);

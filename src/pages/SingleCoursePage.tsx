@@ -13,13 +13,7 @@ import Videos from "../components/Videos";
 import { purchaseCourse } from "../login/backend-api";
 import RatingComponent from "../components/Rating";
 import { RoleContext } from "../context/roles_context";
-import UsersProvider, { UsersContext } from "../context/users_context";
-
-
-const handleGetCourse = () => {
-  console.log("get course");
-  // Add here call to function to call endpoint
-};
+import { UsersContext } from "../context/users_context";
 
 const ratings = [4, 5, 3, 2];
 const reviews = [
@@ -30,7 +24,6 @@ const reviews = [
 ];
 
 const SingleCoursePage = () => {
-
   const [showModal, setShowModal] = useState(false);
   const [showModalRating, setShowModalRating] = useState(false);
   const { role } = React.useContext(RoleContext);
@@ -75,8 +68,12 @@ const SingleCoursePage = () => {
     //Send calificacion y comentario to backend
   };
 
-  const { getCourse, purchaseCourses } = React.useContext(CoursesContext) as CourseContextType;
-  const purchasedCourse = purchaseCourses.find(course => String(course.id) === id);
+  const { getCourse, purchaseCourses } = React.useContext(
+    CoursesContext
+  ) as CourseContextType;
+  const purchasedCourse = purchaseCourses.find(
+    (course) => String(course.id) === id
+  );
   const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
   const single_course = getCourse(id);
   const usersContext = React.useContext(UsersContext);
@@ -106,9 +103,9 @@ const SingleCoursePage = () => {
     image,
     what_will_you_learn,
     content,
-    video
+    video,
   } = single_course || {};
-  console.log("Course creator is:" , creator)
+  console.log("Course creator is:", creator);
   // TODO: creator.name no existe en la db actualmente, asi que está hardcodeado acá por el momento
   // TODO: integrar el lenguaje del curso con la info del back
   return (
@@ -156,7 +153,9 @@ const SingleCoursePage = () => {
                 <span>
                   <TbWorld />
                 </span>
-                <span className="fs-14 course-info-txt fw-5">{language.name}</span>
+                <span className="fs-14 course-info-txt fw-5">
+                  {language.name}
+                </span>
               </li>
               <li className="flex">
                 <span>
@@ -175,7 +174,7 @@ const SingleCoursePage = () => {
               <span className="old-price fs-26 fw-6">${price}</span>
             </div>
           </div>
-          {(creator?.id && creator.id === user.id) && (
+          {creator?.id && creator.id === user.id && (
             <Button
               href={"/editCourse/" + id}
               variant="contained"
@@ -184,34 +183,37 @@ const SingleCoursePage = () => {
               Editar curso
             </Button>
           )}
-           {isLoggedIn && purchasedCourse &&(
-          <Button
-            href={"/exam/" + id}
-            style={{ marginLeft: "20px" }}
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
-            Dar examen
-          </Button>
-           )}
-          {(creator?.id && creator.id === user.id) && <Button
-            href={'/examCreation/' + id}
-            style={{marginLeft: '20px'}}
-            variant="contained"
-            sx={{ mt: 3, mb: 2, marginRight: '20px'}}>
-            Crear examen
-        </Button>}
-
-          <div>
-          {isLoggedIn && !purchasedCourse &&(
+          {role === "Student" && isLoggedIn && purchasedCourse && (
             <Button
-              onClick={handleGetCourse}
+              href={"/exam/" + id}
+              style={{ marginLeft: "20px" }}
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Obtener curso
+              Dar examen
             </Button>
           )}
+          {creator?.id && creator.id === user.id && (
+            <Button
+              href={"/examCreation/" + id}
+              style={{ marginLeft: "20px" }}
+              variant="contained"
+              sx={{ mt: 3, mb: 2, marginRight: "20px" }}
+            >
+              Crear examen
+            </Button>
+          )}
+
+          <div>
+            {role === "Student" && isLoggedIn && !purchasedCourse && (
+              <Button
+                onClick={handleGetCourse}
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Obtener curso
+              </Button>
+            )}
           </div>
           {showModal && (
             <ModalWrapper>
@@ -236,18 +238,17 @@ const SingleCoursePage = () => {
             </Alert>
           </Snackbar>
           <div>
-          {isLoggedIn && purchasedCourse && (
-            <Button
-              onClick={handleRating}
-              // style={{ marginLeft: "20px" }}
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              disabled={isRated}
-
-            >
-              Calificar curso
-            </Button>
-          )}
+            {role === "Student" && isLoggedIn && purchasedCourse && (
+              <Button
+                onClick={handleRating}
+                // style={{ marginLeft: "20px" }}
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+                disabled={isRated}
+              >
+                Calificar curso
+              </Button>
+            )}
           </div>
           {showModalRating && (
             <ModalWrapper>
@@ -321,10 +322,11 @@ const SingleCoursePage = () => {
           </ul>
         </div>
         {purchasedCourse && (
-        <div className="container" style={{ marginTop: "20px" }}>
-          <Videos embedId={video} />
-        </div>)}
-        
+          <div className="container" style={{ marginTop: "20px" }}>
+            <Videos embedId={video} />
+          </div>
+        )}
+
         <div className="container" style={{ marginTop: "20px" }}>
           <RatingComponent ratings={ratings} reviews={reviews} />
         </div>
@@ -359,7 +361,7 @@ const ModalWrapper = styled.div`
     margin-top: 10px;
     margin-right: 10px;
     margin-left: 10px;
-    color: white
+    color: white;
   }
 `;
 

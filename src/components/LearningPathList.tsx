@@ -5,9 +5,6 @@ import LearningPath from './LearningPath.tsx';
 
 const LearningPathList = () => {
   const learningPathsContext = React.useContext(LearningPathsContext)
-
-  console.log("LEARNING PATHS");
-  console.log(learningPathsContext?.learningPaths);
   
   return (
     <LearningPathListWrapper>

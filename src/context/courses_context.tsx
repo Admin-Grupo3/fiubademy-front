@@ -1,7 +1,9 @@
 import React, { useEffect} from "react";
-import { CourseContextType, CourseType } from "../@types/sideBarType.tsx";
+import { CourseContextType, CourseType, PurchaseType } from "../@types/sideBarType.tsx";
 import {getCategories, getPurchaseCourses} from "../login/backend-api";
 import {getCourses} from "../login/backend-api";
+import {getPurchases} from "../login/backend-api";
+
 export const CoursesContext = React.createContext<CourseContextType | null> (null);
 
 interface Props {
@@ -10,6 +12,7 @@ interface Props {
 const CoursesProvider: React.FC<Props> = ({children}) => {
     const [courses, setCourse] = React.useState<CourseType[]>([]);
     const [purchaseCourses, setPurchaseCourse] = React.useState<CourseType[]>([]);
+    const [purchases, setPurchase] = React.useState<PurchaseType[]>([]);
 
     const fetchCourses = () => {
         const data = getCourses();
@@ -73,7 +76,9 @@ const CoursesProvider: React.FC<Props> = ({children}) => {
             discount: 0,
             what_will_you_learn: [],
             content: [],
-            updatedAt: ""
+            updatedAt: "",
+            video: "",
+            exams: course.exams
         };
         setCourse([...courses, newCourse]);
     }
@@ -88,16 +93,26 @@ const CoursesProvider: React.FC<Props> = ({children}) => {
             }
         })
     }
+
+    const fetchPurchases = () => {
+        const data = getPurchases();
+        data.then(purchasesData => {
+            setPurchase(purchasesData);
+          }).catch(error => {
+            console.error('Error al obtener cursos:', error);
+          });
+    }
     useEffect(() => {
         fetchCourses();
         fetchPurchaseCourses();
         getCourses();
         getCategorys();
+        fetchPurchases();
     }, []);
 
     return (
         <CoursesContext.Provider value = {{
-            courses, getCourse, saveCourse, updateCourse, getCourses, getCategorys, purchaseCourses
+            courses, getCourse, saveCourse, updateCourse, getCourses, getCategorys, purchaseCourses, purchases
         }}>
             {children}
         </CoursesContext.Provider>

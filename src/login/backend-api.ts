@@ -1,7 +1,7 @@
 import axios from 'axios';
 import dayjs from 'dayjs';
 
-export { signup, signin, getCategories, getCourses, createCourse, createCompanyCourse, logOut, editCourse, createExam, purchaseCourse, getPurchaseCourses, getExams, sendExam , createLearningPath, getLearningPaths, getUserProfile, createCategory, rejectCourse, updateUser, getPurchasedLearningPaths, purchaseLearningPath}
+export { signup, signin, getCategories, getCourses, createCourse, createCompanyCourse, logOut, editCourse, createExam, purchaseCourse, getPurchaseCourses, getExams, sendExam , createLearningPath, getLearningPaths, getUserProfile, createCategory, rejectCourse, updateUser, getPurchases, getPurchasedLearningPaths, purchaseLearningPath}
 
 //const url = 'http://localhost:3300';
 
@@ -126,7 +126,6 @@ function createCourse(title: any, language: any, categoryIds: any, description: 
     video: video
   };
   instance.post(`/courses`, payload)
-  console.log(categoryIds)
   .then(response => {
   if(response.status == 201){
     window.location.href = "/";
@@ -148,7 +147,6 @@ function createCompanyCourse(title: any, language: any, categoryIds: any, descri
     price: price,
     companyName: company
   };
-  console.log(payload)
   instance.post(`/courses`, payload)
   .then(response => {
   if(response.status == 201){
@@ -163,15 +161,11 @@ function createCompanyCourse(title: any, language: any, categoryIds: any, descri
   });
 }
 function createExam(title: any, courseId: string | undefined, questions: []) {
-  console.log("createExam");
-  console.log(title);
-  console.log(questions);
   const payload = {
     name: title,
     description: "description",
     questions: questions,
   }
-  console.log(payload)
   instance.post(`/courses/${courseId}/exams/`, payload)
   .then(response => {
     if(response.status == 201){
@@ -218,7 +212,7 @@ function purchaseCourse(courseId: string) {
   if(response.status == 201){
     setTimeout(() => {
       window.location.href = "/mycourses"; // Redirigir a MyCourses después de 2 segundos para ver los cursos comprados
-    }, 2000);
+    }, 1000);
   }
   else{
     console.error('Error al comprar el curso:');
@@ -244,6 +238,20 @@ function getPurchaseCourses(): Promise<any> {
 
 }
 
+function getPurchasePaths(): Promise<any> {
+  return instance.get('/learning-paths/purchases', ).then(response => {
+    if (response.status == 200) {
+      return response.data;
+    }
+    else {
+      return [];
+    }
+  }).catch(error => {
+    console.error('Error al obtener cursos:', error);
+    return [];
+  });
+
+}
 function getUserProfile(): Promise<any> {
   return instance.get('/users/profile').then(response => {
     if (response.status == 200) {
@@ -261,8 +269,6 @@ function getExams(courseId):Promise<any>{
   
   return instance.get(`/courses/${courseId}/exams`, ).then(response => {
     if (response.status == 200) {
-      console.log(response.data);
-
       return response.data;
     }
     else {
@@ -275,15 +281,12 @@ function getExams(courseId):Promise<any>{
   });
 }
 function sendExam(examId, courseId, answers){
-  console.log("sendExam");
-  console.log(answers);
   const payload = {
     answers: answers,
   }
   return instance.post(`users/course/${courseId}/exams/${examId}`, payload)
   .then(response => {
     if(response.status == 201){
-      console.log(response.data);
       return response.data;
     }
     else{
@@ -354,8 +357,6 @@ function rejectCourse(courseId:any){
 function getLearningPaths(): Promise<any> {
   return instance.get('/learning-paths', ).then(response => {
     if (response.status == 200) {
-      console.log("DATA");
-      console.log(response.data);
       return response.data;
     }
     else {
@@ -368,10 +369,8 @@ function getLearningPaths(): Promise<any> {
 }
 
 function getPurchasedLearningPaths(): Promise<any> {
-  console.log("ENDPOINT")
   return instance.get('/learning-paths/purchases', ).then(response => {
     if (response.status == 200) {
-      console.log("RESPONSE DATA", response.data)
       return response.data;
     }
     else {
@@ -424,3 +423,20 @@ function updateUser(firstName: string, lastName: string, birthDate: dayjs.Dayjs 
     console.error('Error al editar el usuario:', error);
   });
 }
+
+function getPurchases() {
+  return instance.get(`/purchases`, ).then(response => {
+    if (response.status == 200) {
+      return response.data;
+    }
+    else {
+      return [];
+    }
+  }).catch(error => {
+
+    console.error('Error al obtener los examenes:', error);
+    return [];
+  });
+}
+
+
