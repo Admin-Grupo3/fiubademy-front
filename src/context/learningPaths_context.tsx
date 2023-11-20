@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { LearningPathContextType, LearningPathType } from "../@types/sideBarType.tsx";
-import { getLearningPaths } from "../login/backend-api";
+import { getLearningPaths, getPurchasedLearningPaths } from "../login/backend-api";
 export const LearningPathsContext = React.createContext<LearningPathContextType | null>(null);
 
 interface Props {
@@ -9,6 +9,7 @@ interface Props {
 
 const LearningPathsProvider: React.FC<Props> = ({ children }) => {
   const [learningPaths, setLearningPath] = React.useState<LearningPathType[]>([]);
+  const [purchasedLearningPaths, setPurchasedLearningPaths] = React.useState<LearningPathType[]>([]);
 
   const fetchLearningPaths = () => {
     const data = getLearningPaths();
@@ -19,6 +20,16 @@ const LearningPathsProvider: React.FC<Props> = ({ children }) => {
       console.error('Error al obtener learning paths:', error);
     });
   }
+
+  const fetchPurchasedLearningPaths = () => {
+    const data = getPurchasedLearningPaths();
+    data.then((learningPathsData: any) => {
+      console.log("LEARNING PATH DATA", learningPathsData);
+      setPurchasedLearningPaths(learningPathsData.learningPaths);
+      }).catch(error => {
+        console.error('Error al obtener cursos:', error);
+      });
+}
 
   const getLearningPath = (id: any) => {
     console.log("searching for learning path:", id);
@@ -31,12 +42,14 @@ const LearningPathsProvider: React.FC<Props> = ({ children }) => {
   useEffect(() => {
     console.log("USE EFFECT LEARNING PATHS");
     fetchLearningPaths();
+    fetchPurchasedLearningPaths();
     getLearningPaths();
+    getPurchasedLearningPaths();
   }, []);
 
   return (
     <LearningPathsContext.Provider value={{
-      learningPaths, getLearningPath, getLearningPaths
+      learningPaths, purchasedLearningPaths, getLearningPath, getLearningPaths, fetchPurchasedLearningPaths
     }}>
       {children}
     </LearningPathsContext.Provider>

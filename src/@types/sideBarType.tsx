@@ -56,8 +56,10 @@ export interface SidebarType {
 
   export type LearningPathContextType = {
     learningPaths: LearningPathType[];
+    purchasedLearningPaths: LearningPathType[];
     getLearningPaths:() => Promise<any>;
     getLearningPath:(id: number) => LearningPathType | undefined;
+    fetchPurchasedLearningPaths:() => void;
   };
 
   export interface UserType {

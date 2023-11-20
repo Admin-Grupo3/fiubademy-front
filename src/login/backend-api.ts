@@ -1,7 +1,7 @@
 import axios from 'axios';
 import dayjs from 'dayjs';
 
-export { signup, signin, getCategories, getCourses, createCourse, createCompanyCourse, logOut, editCourse, createExam, purchaseCourse, getPurchaseCourses, getExams, sendExam , createLearningPath, getLearningPaths, getUserProfile, createCategory, rejectCourse, updateUser}
+export { signup, signin, getCategories, getCourses, createCourse, createCompanyCourse, logOut, editCourse, createExam, purchaseCourse, getPurchaseCourses, getExams, sendExam , createLearningPath, getLearningPaths, getUserProfile, createCategory, rejectCourse, updateUser, getPurchasedLearningPaths, purchaseLearningPath}
 
 //const url = 'http://localhost:3300';
 
@@ -364,6 +364,43 @@ function getLearningPaths(): Promise<any> {
   }).catch(error => {
     console.error('Error al obtener los caminos de aprendizaje:', error);
     return [];
+  });
+}
+
+function getPurchasedLearningPaths(): Promise<any> {
+  console.log("ENDPOINT")
+  return instance.get('/learning-paths/purchases', ).then(response => {
+    if (response.status == 200) {
+      console.log("RESPONSE DATA", response.data)
+      return response.data;
+    }
+    else {
+      return [];
+    }
+  }).catch(error => {
+    console.error('Error al obtener learning paths comprados:', error);
+    return [];
+  });
+
+}
+
+function purchaseLearningPath(learningPathId: string) {
+  
+  instance.post(`/learning-paths/${learningPathId}/purchase`)
+  .then(response => {
+  if(response.status == 201){
+    setTimeout(() => {
+      // window.location.href = "/mycourses"; // Redirigir a MyCourses después de 2 segundos para ver los cursos comprados
+      // TODO: definir la ruta a la que se redirige
+      window.location.reload();
+    }, 2000);
+  }
+  else{
+    console.error('Error al comprar el curso:');
+  }
+  })
+  .catch(error => {
+    console.error('Error al comprar el curso:', error);
   });
 }
 

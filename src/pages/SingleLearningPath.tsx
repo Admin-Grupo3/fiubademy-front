@@ -10,7 +10,7 @@ import { BiCheck } from "react-icons/bi";
 import {LearningPathContextType } from "../@types/sideBarType";
 import { Alert, Button, Rating, Snackbar, TextField } from "@mui/material";
 import Videos from "../components/Videos";
-import { purchaseCourse } from "../login/backend-api";
+import { purchaseCourse, purchaseLearningPath } from "../login/backend-api";
 import RatingComponent from "../components/Rating";
 import { RoleContext } from "../context/roles_context";
 import { LearningPathsContext } from "../context/learningPaths_context";
@@ -33,12 +33,10 @@ const reviews = [
 const SingleLearningPath = () => {
   const { role } = React.useContext(RoleContext);
 
-  const [openSnackBar, setOpenSnackBar] = React.useState(false);
   const { id } = useParams();
 
   const handleConfirm = () => {
-    setOpenSnackBar(true);
-    console.log("Curso adquirido!");
+    console.log("Learning path adquirido!");
     purchaseCourse(id);
   };
 
@@ -46,9 +44,20 @@ const SingleLearningPath = () => {
     console.log("get course");
   };
 
-  const { getLearningPath } = React.useContext(LearningPathsContext) as LearningPathContextType;
+  const handlePurchaseButton = () => {
+    console.log("Learning path adquirido!");
+    purchaseLearningPath(id);
+  };
+
+  const { getLearningPath, purchasedLearningPaths } = React.useContext(LearningPathsContext) as LearningPathContextType;
+  console.log("purchased paths");
+  console.log(purchasedLearningPaths);
+
+  const isPurchased = purchasedLearningPaths.find(learningPath => String(learningPath.id) === id);
+
   const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
   const learningPath = getLearningPath(id);
+
   useEffect(() => {
     if (id) {
       getLearningPath(id);
@@ -92,6 +101,16 @@ const SingleLearningPath = () => {
                 <span className="fs-14 course-info-txt fw-5">
                   Last updated {learningPath.updatedAt}
                 </span>
+
+                {isLoggedIn && !isPurchased &&(
+                  <Button
+                    onClick={handlePurchaseButton}
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2 }}
+                  >
+                    Obtener camino de aprendizaje
+                  </Button>
+                )}
               </li>
             </ul>
           </div>
