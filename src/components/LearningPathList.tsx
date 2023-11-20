@@ -11,6 +11,7 @@ const LearningPathList = () => {
   
   return (
     <LearningPathListWrapper>
+      <div className='container'>
       <div className='tabs'>
         <div className='learning-paths-list-top'>
           <h2>Follow a learning path</h2>
@@ -22,6 +23,7 @@ const LearningPathList = () => {
           ))
         }
         </div>
+      </div>
       </div>
     </LearningPathListWrapper>
   )

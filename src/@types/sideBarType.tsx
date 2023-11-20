@@ -66,6 +66,7 @@ export interface SidebarType {
     learningPaths: LearningPathType[];
     getLearningPaths:() => Promise<any>;
     getLearningPath:(id: number) => LearningPathType | undefined;
+    purchasePaths: LearningPathType[];
   };
 
   export interface UserType {

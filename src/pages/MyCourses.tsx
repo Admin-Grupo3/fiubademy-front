@@ -6,12 +6,15 @@ import { UsersContext } from "../context/users_context.tsx";
 import ProgressBar from "../components/ProgressBar.tsx";
 import { RoleContext } from "../context/roles_context.tsx";
 import { CourseType } from "../@types/sideBarType.tsx";
+import { LearningPathsContext } from "../context/learningPaths_context.tsx";
+import LearningPath from "../components/LearningPath.tsx";
 
 const MyCourses = () => {
   const coursesContext = React.useContext(CoursesContext);
   const usersContext = React.useContext(UsersContext);
   const user = usersContext?.user;
   const totalCourses = coursesContext?.purchaseCourses.length;
+  const learningPathsContext = React.useContext(LearningPathsContext)
 
   let approvedCourses: string | any[] = [];
   if (coursesContext?.purchaseCourses && user?.coursesAproved) {
@@ -30,6 +33,21 @@ const MyCourses = () => {
     approvedProgress = totalApprovedCourses / totalCourses;
   }
   const { role } = React.useContext(RoleContext);
+  let displayedPaths: React.ReactNode[] = [];
+  if (role === "Student" && learningPathsContext?.purchasePaths) {
+    displayedPaths = learningPathsContext.purchasePaths.map((learningPath: any) => (
+      <LearningPath key = {learningPath.id} {...learningPath} />
+      ));
+  } else if (learningPathsContext?.learningPaths && role === "Teacher") {
+    displayedPaths = learningPathsContext.learningPaths
+      .filter(
+        (path: any) => path.creator?.id === user?.id 
+      )
+      .map((learningPath: any) => <LearningPath key = {learningPath.id} {...learningPath} />);
+  } else if (learningPathsContext?.learningPaths && role === "Admin") {
+    displayedPaths = learningPathsContext.learningPaths.map((learningPath: any) =>
+    <LearningPath key = {learningPath.id} {...learningPath} />);
+  }
 
   let displayedCourses: React.ReactNode[] = [];
   if (role === "Student" && coursesContext?.purchaseCourses) {
@@ -128,6 +146,7 @@ const MyCourses = () => {
       </tbody>
     </table>
   );
+
   return (
     <MyCoursesWrapper>
       <div className="container">
@@ -138,10 +157,9 @@ const MyCourses = () => {
               {coursesTable}
             </div>
           )}
-          <h2> Mis cursos </h2>
-          <div className="tabs-body">{displayedCourses}</div>
+          
           {role === "Student" && (
-            <div>
+            <div style={{ marginBottom: "20px" }}>
               <h2> Avance </h2>
               <p style={{ marginBottom: "20px" }}>
                 Usted tiene <strong>{totalApprovedCourses}</strong> cursos
@@ -150,6 +168,10 @@ const MyCourses = () => {
               <ProgressBar progress={approvedProgress * 100} />
             </div>
           )}
+          <h2> Mis cursos </h2>
+          <div className="tabs-body">{displayedCourses}</div>
+          <h2> Mis caminos de aprendizaje </h2>
+          <div className="tabs-body">{displayedPaths}</div>
         </div>
       </div>
     </MyCoursesWrapper>
