@@ -3,10 +3,18 @@ import {Link} from "react-router-dom";
 import StarRating from "./StarRating.tsx";
 import { RoleContext } from '../context/roles_context.tsx';
 import React from 'react';
+import { Button } from '@mui/material';
+import createPdf from '../utils/generatePDF.tsx';
 
 const Course = (props: { id: any; image: any; title: any; creator: any; price: any; discount: any; rating_count: any; rating_star: any; categories: any; exams: any; user: any; }) => {
   const {id, image, title, creator, price, discount, rating_count, rating_star, categories, exams, user} = props;
   const isCourseApproved = user?.coursesAproved.some((course: { courseId: any; }) => course.courseId === id);
+  const result = user?.coursesAproved.find((course: { courseId: any; }) => course.courseId === id)
+  let score = 0;  
+  if(isCourseApproved){
+    score = result.avgScore;
+  }
+  
   const { role } = React.useContext(RoleContext);
 
   // TODO: creator.name no existe en la db actualmente, asi que está hardcodeado acá por el momento
@@ -40,6 +48,9 @@ const Course = (props: { id: any; image: any; title: any; creator: any; price: a
     </div>
     {(isCourseApproved && role === "Student") && (
       <div className="item-btn approved-btn" style={{ marginLeft: '10px' }}>Aprobado</div>
+    )}
+    {(isCourseApproved && role === "Student") && (
+      <div className="item-btn approved-btn" onClick={() => createPdf("Certificado de aprobacion", user.firstName + user.lastName, title, score)} style={{ marginLeft: '10px' }}>Descargar Certificado</div>
     )}
   </>
 )}   

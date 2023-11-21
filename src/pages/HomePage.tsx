@@ -16,13 +16,6 @@ const HomePage = () => {
       <CertificationsList />
       <CategoriesList />
       <LearningPathList />
-      <Button
-              onClick={() => createPdf("Certificado de aprobacion", "Juan Perez", "React", 10)}
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Descargar certificado
-            </Button>
     </div>
   )
 }
