@@ -1,8 +1,7 @@
 import axios from 'axios';
 import dayjs from 'dayjs';
 
-export { signup, signin, getCategories, getCourses, createCourse, createCompanyCourse, logOut, editCourse, createExam, purchaseCourse, getPurchaseCourses, getExams, sendExam , createLearningPath, getLearningPaths, getUserProfile, createCategory, rejectCourse, updateUser, getPurchases, getPurchasedLearningPaths, purchaseLearningPath}
-
+export { signup, signin, getCategories, getCourses, createCourse, createCompanyCourse, logOut, editCourse, createExam, purchaseCourse, getPurchaseCourses, getExams, sendExam , createLearningPath, getLearningPaths, getUserProfile, createCategory, rejectCourse, updateUser, getPurchases, getPurchasedLearningPaths, purchaseLearningPath, rating, getRatings}
 //const url = 'http://localhost:3300';
 
 const instance = axios.create({
@@ -440,3 +439,44 @@ function getPurchases() {
 }
 
 
+function rating(courseId: any, rating: any, opinion: any){
+  const payload = {
+    courseId: courseId,
+    rating: rating,
+    opinion: opinion,
+  }
+  console.log(payload)
+  instance.post(`/rating`, payload)
+  .then(response => {
+    console.log("STATUS", response.status)
+
+    if(response.status == 200){
+      window.location.reload()
+    }
+    else{
+      console.error('Error al calificar el curso:');
+    }
+    })
+    .catch(error => {
+      console.error('Error al calificar el curso:', error);
+
+    });
+}
+
+function getRatings(courseId: any){
+  return instance.get(`/rating/${courseId}`)
+  .then(response => {
+    if(response.status == 200){
+      //window.location.href = "/";
+      console.log(response.data)
+      return response.data
+    }
+    else{
+      console.error('Error al calificar el curso:');
+    }
+    })
+    .catch(error => {
+      console.error('Error al calificar el curso:', error);
+
+    });
+}

@@ -83,3 +83,17 @@ export interface SidebarType {
   export type UserContextType = {
     user: UserType | undefined;
   };
+
+  export interface Rating {
+    rating_star: number;
+    user_id: string;
+  }
+
+  export interface Opinion {
+    opinion: string;
+    user_id: string;
+  }
+  export type RatingType = {
+    ratingsArray: Rating[];
+    opinionsArray: Opinion[];
+  }

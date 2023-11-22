@@ -7,10 +7,10 @@ import { MdInfo } from "react-icons/md";
 import { TbWorld } from "react-icons/tb";
 import { RiClosedCaptioningFill } from "react-icons/ri";
 import { BiCheck } from "react-icons/bi";
-import { CourseContextType, CourseType } from "../@types/sideBarType";
+import { CourseContextType, CourseType, RatingType } from "../@types/sideBarType";
 import { Alert, Button, Rating, Snackbar, TextField } from "@mui/material";
 import Videos from "../components/Videos";
-import { purchaseCourse } from "../login/backend-api";
+import { purchaseCourse, rating, getRatings } from "../login/backend-api";
 import RatingComponent from "../components/Rating";
 import { RoleContext } from "../context/roles_context";
 import { UsersContext } from "../context/users_context";
@@ -27,6 +27,11 @@ const SingleCoursePage = () => {
   const [showModal, setShowModal] = useState(false);
   const [showModalRating, setShowModalRating] = useState(false);
   const { role } = React.useContext(RoleContext);
+  const [ratings, setRatings] = useState<RatingType>({
+    opinionsArray: [],
+    ratingsArray: [],
+  });
+
 
   const handleCloseModal = () => {
     setShowModal(false);
@@ -38,6 +43,24 @@ const SingleCoursePage = () => {
 
   const [openSnackBar, setOpenSnackBar] = React.useState(false);
   const { id } = useParams();
+
+  useEffect(() => {
+    const fetchRatings = async () => {
+      try {
+        const ratingsData = await getRatings(id);
+        setRatings(ratingsData);
+      } catch (error) {
+        console.error('Error al obtener las calificaciones del curso:', error);
+      }
+    };
+
+    if (id) {
+      fetchRatings();
+    }
+  }, [id]);
+
+  const ratings_stars: number[] = ratings.ratingsArray.map((rating) => rating.rating_star);
+  const opinions: string[] = ratings.opinionsArray.map((opinion) => opinion.opinion);
 
   const handleConfirm = () => {
     setOpenSnackBar(true);
@@ -60,12 +83,13 @@ const SingleCoursePage = () => {
   const [comment, setComment] = useState("");
 
   const handleConfirmRating = () => {
-    setIsRated(true);
-    setShowModalRating(false);
-
-    console.log("Calificación seleccionada:", userRating);
-    console.log("Comentario:", comment);
-    //Send calificacion y comentario to backend
+    if (userRating === null) {
+      alert("Por favor, seleccione una cantidad de estrellas.");
+    } else {
+      setIsRated(true);
+      setShowModalRating(false);
+      rating(id, userRating, comment);
+    }
   };
 
   const { getCourse, purchaseCourses } = React.useContext(
@@ -87,6 +111,10 @@ const SingleCoursePage = () => {
   if (!single_course) {
     return <h2 className="section-title">no course to display</h2>;
   }
+
+  const hasUserRated = ratings.ratingsArray.some(
+    (rating) => rating.user_id === user?.id
+  );
 
   const {
     title,
@@ -238,7 +266,7 @@ const SingleCoursePage = () => {
             </Alert>
           </Snackbar>
           <div>
-            {role === "Student" && isLoggedIn && purchasedCourse && (
+            {role === "Student" && isLoggedIn && purchasedCourse && !hasUserRated && (
               <Button
                 onClick={handleRating}
                 // style={{ marginLeft: "20px" }}
@@ -328,7 +356,7 @@ const SingleCoursePage = () => {
         )}
 
         <div className="container" style={{ marginTop: "20px" }}>
-          <RatingComponent ratings={ratings} reviews={reviews} />
+          <RatingComponent ratings={ratings_stars} reviews={opinions} />
         </div>
       </div>
     </SingleCourseWrapper>

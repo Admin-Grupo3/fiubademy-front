@@ -36,25 +36,37 @@ const Course = (props: { id: any; image: any; title: any; creator: any; price: a
           <span className='item-price-old'>${price}</span>
         </div>
       </div>
-      <div className='item-btns flex'>
-        {(!isCourseApproved && role !== "Student") ? (
-  <div className="item-btn see-details-btn">
-    <Link to={`/courses/${id}`} className="link">See details</Link>
-  </div>
-) : (
-  <>
-    <div className="item-btn see-details-btn">
-      <Link to={`/courses/${id}`} className="link">See details</Link>
-    </div>
-    {(isCourseApproved && role === "Student") && (
-      <div className="item-btn approved-btn" style={{ marginLeft: '10px' }}>Aprobado</div>
-    )}
-    {(isCourseApproved && role === "Student") && (
-      <div className="item-btn approved-btn" onClick={() => createPdf("Certificado de aprobacion", user.firstName + user.lastName, title, score)} style={{ marginLeft: '10px' }}>Descargar Certificado</div>
-    )}
-  </>
-)}   
-        </div>
+      <div className='item-btns flex-column'> 
+      
+        {(isCourseApproved || role === "Student") && (
+          <div className='item-btn see-details-btn'>
+            <Link to={`/courses/${id}`} className='link'>
+              See details
+            </Link>
+          </div>
+        )}
+        {(isCourseApproved && role === "Student") && (
+          <div className='item-btn approved-btn' style={{ pointerEvents: 'none' }}>
+            Aprobado
+          </div>
+        )}
+        {(isCourseApproved && role === "Student") && (
+          <div
+          style={{marginTop: '10px', cursor: 'pointer'}}
+            className='item-btn approved-btn'
+            onClick={() =>
+              createPdf(
+                "Certificado de aprobacion",
+                user.firstName + user.lastName,
+                title,
+                score
+              )
+            }
+          >
+            Descargar Certificado
+          </div>
+        )}
+      </div>
     </CourseCard>
   )
 }
